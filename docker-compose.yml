@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:latest
-    container_name: postgres_db
+    container_name: album_db
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -15,7 +15,7 @@ services:
     build:
       context: ./api
       dockerfile: ../docker/api/Dockerfile
-    container_name: hono_api
+    container_name: album_api
     ports:
       - "3000:3000"
     depends_on:
@@ -28,6 +28,22 @@ services:
     command: npm run dev
     working_dir: /app
 
+  client:
+    build:
+      context: .
+      dockerfile: ./docker/client/Dockerfile
+    container_name: album_client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - node_modules_client:/app/node_modules
+    depends_on:
+      - api
+    working_dir: /app
+    command: npm run dev -- --host
+
 volumes:
   pgdata:
   node_modules_api:
+  node_modules_client:
