@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: myapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./api             # ← これが重要！COPY の起点になる
+      dockerfile: ../docker/api/Dockerfile
+    container_name: myapp_api
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: myapp
+    ports:
+      - "3001:3001"
+    command: npm run dev
+
+  client:
+    build: ./client
+    container_name: album_client
+    ports:
+      - "3000:80"
+
+volumes:
+  pgdata:
