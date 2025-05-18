@@ -89,10 +89,22 @@ docker compose down
 PostgreSQL に接続するには以下のコマンドを使用します：
 
 ```bash
-docker compose exec db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+docker compose exec db psql -U {POSTGRES_USER} -d {POSTGRES_DB}
 ```
 
-`.env` ファイルの変数 `POSTGRES_USER` と `POSTGRES_DB` を参照して接続します。
+`{POSTGRES_USER}` と `{POSTGRES_DB}` は `.env` ファイルで設定した値に置き換えてください。
+
+
+### データべースの初期化
+
+
+このファイルを次のようにして実行できます：
+
+```bash
+docker compose exec db psql -U {POSTGRES_USER} -d {POSTGRES_DB} -f /app/db/init.sql
+```
+
+`{POSTGRES_USER}` と `{POSTGRES_DB}` は `.env` ファイルで設定した値に置き換えてください。
 
 ---
 
