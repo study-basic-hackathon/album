@@ -131,13 +131,13 @@ docker compose exec db psql -U app -d app -c "SELECT * FROM post;"
 ### Express API にアクセス
 
 ```bash
-curl http://localhost:3000/dogs
+curl http://localhost:3000/
 ```
 
-### 応答例（空の場合）
+### 応答例
 
-```json
-[]
+```txt
+Hello World!
 ```
 
 ---

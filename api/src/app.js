@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!🐕️!!');
+  res.send('Hello World!');
 });
 
 app.get('/posts', async (req, res) => {
