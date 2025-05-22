@@ -95,19 +95,17 @@ docker compose down -v
 * `sql/init.sql` を作成して以下のように `dog` テーブルを定義：
 
 ```sql
-CREATE TABLE IF NOT EXISTS dog (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  birthday DATE,
-  gender VARCHAR(10),
-  description TEXT
+CREATE TABLE IF NOT EXISTS post (
+  id SERIAL PRIMARY KEY AUTO_INCREMENT,
+  body VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
 ### SQL を Docker コンテナから実行する
 
 ```bash
-docker compose exec db psql -U myuser -d myapp -f /docker-entrypoint-initdb.d/init.sql
+docker compose exec db psql -U app -d app -f /docker-entrypoint-initdb.d/init.sql
 ```
 
 `.env` を使っている場合でも、ここでは環境変数展開が効かないので直接値を書くのが確実です。
@@ -123,7 +121,7 @@ docker compose exec db ls /docker-entrypoint-initdb.d
 ### 結果確認
 
 ```bash
-docker compose exec db psql -U myuser -d myapp -c "SELECT * FROM dog;"
+docker compose exec db psql -U app -d app -c "SELECT * FROM post;"
 ```
 
 ---
