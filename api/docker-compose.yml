@@ -13,19 +13,14 @@ services:
 
   api:
     build: .
-    container_name: api_server
-    restart: always
-    env_file:
-      - .env
     ports:
-      - "${PORT}:3000"
-    depends_on:
-      - db
+      - "${PORT:-3000}:3000"
     volumes:
       - ./src:/app/src
-      - ./node_modules:/app/node_modules
-      - .:/app
-    command: npm run dev
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+    environment:
+      - NODE_ENV=development
 
 volumes:
   pgdata:

@@ -17,7 +17,7 @@
 # DB設定
 POSTGRES_USER=app
 POSTGRES_PASSWORD=Passw0rd!1234
-POSTGRES_DB=myapp
+POSTGRES_DB=app
 
 # Express設定
 PORT=3000
@@ -92,7 +92,7 @@ docker compose down -v
 
 ### 初期化用 SQL ファイルの配置
 
-* `sql/init.sql` を作成して以下のように `dog` テーブルを定義：
+* `sql/init.sql` を作成して以下のように `post` テーブルを定義：
 
 ```sql
 CREATE TABLE IF NOT EXISTS post (
