@@ -126,6 +126,12 @@ docker compose exec db ls /docker-entrypoint-initdb.d
 docker compose exec db psql -U app -d app -c "SELECT * FROM post;"
 ```
 
+## データベースにCLIで接続
+
+```bash
+docker compose exec db psql -U app -d app
+```
+
 ---
 
 ## ✅ 動作確認
