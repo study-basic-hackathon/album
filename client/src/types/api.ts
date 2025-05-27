@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/exihibitions": {
+    "/exhibitions": {
         parameters: {
             query?: never;
             header?: never;
@@ -15,7 +15,7 @@ export interface paths {
          * 花展の一覧
          * @description 花展の一覧を取得する。花展は開催日の降順。
          */
-        get: operations["listExihibitions"];
+        get: operations["listExhibitions"];
         put?: never;
         post?: never;
         delete?: never;
@@ -24,7 +24,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/exihibitions/{exihibitionId}": {
+    "/exhibitions/{exhibitionId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -35,7 +35,7 @@ export interface paths {
          * 花展の取得
          * @description 花展の情報を取得する
          */
-        get: operations["getExihibition"];
+        get: operations["getExhibition"];
         put?: never;
         post?: never;
         delete?: never;
@@ -44,7 +44,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/exihibitions/{exihibitionId}/works": {
+    "/exhibitions/{exhibitionId}/works": {
         parameters: {
             query?: never;
             header?: never;
@@ -55,7 +55,7 @@ export interface paths {
          * 花展の作品の一覧
          * @description 花展ごとの作品の一覧を日付順で取得する
          */
-        get: operations["listExihibitionWorks"];
+        get: operations["listExhibitionWorks"];
         put?: never;
         post?: never;
         delete?: never;
@@ -64,7 +64,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/exihibitions/{exihibitionId}/works/{workId}": {
+    "/exhibitions/{exhibitionId}/works/{workId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -75,7 +75,7 @@ export interface paths {
          * 花展の作品の取得
          * @description 花展ごとの作品の情報を取得する
          */
-        get: operations["getExihibitionWork"];
+        get: operations["getExhibitionWork"];
         put?: never;
         post?: never;
         delete?: never;
@@ -314,7 +314,7 @@ export interface components {
          *       "started_date": "2023-03-01",
          *       "ended_date": "2023-03-31"
          *     } */
-        Exihibition: {
+        Exhibition: {
             /** @description 花展のID */
             id?: number;
             /** @description 花展の名前 */
@@ -438,7 +438,7 @@ export interface components {
                 [name: string]: unknown;
             };
             content: {
-                "application/json": components["schemas"]["Exihibition"];
+                "application/json": components["schemas"]["Exhibition"];
             };
         };
         /** @description A list of exhibitions */
@@ -447,7 +447,7 @@ export interface components {
                 [name: string]: unknown;
             };
             content: {
-                "application/json": components["schemas"]["Exihibition"][];
+                "application/json": components["schemas"]["Exhibition"][];
             };
         };
         /** @description A list of work list items */
@@ -525,7 +525,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    listExihibitions: {
+    listExhibitions: {
         parameters: {
             query?: never;
             header?: never;
@@ -538,13 +538,13 @@ export interface operations {
             default: components["responses"]["UnexpectedError"];
         };
     };
-    getExihibition: {
+    getExhibition: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description 花展のID */
-                exihibitionId: components["parameters"]["ExhibitionIdParam"];
+                exhibitionId: components["parameters"]["ExhibitionIdParam"];
             };
             cookie?: never;
         };
@@ -554,13 +554,13 @@ export interface operations {
             default: components["responses"]["UnexpectedError"];
         };
     };
-    listExihibitionWorks: {
+    listExhibitionWorks: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description 花展のID */
-                exihibitionId: components["parameters"]["ExhibitionIdParam"];
+                exhibitionId: components["parameters"]["ExhibitionIdParam"];
             };
             cookie?: never;
         };
@@ -577,13 +577,13 @@ export interface operations {
             };
         };
     };
-    getExihibitionWork: {
+    getExhibitionWork: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description 花展のID */
-                exihibitionId: components["parameters"]["ExhibitionIdParam"];
+                exhibitionId: components["parameters"]["ExhibitionIdParam"];
                 /** @description 作品のID */
                 workId: components["parameters"]["WorkIdParam"];
             };
