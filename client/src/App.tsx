@@ -12,6 +12,7 @@ type Post = {
 function App() {
   const [posts, setPosts] = useState<Post[]>([])
   const [body, setBody] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
   const createPost = async () => {
     if (body.length === 0) {
@@ -30,7 +31,7 @@ function App() {
       getPosts()
     } catch (error) {
       console.error('Error creating post:', error)
-      alert('Error creating post')
+      setError(String(error))
     }
   }
 
@@ -44,10 +45,9 @@ function App() {
       setPosts(data)
     } catch (error) {
       console.error('Error fetching posts:', error)
-      alert('Error fetching posts')
+      setError(String(error))
       return
     }
-
   }
 
   useEffect(() => {
@@ -71,6 +71,12 @@ function App() {
           value={body} onChange={event => setBody(event.target.value)} />
         <button onClick={() => createPost()}>Post</button>
       </div>
+
+      {error && (
+        <p>
+          <strong>Error:</strong> {error}
+        </p>
+      )}
 
       <div className="card">
         {posts.map((post, index) => (

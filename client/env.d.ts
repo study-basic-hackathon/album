@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string
-  // 他にも必要ならここに追加
+  readonly VITE_MOCK_SERVER_ENABELD: boolean
 }
 
 interface ImportMeta {

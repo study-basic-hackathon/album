@@ -6,6 +6,7 @@
 
 ```
 VITE_API_BASE_URL=http://localhost:3000
+VITE_MOCK_SERVER_ENABELD=true
 ```
 
 ## Installation

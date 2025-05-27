@@ -4,45 +4,47 @@ info:
   version: 1.0.0
 
 tags:
-  - name: exihibition
+  - name: exhibition
     description: 花展の情報を取得するAPI
 
 paths:
-  /exihibitions:
+  /exhibitions:
     get:
       tags:
-        - exihibition
+        - exhibition
       summary: 花展の一覧
       description: 花展の一覧を取得する。花展は開催日の降順。
-      operationId: listExihibitions
+      operationId: listExhibitions
       responses:
         '200':
           $ref: '#/components/responses/ExhibitionsResponse'
         default:
           $ref: '#/components/responses/UnexpectedError'
 
-  /exihibitions/{exihibitionId}:
+  /exhibitions/{exhibitionId}:
     get:
       tags:
-        - exihibition
+        - exhibition
       summary: 花展の取得
       description: 花展の情報を取得する
-      operationId: getExihibition
+      operationId: getExhibition
       parameters:
         - $ref: '#/components/parameters/ExhibitionIdParam'
       responses:
         '200':
           $ref: '#/components/responses/ExhibitionResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
 
-  /exihibitions/{exihibitionId}/works:
+  /exhibitions/{exhibitionId}/works:
     get:
       tags:
-        - exihibition
+        - exhibition
       summary: 花展の作品の一覧
       description: 花展ごとの作品の一覧を日付順で取得する
-      operationId: listExihibitionWorks
+      operationId: listExhibitionWorks
       parameters:
         - $ref: '#/components/parameters/ExhibitionIdParam'
       responses:
@@ -53,13 +55,13 @@ paths:
         default:
           description: Unexpected error
 
-  /exihibitions/{exihibitionId}/works/{workId}:
+  /exhibitions/{exhibitionId}/works/{workId}:
     get:
       tags:
-        - exihibition
+        - exhibition
       summary: 花展の作品の取得
       description: 花展ごとの作品の情報を取得する
-      operationId: getExihibitionWork
+      operationId: getExhibitionWork
       parameters:
         - $ref: '#/components/parameters/ExhibitionIdParam'
         - $ref: '#/components/parameters/WorkIdParam'
@@ -263,7 +265,7 @@ paths:
 
 components:
   schemas:
-    Exihibition:
+    Exhibition:
       type: object
       properties:
         id:
@@ -280,6 +282,11 @@ components:
           type: string
           format: date
           description: 花展の終了日
+      required:
+        - id
+        - name
+        - started_date
+        - ended_date
       example:
         id: 1
         name: "春の花展"
@@ -289,14 +296,18 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           description: 作品のID
         title:
           type: string
           description: 作品のタイトル
           nullable: true
+        exhibition_id:
+          type: integer
+          description: 花展のID
+          nullable: true
         author_id:
-          type: string
+          type: integer
           description: 作者のID
         season_id:
           type: integer
@@ -315,6 +326,15 @@ components:
             type: string
             format: uri
           description: 作品の画像URLのリスト
+      required:
+        - id
+        - title
+        - exhibition_id
+        - author_id
+        - material_ids
+        - season_id
+        - category_id
+        - image_urls
       example:
         id: 1
         title: "桜のアレンジメント"
@@ -332,6 +352,9 @@ components:
           $ref: '#/components/schemas/Work'
         navigation:
           $ref: '#/components/schemas/WorkListNavigation'
+      required:
+        - work
+        - navigation
     WorkListNavigation:
       type: object
       properties:
@@ -343,6 +366,9 @@ components:
           type: integer
           description: 前の作品のID
           nullable: true
+      required:
+        - next
+        - previous
       example:
         next: 2
         previous: null
@@ -355,6 +381,9 @@ components:
         name:
           type: string
           description: 作者の名前
+      required:
+        - id
+        - name
       example:
         id: 1
         name: "山田太郎"
@@ -362,11 +391,14 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           description: 材料のID
         name:
           type: string
           description: 材料の名前
+      required:
+        - id
+        - name
       example:
         id: 1
         name: "芍薬"
@@ -374,11 +406,14 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           description: カテゴリのID
         name:
           type: string
           description: カテゴリの名前
+      required:
+        - id
+        - name
       example:
         id: 1
         name: "格花"
@@ -391,12 +426,15 @@ components:
         name:
           type: string
           description: 季節の名前
+      required:
+        - id
+        - name
       example:
         id: 1
         name: "春"
   parameters:
     ExhibitionIdParam:
-      name: exihibitionId
+      name: exhibitionId
       in: path
       required: true
       description: 花展のID
@@ -442,12 +480,20 @@ components:
       description: An unexpected error occurred
     NotFound:
       description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Resource not found"
     ExhibitionResponse:
       description: A single exhibition
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Exihibition'
+            $ref: '#/components/schemas/Exhibition'
     ExhibitionsResponse:
       description: A list of exhibitions
       content:
@@ -455,7 +501,7 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/Exihibition'
+              $ref: '#/components/schemas/Exhibition'
             example:
               - id: 1
                 name: "春の花展"

@@ -316,19 +316,19 @@ export interface components {
          *     } */
         Exhibition: {
             /** @description 花展のID */
-            id?: number;
+            id: number;
             /** @description 花展の名前 */
-            name?: string;
+            name: string;
             /**
              * Format: date
              * @description 花展の開始日
              */
-            started_date?: string;
+            started_date: string;
             /**
              * Format: date
              * @description 花展の終了日
              */
-            ended_date?: string;
+            ended_date: string;
         };
         /** @example {
          *       "id": 1,
@@ -348,23 +348,25 @@ export interface components {
          *     } */
         Work: {
             /** @description 作品のID */
-            id?: string;
+            id: number;
             /** @description 作品のタイトル */
-            title?: string | null;
+            title: string | null;
+            /** @description 花展のID */
+            exhibition_id: number | null;
             /** @description 作者のID */
-            author_id?: string;
+            author_id: number;
             /** @description 季節のID */
-            season_id?: number;
+            season_id: number;
             /** @description 使用された材料のIDのリスト */
-            material_ids?: number[];
+            material_ids: number[];
             /** @description カテゴリのID */
-            category_id?: number;
+            category_id: number;
             /** @description 作品の画像URLのリスト */
-            image_urls?: string[];
+            image_urls: string[];
         };
         WorkListItem: {
-            work?: components["schemas"]["Work"];
-            navigation?: components["schemas"]["WorkListNavigation"];
+            work: components["schemas"]["Work"];
+            navigation: components["schemas"]["WorkListNavigation"];
         };
         /** @example {
          *       "next": 2,
@@ -372,9 +374,9 @@ export interface components {
          *     } */
         WorkListNavigation: {
             /** @description 次の作品のID */
-            next?: number | null;
+            next: number | null;
             /** @description 前の作品のID */
-            previous?: number | null;
+            previous: number | null;
         };
         /** @example {
          *       "id": 1,
@@ -382,9 +384,9 @@ export interface components {
          *     } */
         Author: {
             /** @description 作者のID */
-            id?: number;
+            id: number;
             /** @description 作者の名前 */
-            name?: string;
+            name: string;
         };
         /** @example {
          *       "id": 1,
@@ -392,9 +394,9 @@ export interface components {
          *     } */
         Material: {
             /** @description 材料のID */
-            id?: string;
+            id: number;
             /** @description 材料の名前 */
-            name?: string;
+            name: string;
         };
         /** @example {
          *       "id": 1,
@@ -402,9 +404,9 @@ export interface components {
          *     } */
         Category: {
             /** @description カテゴリのID */
-            id?: string;
+            id: number;
             /** @description カテゴリの名前 */
-            name?: string;
+            name: string;
         };
         /** @example {
          *       "id": 1,
@@ -412,9 +414,9 @@ export interface components {
          *     } */
         Season: {
             /** @description 季節のID */
-            id?: number;
+            id: number;
             /** @description 季節の名前 */
-            name?: string;
+            name: string;
         };
     };
     responses: {
@@ -430,7 +432,12 @@ export interface components {
             headers: {
                 [name: string]: unknown;
             };
-            content?: never;
+            content: {
+                "application/json": {
+                    /** @example Resource not found */
+                    message?: string;
+                };
+            };
         };
         /** @description A single exhibition */
         ExhibitionResponse: {
@@ -551,6 +558,7 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: components["responses"]["ExhibitionResponse"];
+            404: components["responses"]["NotFound"];
             default: components["responses"]["UnexpectedError"];
         };
     };
