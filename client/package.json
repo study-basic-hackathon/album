@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-schema": "npx openapi-typescript ../docs/api.yml --output src/types/api.ts"
   },
   "dependencies": {
     "react": "^19.1.0",
