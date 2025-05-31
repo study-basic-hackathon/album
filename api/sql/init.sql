@@ -3,3 +3,85 @@ CREATE TABLE IF NOT EXISTS post (
   body VARCHAR(100) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 華展テーブル
+CREATE TABLE exhibition (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  started_date DATE NOT NULL,
+  finished_date DATE NOT NULL
+);
+COMMENT ON TABLE exhibition IS '華展テーブル';
+COMMENT ON COLUMN exhibition.id IS '華展ID';
+COMMENT ON COLUMN exhibition.name IS '華展名';
+COMMENT ON COLUMN exhibition.started_date IS '開始日';
+COMMENT ON COLUMN exhibition.finished_date IS '終了日';
+
+-- 作者テーブル
+CREATE TABLE author (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+);
+COMMENT ON TABLE artist IS '作者テーブル';
+COMMENT ON COLUMN artist.id IS '作者ID';
+COMMENT ON COLUMN artist.name IS '作者名';
+
+-- 作品テーブル
+CREATE TABLE work (
+  id SERIAL PRIMARY KEY,
+  season VARCHAR(10),
+  exhibition_id INTEGER REFERENCES exhibition(id),
+  author_id INTEGER REFERENCES author(id),
+  category_id INTEGER REFERENCES category(id),
+  createdate DATE DEFAULT CURRENT_TIMESTAMP
+);
+COMMENT ON TABLE work IS '作品テーブル';
+COMMENT ON COLUMN work.id IS '作品ID';
+COMMENT ON COLUMN work.season IS '季節';
+COMMENT ON COLUMN work.exhibition_id IS '華展ID';
+COMMENT ON COLUMN work.artist_id IS '作者ID';
+COMMENT ON COLUMN work.category_id IS '作品分類ID';
+COMMENT ON COLUMN work.createdate IS '登録日';
+
+-- 作品分類テーブル
+CREATE TABLE category (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+);
+COMMENT ON TABLE category IS '作品分類テーブル';
+COMMENT ON COLUMN category.id IS '作品分類ID';
+COMMENT ON COLUMN category.name IS '作品分類名';
+
+-- 作品 + 花材 -> 複合キーテーブル
+CREATE TABLE work_material (
+  work_id INTEGER NOT NULL,
+  material_id INTEGER NOT NULL,
+  PRIMARY KEY (work_id, material_id),
+  FOREIGN KEY (work_id) REFERENCES work(id),
+  FOREIGN KEY (material_id) REFERENCES material(id)
+);
+COMMENT ON TABLE work_material IS '作品_花材テーブル';
+COMMENT ON COLUMN work_material.work_id IS '作品ID';
+COMMENT ON COLUMN work_material.material_id IS '花材ID';
+
+-- 花材テーブル
+CREATE TABLE material (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+);
+COMMENT ON TABLE material IS '花材テーブル';
+COMMENT ON COLUMN material.id IS '花材ID';
+COMMENT ON COLUMN material.name IS '花材名';
+
+-- 画像テーブル
+CREATE TABLE image (
+  id SERIAL PRIMARY KEY,
+  url TEXT NOT NULL,
+  work_id INTEGER REFERENCES work(id),
+  createdate DATE DEFAULT CURRENT_TIMESTAMP
+);
+COMMENT ON TABLE image IS '画像テーブル';
+COMMENT ON COLUMN image.id IS '画像ID';
+COMMENT ON COLUMN image.url IS '画像URL';
+COMMENT ON COLUMN image.work_id IS '作品ID';
+COMMENT ON COLUMN image.createdate IS '登録日';
