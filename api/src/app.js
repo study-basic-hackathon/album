@@ -21,7 +21,7 @@ app.get("/posts", async (req, res) => {
     res.status(500).json({ error: "Database query failed" });
   }
 });
-
+// コメント
 app.get("/exhibitions", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM exhibition");
