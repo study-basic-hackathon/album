@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS post (
 );
 
 -- 華展テーブル
-CREATE TABLE exhibition (
+CREATE TABLE IF NOT EXISTS exhibition (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   started_date DATE NOT NULL,
@@ -18,16 +18,16 @@ COMMENT ON COLUMN exhibition.started_date IS '開始日';
 COMMENT ON COLUMN exhibition.finished_date IS '終了日';
 
 -- 作者テーブル
-CREATE TABLE author (
+CREATE TABLE IF NOT EXISTS author (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL
 );
-COMMENT ON TABLE artist IS '作者テーブル';
-COMMENT ON COLUMN artist.id IS '作者ID';
-COMMENT ON COLUMN artist.name IS '作者名';
+COMMENT ON TABLE author IS '作者テーブル';
+COMMENT ON COLUMN author.id IS '作者ID';
+COMMENT ON COLUMN author.name IS '作者名';
 
 -- 作品テーブル
-CREATE TABLE work (
+CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
   season VARCHAR(10),
   exhibition_id INTEGER REFERENCES exhibition(id),
@@ -39,12 +39,12 @@ COMMENT ON TABLE work IS '作品テーブル';
 COMMENT ON COLUMN work.id IS '作品ID';
 COMMENT ON COLUMN work.season IS '季節';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
-COMMENT ON COLUMN work.artist_id IS '作者ID';
+COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
 COMMENT ON COLUMN work.createdate IS '登録日';
 
 -- 作品分類テーブル
-CREATE TABLE category (
+CREATE TABLE IF NOT EXISTS category (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL
 );
@@ -53,7 +53,7 @@ COMMENT ON COLUMN category.id IS '作品分類ID';
 COMMENT ON COLUMN category.name IS '作品分類名';
 
 -- 作品 + 花材 -> 複合キーテーブル
-CREATE TABLE work_material (
+CREATE TABLE IF NOT EXISTS work_material (
   work_id INTEGER NOT NULL,
   material_id INTEGER NOT NULL,
   PRIMARY KEY (work_id, material_id),
@@ -65,7 +65,7 @@ COMMENT ON COLUMN work_material.work_id IS '作品ID';
 COMMENT ON COLUMN work_material.material_id IS '花材ID';
 
 -- 花材テーブル
-CREATE TABLE material (
+CREATE TABLE IF NOT EXISTS material (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL
 );
@@ -74,7 +74,7 @@ COMMENT ON COLUMN material.id IS '花材ID';
 COMMENT ON COLUMN material.name IS '花材名';
 
 -- 画像テーブル
-CREATE TABLE image (
+CREATE TABLE IF NOT EXISTS image (
   id SERIAL PRIMARY KEY,
   url TEXT NOT NULL,
   work_id INTEGER REFERENCES work(id),
