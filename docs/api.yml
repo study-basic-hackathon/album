@@ -211,6 +211,24 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
 
+  /categories/{categoryId}/works/{workId}:
+    get:
+      tags:
+        - category
+      summary: カテゴリの作品の取得
+      description: カテゴリごとの作品の情報を取得する
+      operationId: getCategoryWork
+      parameters:
+        - $ref: '#/components/parameters/CategoryIdParam'
+        - $ref: '#/components/parameters/WorkIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/WorkListItemResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+
   /seasons/{seasonId}:
     get:
       tags:
