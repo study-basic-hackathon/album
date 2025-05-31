@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS post (
   id SERIAL PRIMARY KEY,
   body VARCHAR(100) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 華展テーブル
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS work (
   exhibition_id INTEGER REFERENCES exhibition(id),
   author_id INTEGER REFERENCES author(id),
   category_id INTEGER REFERENCES category(id),
-  createdate DATE DEFAULT CURRENT_TIMESTAMP
+  create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
 COMMENT ON COLUMN work.id IS '作品ID';
@@ -41,7 +41,7 @@ COMMENT ON COLUMN work.season IS '季節';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
-COMMENT ON COLUMN work.createdate IS '登録日';
+COMMENT ON COLUMN work.create_date IS '登録日';
 
 -- 作品分類テーブル
 CREATE TABLE IF NOT EXISTS category (
@@ -78,10 +78,10 @@ CREATE TABLE IF NOT EXISTS image (
   id SERIAL PRIMARY KEY,
   url TEXT NOT NULL,
   work_id INTEGER REFERENCES work(id),
-  createdate DATE DEFAULT CURRENT_TIMESTAMP
+  create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE image IS '画像テーブル';
 COMMENT ON COLUMN image.id IS '画像ID';
 COMMENT ON COLUMN image.url IS '画像URL';
 COMMENT ON COLUMN image.work_id IS '作品ID';
-COMMENT ON COLUMN image.createdate IS '登録日';
+COMMENT ON COLUMN image.create_date IS '登録日';
