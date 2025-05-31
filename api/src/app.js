@@ -21,10 +21,40 @@ app.get("/posts", async (req, res) => {
     res.status(500).json({ error: "Database query failed" });
   }
 });
-// コメント
+
+// exhibition
+// -- 華展の一覧
 app.get("/exhibitions", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM exhibition");
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+// category
+// -- カテゴリの情報の取得
+app.get("/categories/{categoryId}", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query("SELECT * FROM category WHERE id = $1", [
+      id,
+    ]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+// category
+// -- カテゴリの作品の一覧
+app.get("/categories/{categoryId}/works", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
