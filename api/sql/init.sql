@@ -29,6 +29,7 @@ COMMENT ON COLUMN author.name IS '作者名';
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
+  title VARCHAR(100),
   season VARCHAR(10),
   exhibition_id INTEGER REFERENCES exhibition(id),
   author_id INTEGER REFERENCES author(id),
@@ -37,6 +38,7 @@ CREATE TABLE IF NOT EXISTS work (
 );
 COMMENT ON TABLE work IS '作品テーブル';
 COMMENT ON COLUMN work.id IS '作品ID';
+COMMENT ON COLUMN work.title IS 'タイトル';
 COMMENT ON COLUMN work.season IS '季節';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.author_id IS '作者ID';
