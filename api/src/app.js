@@ -26,7 +26,9 @@ app.get("/posts", async (req, res) => {
 // -- 華展の一覧
 app.get("/exhibitions", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM exhibition");
+    const result = await pool.query(
+      "SELECT id, name, started_date::date, ended_date::date FROM exhibition"
+    );
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);

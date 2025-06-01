@@ -9,13 +9,13 @@ CREATE TABLE IF NOT EXISTS exhibition (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   started_date DATE NOT NULL,
-  finished_date DATE NOT NULL
+  ended_date DATE NOT NULL
 );
 COMMENT ON TABLE exhibition IS '華展テーブル';
 COMMENT ON COLUMN exhibition.id IS '華展ID';
 COMMENT ON COLUMN exhibition.name IS '華展名';
 COMMENT ON COLUMN exhibition.started_date IS '開始日';
-COMMENT ON COLUMN exhibition.finished_date IS '終了日';
+COMMENT ON COLUMN exhibition.ended_date IS '終了日';
 
 -- 作者テーブル
 CREATE TABLE IF NOT EXISTS author (
