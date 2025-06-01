@@ -26,6 +26,24 @@ COMMENT ON TABLE author IS '作者テーブル';
 COMMENT ON COLUMN author.id IS '作者ID';
 COMMENT ON COLUMN author.name IS '作者名';
 
+-- 作品分類テーブル
+CREATE TABLE IF NOT EXISTS category (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+);
+COMMENT ON TABLE category IS '作品分類テーブル';
+COMMENT ON COLUMN category.id IS '作品分類ID';
+COMMENT ON COLUMN category.name IS '作品分類名';
+
+-- 花材テーブル
+CREATE TABLE IF NOT EXISTS material (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+);
+COMMENT ON TABLE material IS '花材テーブル';
+COMMENT ON COLUMN material.id IS '花材ID';
+COMMENT ON COLUMN material.name IS '花材名';
+
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
@@ -45,15 +63,6 @@ COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
 COMMENT ON COLUMN work.create_date IS '登録日';
 
--- 作品分類テーブル
-CREATE TABLE IF NOT EXISTS category (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL
-);
-COMMENT ON TABLE category IS '作品分類テーブル';
-COMMENT ON COLUMN category.id IS '作品分類ID';
-COMMENT ON COLUMN category.name IS '作品分類名';
-
 -- 作品 + 花材 -> 複合キーテーブル
 CREATE TABLE IF NOT EXISTS work_material (
   work_id INTEGER NOT NULL,
@@ -65,15 +74,6 @@ CREATE TABLE IF NOT EXISTS work_material (
 COMMENT ON TABLE work_material IS '作品_花材テーブル';
 COMMENT ON COLUMN work_material.work_id IS '作品ID';
 COMMENT ON COLUMN work_material.material_id IS '花材ID';
-
--- 花材テーブル
-CREATE TABLE IF NOT EXISTS material (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL
-);
-COMMENT ON TABLE material IS '花材テーブル';
-COMMENT ON COLUMN material.id IS '花材ID';
-COMMENT ON COLUMN material.name IS '花材名';
 
 -- 画像テーブル
 CREATE TABLE IF NOT EXISTS image (
