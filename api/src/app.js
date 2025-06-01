@@ -12,6 +12,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+
 app.get("/posts", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM post");
@@ -29,6 +30,60 @@ app.get("/exhibitions", async (req, res) => {
     const result = await pool.query(
       "SELECT id, name,TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date, TO_CHAR(ended_date, 'YYYY-MM-DD')AS ended_date FROM exhibition"
     );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+// -- 華展の取得
+app.get("/exhibitions/:exhibitionId", async (req, res) => {
+  const { exhibitionId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM exhibition WHERE id = $1",
+      [exhibitionId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Resourse not found" });
+    };
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+// -- 華展の作品の一覧
+app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
+  const { exhibitionId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM work WHERE exhibition_id = $1",
+      [exhibitionId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Resourse not found" });
+    };
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+// --華展の作品の取得
+app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
+  const { exhibitionId, workId } = req.params;
+  try {
+    const result = await pool.query(
+       "SELECT * FROM work WHERE exhibition_id = $1 AND id = $2",
+      [exhibitionId, workId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Resourse not found" });
+    };
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
