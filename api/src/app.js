@@ -27,7 +27,7 @@ app.get("/posts", async (req, res) => {
 app.get("/exhibitions", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, name, started_date::date, ended_date::date FROM exhibition"
+      "SELECT id, name, TO_CHAR(started_date, 'YYYY-MM-DD'), TO_CHAR(ended_date, 'YYYY-MM-DD') FROM exhibition"
     );
     res.json(result.rows);
   } catch (err) {
