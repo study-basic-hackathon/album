@@ -39,11 +39,12 @@ app.get("/exhibitions", async (req, res) => {
 // category
 // -- カテゴリの情報の取得
 app.get("/categories/:categoryId", async (req, res) => {
-  const { id } = req.params;
+  const { categoryId } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM category WHERE id = $1", [
-      id,
-    ]);
+    const result = await pool.query(
+      "SELECT * FROM category WHERE id = $1 AS categoryId",
+      [categoryId]
+    );
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
