@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-schema": "npx openapi-typescript ../docs/api.yml --output src/types/api.ts"
+    "generate-schema": "npx openapi-typescript ../docs/api.yml --output src/types/api.ts",
+    "format": "prettier --write src"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -24,6 +25,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "msw": "^2.8.4",
+    "prettier": "^3.5.3",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5"

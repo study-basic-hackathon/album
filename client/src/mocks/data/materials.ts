@@ -1,6 +1,6 @@
-import { type components } from '../../types/api';
+import { type components } from "../../types/api";
 
-type Material = components['schemas']['Material'];
+type Material = components["schemas"]["Material"];
 
 export const materials: Record<number, Material> = {
   1: {
@@ -54,5 +54,5 @@ export const materials: Record<number, Material> = {
   13: {
     id: 13,
     name: "アイリス",
-  }
-}
+  },
+};
