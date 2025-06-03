@@ -48,7 +48,7 @@ COMMENT ON COLUMN material.name IS '花材名';
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100),
-  season VARCHAR(10)
+  season VARCHAR(10),
   exhibition_id INTEGER REFERENCES exhibition(id),
   author_id INTEGER REFERENCES author(id),
   category_id INTEGER REFERENCES category(id),
