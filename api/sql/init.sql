@@ -44,15 +44,6 @@ COMMENT ON TABLE material IS '花材テーブル';
 COMMENT ON COLUMN material.id IS '花材ID';
 COMMENT ON COLUMN material.name IS '花材名';
 
--- 季節
-CREATE TABLE IF NOT EXISTS season (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(10) NOT NULL
-)
-COMMENT ON TABLE category IS '季節テーブル';
-COMMENT ON COLUMN category.id IS '季節ID';
-COMMENT ON COLUMN category.name IS '季節名';
-
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
@@ -97,3 +88,12 @@ COMMENT ON COLUMN image.id IS '画像ID';
 COMMENT ON COLUMN image.url IS '画像URL';
 COMMENT ON COLUMN image.work_id IS '作品ID';
 COMMENT ON COLUMN image.create_date IS '登録日';
+
+-- 季節
+CREATE TABLE IF NOT EXISTS season (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(10) NOT NULL
+)
+COMMENT ON TABLE category IS '季節テーブル';
+COMMENT ON COLUMN category.id IS '季節ID';
+COMMENT ON COLUMN category.name IS '季節名';
