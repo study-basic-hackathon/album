@@ -67,7 +67,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       +"FROM work w",
       +"LEFT JOIN image i ON i.work_id = w.id",
       +"LEFT JOIN work_material wm ON wm.work_id = w.id",
-      +"WHERE id = $1",
+      +"WHERE w.category_id = $1",
       +"GROUP BY w.id",
       +"ORDER BY w.id ASC",
       [categoryId]
