@@ -121,10 +121,9 @@ app.get("/categories/:categoryId/works", async (req, res) => {
 app.get("/seasons/:seasonId", async (req, res) => {
   const { seasonId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT id, season FROM season WHERE id = $1",
-      [seasonId]
-    );
+    const result = await pool.query("SELECT * FROM season WHERE id = $1", [
+      seasonId,
+    ]);
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
