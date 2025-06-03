@@ -51,13 +51,13 @@ CREATE TABLE IF NOT EXISTS work (
   exhibition_id INTEGER REFERENCES exhibition(id),
   author_id INTEGER REFERENCES author(id),
   category_id INTEGER REFERENCES category(id),
-  season _id INTEGER REFERENCES season(id),
+  season_id INTEGER REFERENCES season(id),
   create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
 COMMENT ON COLUMN work.id IS '作品ID';
 COMMENT ON COLUMN work.title IS 'タイトル';
-COMMENT ON COLUMN work.season IS '季節';
+COMMENT ON COLUMN work.season_id IS '季節';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
