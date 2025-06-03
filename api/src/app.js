@@ -56,7 +56,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
   const { categoryId } = req.params;
   try {
     const result = await pool.query(
-      "SELECT ",
+      "SELECT *",
       "w.id",
       "w.title",
       "w.author_id",
