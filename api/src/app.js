@@ -61,7 +61,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       +"w.title",
       +"w.author_id",
       +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
-      +"+w.category_id",
+      +"w.category_id",
       +"w.season",
       +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
       +"FROM work w",
@@ -72,6 +72,29 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       +"ORDER BY w.id ASC",
       [categoryId]
     );
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No works found for this category" });
+    }
+
+    // 作品情報を整形
+    const works = result.rows.map((work) => ({
+      work: {
+        id: work.id,
+        title: work.title || "No title", // null の場合 "No title" を表示
+        author_id: work.author_id,
+        material_ids: work.material_ids, // 配列で返されるためそのまま
+        season_id: work.season_id, // `season_id` をそのまま返す
+        category_id: work.category_id, // カテゴリID
+        image_urls: work.image_urls, // 配列で返されるためそのまま
+      },
+      navigation: {
+        next: null, // 次の作品を設定するロジックが必要
+        previous: null, // 前の作品を設定するロジックが必要
+      },
+    }));
+
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
