@@ -93,7 +93,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
 
 // category
 // -- カテゴリの情報の取得
-app.get("/categories/{categoryId}", async (req, res) => {
+app.get("/categories/:categoryId", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
@@ -107,7 +107,7 @@ app.get("/categories/{categoryId}", async (req, res) => {
 });
 
 // -- カテゴリの作品の一覧
-app.get("/categories/{categoryId}/works", async (req, res) => {
+app.get("/categories/:categoryId/works", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
@@ -121,7 +121,7 @@ app.get("/categories/{categoryId}/works", async (req, res) => {
 });
 
 // -- カテゴリの作品の取得
-app.get("/categories/{categoryId}/works/{workId}", async (req, res) => {
+app.get("/categories/:categoryId/works/:workId", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
@@ -136,7 +136,7 @@ app.get("/categories/{categoryId}/works/{workId}", async (req, res) => {
 
 // -- season
 // -- 季節の情報の所得
-app.get("/seasons/{seasonId}}", async (req, res) => {
+app.get("/seasons/:seasonId", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
@@ -148,7 +148,7 @@ app.get("/seasons/{seasonId}}", async (req, res) => {
 });
 
 // -- 季節の作品の一覧
-app.get("/seasons/{seasonId}/works", async (req, res) => {
+app.get("/seasons/:seasonId/works", async (req, res) => {
   const { season_id } = req.params;
   try {
     const result = await pool.query(
@@ -176,7 +176,7 @@ app.get("/seasons/{seasonId}/works", async (req, res) => {
 });
 
 // -- 季節の作品の取得
-app.get("/seasons/{seasonId}/works/{workId}", async (req, res) => {
+app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
