@@ -55,7 +55,9 @@ app.get("/categories/{categoryId}", async (req, res) => {
 app.get("/categories/{categoryId}/works", async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
+    const result = await pool.query("SELECT * FROM category WHERE id = $1", [
+      id,
+    ]);
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -67,7 +69,9 @@ app.get("/categories/{categoryId}/works", async (req, res) => {
 app.get("/categories/{categoryId}/works/{workId}", async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
+    const result = await pool.query("SELECT * FROM category WHERE id = $1", [
+      id,
+    ]);
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);

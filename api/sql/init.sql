@@ -44,14 +44,23 @@ COMMENT ON TABLE material IS '花材テーブル';
 COMMENT ON COLUMN material.id IS '花材ID';
 COMMENT ON COLUMN material.name IS '花材名';
 
+-- 季節
+CREATE TABLE IF NOT EXISTS season (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(10) NOT NULL
+)
+COMMENT ON TABLE category IS '季節テーブル';
+COMMENT ON COLUMN category.id IS '季節ID';
+COMMENT ON COLUMN category.name IS '季節名';
+
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100),
-  season VARCHAR(10),
   exhibition_id INTEGER REFERENCES exhibition(id),
   author_id INTEGER REFERENCES author(id),
   category_id INTEGER REFERENCES category(id),
+  season _id INTEGER REFERENCES season(id),
   create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
@@ -61,6 +70,7 @@ COMMENT ON COLUMN work.season IS '季節';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
+COMMENT ON COLUMN work.season_id IS '季節ID';
 COMMENT ON COLUMN work.create_date IS '登録日';
 
 -- 作品 + 花材 -> 複合キーテーブル
