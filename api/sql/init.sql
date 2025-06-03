@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS work (
 COMMENT ON TABLE work IS '作品テーブル';
 COMMENT ON COLUMN work.id IS '作品ID';
 COMMENT ON COLUMN work.title IS 'タイトル';
-COMMENT ON COLUMN work.season_id IS '季節';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
