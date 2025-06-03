@@ -57,22 +57,21 @@ app.get("/categories/:categoryId/works", async (req, res) => {
   try {
     const result = await pool.query(
       "SELECT ",
-      +"w.id",
-      +"w.title",
-      +"w.author_id",
+      "w.id",
+      "w.title",
+      "w.author_id",
       // +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
-      +"w.category_id",
-      +"w.season",
+      "w.category_id",
+      "w.season",
       // +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
-      +"FROM work w",
+      "FROM work w",
       // +"LEFT JOIN image i ON i.work_id = w.id",
       // +"LEFT JOIN work_material wm ON wm.work_id = w.id",
-      +"WHERE w.category_id = $1",
+      "WHERE w.category_id = $1",
       // +"GROUP BY w.id",
       // +"ORDER BY w.id ASC",
       [categoryId]
     );
-
     // // 作品情報を整形
     // const works = result.rows.map((work) => ({
     //   work: {
@@ -89,7 +88,6 @@ app.get("/categories/:categoryId/works", async (req, res) => {
     //     previous: null, // 前の作品を設定するロジックが必要
     //   },
     // }));
-
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
