@@ -85,7 +85,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
         title: work.title || "No title", // null の場合 "No title" を表示
         author_id: work.author_id,
         material_ids: work.material_ids, // 配列で返されるためそのまま
-        season_id: work.season_id, // `season_id` をそのまま返す
+        season: work.season, // `season_id` をそのまま返す
         category_id: work.category_id, // カテゴリID
         image_urls: work.image_urls, // 配列で返されるためそのまま
       },
