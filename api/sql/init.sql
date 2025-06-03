@@ -94,6 +94,6 @@ CREATE TABLE IF NOT EXISTS season (
   id SERIAL PRIMARY KEY,
   name VARCHAR(10) NOT NULL
 )
-COMMENT ON TABLE category IS '季節テーブル';
-COMMENT ON COLUMN category.id IS '季節ID';
-COMMENT ON COLUMN category.name IS '季節名';
+COMMENT ON TABLE season IS '季節テーブル';
+COMMENT ON COLUMN season.id IS '季節ID';
+COMMENT ON COLUMN season.name IS '季節名';
