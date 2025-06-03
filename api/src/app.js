@@ -51,19 +51,33 @@ app.get("/categories/:categoryId", async (req, res) => {
   }
 });
 
-// // -- カテゴリの作品の一覧
-// app.get("/categories/:categoryId/works", async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
-//       id,
-//     ]);
-//     res.json(result.rows);
-//   } catch (err) {
-//     console.error("DB Error:", err);
-//     res.status(500).json({ error: "Database query failed" });
-//   }
-// });
+// -- カテゴリの作品の一覧
+app.get("/categories/:categoryId/works", async (req, res) => {
+  const { categoryId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT " +
+        "w.id" +
+        "w.title" +
+        "w.author_id" +
+        "COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids" +
+        "+w.category_id" +
+        "w.season" +
+        "COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls" +
+        "FROM work" +
+        "LEFT JOIN image i ON i.work_id = w.id" +
+        "LEFT JOIN work_material wm ON wm.work_id = w.id" +
+        "WHERE id = $1" +
+        "GROUP BY w.id" +
+        "ORDER BY w.id ASC",
+      [categoryId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
 
 // // -- カテゴリの作品の取得
 // app.get("/categories/:categoryId/works/:workId", async (req, res) => {
@@ -103,7 +117,7 @@ app.get("/categories/:categoryId", async (req, res) => {
 //       +"w.aothor_id",
 //       +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
 //       +"w.category_id",
-//       +"w.season_id",
+//       +"w.season",
 //       +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
 //       +"FROM work w",
 //       +"LEFT JOIN image i ON i.work_id = w.id",
