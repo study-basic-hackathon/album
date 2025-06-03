@@ -122,7 +122,7 @@ app.get("/seasons/:seasonId", async (req, res) => {
   const { seasonId } = req.params;
   try {
     const result = await pool.query(
-      "SELECT id, season FROM work WHERE season = $1",
+      "SELECT id, season FROM season WHERE id = $1",
       [seasonId]
     );
     res.json(result.rows);
