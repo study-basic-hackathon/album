@@ -149,15 +149,32 @@ app.get("/seasons/{seasonId}}", async (req, res) => {
 
 // -- 季節の作品の一覧
 app.get("/seasons/{seasonId}/works", async (req, res) => {
-  const { id } = req.params;
+  const { season_id } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
+    const result = await pool.query(
+      "SELECT * ",
+      +"w.id",
+      +"w.titel",
+      +"w.aothor_id",
+      +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
+      +"w.category_id",
+      +"w.season_id",
+      +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
+      +"FROM work w",
+      +"LEFT JOIN image i ON i.work_id = w.id",
+      +"LEFT JOIN work_material wm ON wm.work_id = w.id",
+      +"WHERE season_id = $1",
+      +"GROUP BY w.id",
+      +"ORDER BY w.id ASC",
+      [season_id]
+    );
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
   }
 });
+
 // -- 季節の作品の取得
 app.get("/seasons/{seasonId}/works/{workId}", async (req, res) => {
   const { id } = req.params;
