@@ -56,20 +56,20 @@ app.get("/categories/:categoryId/works", async (req, res) => {
   const { categoryId } = req.params;
   try {
     const result = await pool.query(
-      "SELECT " +
-        "w.id" +
-        "w.title" +
-        "w.author_id" +
-        "COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids" +
-        "+w.category_id" +
-        "w.season" +
-        "COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls" +
-        "FROM work" +
-        "LEFT JOIN image i ON i.work_id = w.id" +
-        "LEFT JOIN work_material wm ON wm.work_id = w.id" +
-        "WHERE id = $1" +
-        "GROUP BY w.id" +
-        "ORDER BY w.id ASC",
+      "SELECT ",
+      +"w.id",
+      +"w.title",
+      +"w.author_id",
+      +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
+      +"+w.category_id",
+      +"w.season",
+      +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
+      +"FROM work w",
+      +"LEFT JOIN image i ON i.work_id = w.id",
+      +"LEFT JOIN work_material wm ON wm.work_id = w.id",
+      +"WHERE id = $1",
+      +"GROUP BY w.id",
+      +"ORDER BY w.id ASC",
       [categoryId]
     );
     res.json(result.rows);
