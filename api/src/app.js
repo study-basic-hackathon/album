@@ -74,19 +74,29 @@ app.get("/categories/:categoryId/works", async (req, res) => {
   }
 });
 
-// // -- カテゴリの作品の取得
-// app.get("/categories/:categoryId/works/:workId", async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
-//       id,
-//     ]);
-//     res.json(result.rows);
-//   } catch (err) {
-//     console.error("DB Error:", err);
-//     res.status(500).json({ error: "Database query failed" });
-//   }
-// });
+// -- カテゴリの作品の取得
+app.get("/categories/:categoryId/works/:workId", async (req, res) => {
+  const { categoryId, workId } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT 
+      w.id,
+      w.title,
+      w.author_id,
+      w.category_id,
+      w.season_id
+      FROM work w
+      WHERE w.category_id = $1
+      AND w.id = $2
+      `,
+      [categoryId, workId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
 
 // -- season
 // -- 季節の情報の所得
