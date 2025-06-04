@@ -162,7 +162,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
   }
 });
 
-// -- season
+// season
 // -- 季節の情報の所得
 app.get("/seasons/:seasonId", async (req, res) => {
   const { seasonId } = req.params;
