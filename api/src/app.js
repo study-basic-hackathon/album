@@ -197,7 +197,7 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
         FROM work w
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
-        WHERE season_id = $1
+        WHERE w.season = $1
         GROUP BY w.id
       ),
       numbered AS (
