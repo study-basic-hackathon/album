@@ -1,6 +1,6 @@
-import { type components } from '../../types/api';
+import { type components } from "../../types/api";
 
-type Author = components['schemas']['Author'];
+type Author = components["schemas"]["Author"];
 
 export const authors: Record<number, Author> = {
   1: {
@@ -18,5 +18,5 @@ export const authors: Record<number, Author> = {
   4: {
     id: 4,
     name: "田中 美咲",
-  }
-}
+  },
+};
