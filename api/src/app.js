@@ -74,29 +74,29 @@ app.get("/categories/:categoryId/works", async (req, res) => {
   }
 });
 
-// -- カテゴリの作品の取得
-app.get("/categories/:categoryId/works/:workId", async (req, res) => {
-  const { categoryId, workId } = req.params;
-  try {
-    const result = await pool.query(
-      `SELECT 
-      w.id,
-      w.title,
-      w.author_id,
-      w.category_id,
-      w.season_id
-      FROM work w
-      WHERE w.category_id = $1
-      AND w.id = $2
-      `,
-      [categoryId, workId]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
+// // -- カテゴリの作品の取得
+// app.get("/categories/:categoryId/works/:workId", async (req, res) => {
+//   const { categoryId, workId } = req.params;
+//   try {
+//     const result = await pool.query(
+//       `SELECT
+//       w.id,
+//       w.title,
+//       w.author_id,
+//       w.category_id,
+//       w.season_id
+//       FROM work w
+//       WHERE w.category_id = $1
+//       AND w.id = $2
+//       `,
+//       [categoryId, workId]
+//     );
+//     res.json(result.rows);
+//   } catch (err) {
+//     console.error("DB Error:", err);
+//     res.status(500).json({ error: "Database query failed" });
+//   }
+// });
 
 // -- season
 // -- 季節の情報の所得
@@ -113,45 +113,52 @@ app.get("/seasons/:seasonId", async (req, res) => {
   }
 });
 
-// // -- 季節の作品の一覧
-// app.get("/seasons/:seasonId/works", async (req, res) => {
-//   const { season_id } = req.params;
-//   try {
-//     const result = await pool.query(
-//       "SELECT * ",
-//       +"w.id",
-//       +"w.titel",
-//       +"w.aothor_id",
-//       +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
-//       +"w.category_id",
-//       +"w.season",
-//       +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
-//       +"FROM work w",
-//       +"LEFT JOIN image i ON i.work_id = w.id",
-//       +"LEFT JOIN work_material wm ON wm.work_id = w.id",
-//       +"WHERE season_id = $1",
-//       +"GROUP BY w.id",
-//       +"ORDER BY w.id ASC",
-//       [season_id]
-//     );
-//     res.json(result.rows);
-//   } catch (err) {
-//     console.error("DB Error:", err);
-//     res.status(500).json({ error: "Database query failed" });
-//   }
-// });
+// -- 季節の作品の一覧
+app.get("/seasons/:seasonId/works", async (req, res) => {
+  const { seasonId } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT 
+      w.id,
+      w.title,
+      w.author_id,
+      w.category_id,
+      w.season_id
+      FROM work w
+      WHERE w.season_id = $1
+      `,
+      [seasonId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
 
-// // -- 季節の作品の取得
-// app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
-//     res.json(result.rows);
-//   } catch (err) {
-//     console.error("DB Error:", err);
-//     res.status(500).json({ error: "Database query failed" });
-//   }
-// });
+// -- 季節の作品の取得
+app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
+  const { seasonId, workId } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT 
+      w.id,
+      w.title,
+      w.author_id,
+      w.category_id,
+      w.season_id
+      FROM work w
+      WHERE w.season_id = $1
+      AND w.id = $2
+      `,
+      [seasonId, workId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
 
 app.get("/posts/:id", async (req, res) => {
   const { id } = req.params;
