@@ -44,14 +44,14 @@ COMMENT ON TABLE material IS '花材テーブル';
 COMMENT ON COLUMN material.id IS '花材ID';
 COMMENT ON COLUMN material.name IS '花材名';
 
--- 季節
+-- 季節テーブル
 CREATE TABLE IF NOT EXISTS season (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(10) NOT NULL
-)
-COMMENT ON TABLE category IS '季節テーブル';
-COMMENT ON COLUMN category.id IS '季節ID';
-COMMENT ON COLUMN category.name IS '季節名';
+  name VARCHAR(100) NOT NULL
+);
+COMMENT ON TABLE season IS '季節テーブル';
+COMMENT ON COLUMN season.id IS '季節ID';
+COMMENT ON COLUMN season.name IS '季節名';
 
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS work (
   exhibition_id INTEGER REFERENCES exhibition(id),
   author_id INTEGER REFERENCES author(id),
   category_id INTEGER REFERENCES category(id),
-  season _id INTEGER REFERENCES season(id),
+  season_id INTEGER REFERENCES season(id),
   create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
