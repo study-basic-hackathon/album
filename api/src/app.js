@@ -127,28 +127,41 @@ app.get("/seasons/:seasonId", async (req, res) => {
   }
 });
 
-// // -- 季節の作品の一覧
-// app.get("/seasons/:seasonId/works", async (req, res) => {
-//   const { seasonId } = req.params;
-//   try {
-//     const result = await pool.query(
-//       `SELECT
-//       w.id,
-//       w.title,
-//       w.author_id,
-//       w.category_id,
-//       w.season
-//       FROM work w
-//       WHERE w.id = $1
-//       `,
-//       [seasonId]
-//     );
-//     res.json(result.rows);
-//   } catch (err) {
-//     console.error("DB Error:", err);
-//     res.status(500).json({ error: "Database query failed" });
-//   }
-// });
+// -- 季節の作品の一覧
+app.get("/seasons/:seasonId/works", async (req, res) => {
+  const { seasonId } = req.params;
+  try {
+    const result = await pool.query(
+      `WITH ordered_works AS (
+        SELECT 
+        w.id,
+        w.title,
+        w.author_id,
+        w.category_id,
+        w.season AS season_id = $1,
+        COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
+        COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+        FROM work w
+        LEFT JOIN work_material wm ON wm.work_id = w.id
+        LEFT JOIN image i ON i.work_id = w.id
+        GROUP BY w.id
+        ORDER BY w.create_date ASC
+      )
+      SELECT 
+        *,
+        LAG(id) OVER (ORDER BY id) AS previous,
+        LEAD(id) OVER (ORDER BY id) AS next
+      FROM ordered_works
+      ORDER BY id;
+      `,
+      [seasonId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
 
 // // -- 季節の作品の取得
 // app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
