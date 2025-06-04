@@ -1,4 +1,4 @@
-export default function tmp() {
+export default function Tmp() {
   return (
     <>
       <h1>一時的なトップページ</h1>
