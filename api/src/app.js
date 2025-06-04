@@ -61,7 +61,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       w.title,
       w.author_id,
       w.category_id,
-      w.season_id
+      w.season
       FROM work w
       WHERE w.category_id = $1
       `,
@@ -84,7 +84,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
 //       w.title,
 //       w.author_id,
 //       w.category_id,
-//       w.season_id
+//       w.season
 //       FROM work w
 //       WHERE w.category_id = $1
 //       AND w.id = $2
@@ -103,9 +103,10 @@ app.get("/categories/:categoryId/works", async (req, res) => {
 app.get("/seasons/:seasonId", async (req, res) => {
   const { seasonId } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM season WHERE id = $1", [
-      seasonId,
-    ]);
+    const result = await pool.query(
+      "SELECT id, season FROM work WHERE id = $1",
+      [seasonId]
+    );
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -123,9 +124,9 @@ app.get("/seasons/:seasonId", async (req, res) => {
 //       w.title,
 //       w.author_id,
 //       w.category_id,
-//       w.season_id
+//       w.season
 //       FROM work w
-//       WHERE w.season_id = $1
+//       WHERE w.id = $1
 //       `,
 //       [seasonId]
 //     );
@@ -148,8 +149,7 @@ app.get("/seasons/:seasonId", async (req, res) => {
 //       w.category_id,
 //       w.season_id
 //       FROM work w
-//       WHERE w.season_id = $1
-//       AND w.id = $2
+//       WHERE w.season_id = $1,$2
 //       `,
 //       [seasonId, workId]
 //     );
