@@ -113,45 +113,45 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
     const result = await pool.query(
       `
       WITH base AS (
-        SELECT 
-          w.id,
-          w.title,
-          w.author_id,
-          w.category_id,
-          w.season AS season_id,
-          w.create_date,
-          COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
-          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
-        FROM work w
-        LEFT JOIN work_material wm ON wm.work_id = w.id
-        LEFT JOIN image i ON i.work_id = w.id
-        WHERE w.category_id = $1
-        GROUP BY w.id
-      ),
-      numbered AS (
-        SELECT 
-          *,
-          LAG(id) OVER (ORDER BY create_date ASC) AS previous,
-          LEAD(id) OVER (ORDER BY create_date ASC) AS next
-        FROM base
-      )
-      SELECT 
-        json_build_object(
-          'id', id,
-          'title', title,
-          'author_id', author_id,
-          'material_ids', material_ids,
-          'category_id', category_id,
-          'season_id', season_id,
-          'image_urls', image_urls
-        ) AS work,
-        json_build_object(
-          'previous', previous,
-          'next', next
-        ) AS navigation
-      FROM numbered
-      w.id = $2
-      ORDER BY create_date ASC;
+  SELECT 
+    w.id,
+    w.title,
+    w.author_id,
+    w.category_id,
+    w.season AS season_id,
+    w.create_date,
+    COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
+    COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+  FROM work w
+  LEFT JOIN work_material wm ON wm.work_id = w.id
+  LEFT JOIN image i ON i.work_id = w.id
+  WHERE w.category_id = $1
+  GROUP BY w.id
+),
+numbered AS (
+  SELECT 
+    *,
+    LAG(id) OVER (ORDER BY create_date ASC) AS previous,
+    LEAD(id) OVER (ORDER BY create_date ASC) AS next
+  FROM base
+)
+SELECT 
+  json_build_object(
+    'id', id,
+    'title', title,
+    'author_id', author_id,
+    'material_ids', material_ids,
+    'category_id', category_id,
+    'season_id', season_id,
+    'image_urls', image_urls
+  ) AS work,
+  json_build_object(
+    'previous', previous,
+    'next', next
+  ) AS navigation
+FROM numbered
+WHERE id = $2
+ORDER BY create_date ASC;
       `,
       [categoryId, workId]
     );
