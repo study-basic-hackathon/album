@@ -67,23 +67,6 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       `,
       [categoryId]
     );
-    console.log(result);
-    // // 作品情報を整形
-    // const works = result.rows.map((work) => ({
-    //   work: {
-    //     id: work.id,
-    //     title: work.title || "No title", // null の場合 "No title" を表示
-    //     author_id: work.author_id,
-    //     material_ids: work.material_ids, // 配列で返されるためそのまま
-    //     season: work.season, // `season_id` をそのまま返す
-    //     category_id: work.category_id, // カテゴリID
-    //     image_urls: work.image_urls, // 配列で返されるためそのまま
-    //   },
-    //   navigation: {
-    //     next: null, // 次の作品を設定するロジックが必要
-    //     previous: null, // 前の作品を設定するロジックが必要
-    //   },
-    // }));
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
