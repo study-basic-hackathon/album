@@ -72,6 +72,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       // +"ORDER BY w.id ASC",
       [categoryId]
     );
+    console.log(result);
     // // 作品情報を整形
     // const works = result.rows.map((work) => ({
     //   work: {
