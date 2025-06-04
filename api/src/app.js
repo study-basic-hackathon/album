@@ -67,23 +67,6 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       `,
       [categoryId]
     );
-    console.log(result);
-    // // 作品情報を整形
-    // const works = result.rows.map((work) => ({
-    //   work: {
-    //     id: work.id,
-    //     title: work.title || "No title", // null の場合 "No title" を表示
-    //     author_id: work.author_id,
-    //     material_ids: work.material_ids, // 配列で返されるためそのまま
-    //     season: work.season, // `season_id` をそのまま返す
-    //     category_id: work.category_id, // カテゴリID
-    //     image_urls: work.image_urls, // 配列で返されるためそのまま
-    //   },
-    //   navigation: {
-    //     next: null, // 次の作品を設定するロジックが必要
-    //     previous: null, // 前の作品を設定するロジックが必要
-    //   },
-    // }));
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -93,11 +76,21 @@ app.get("/categories/:categoryId/works", async (req, res) => {
 
 // // -- カテゴリの作品の取得
 // app.get("/categories/:categoryId/works/:workId", async (req, res) => {
-//   const { id } = req.params;
+//   const { categoryId, workId } = req.params;
 //   try {
-//     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
-//       id,
-//     ]);
+//     const result = await pool.query(
+//       `SELECT
+//       w.id,
+//       w.title,
+//       w.author_id,
+//       w.category_id,
+//       w.season_id
+//       FROM work w
+//       WHERE w.category_id = $1
+//       AND w.id = $2
+//       `,
+//       [categoryId, workId]
+//     );
 //     res.json(result.rows);
 //   } catch (err) {
 //     console.error("DB Error:", err);
@@ -122,24 +115,19 @@ app.get("/seasons/:seasonId", async (req, res) => {
 
 // // -- 季節の作品の一覧
 // app.get("/seasons/:seasonId/works", async (req, res) => {
-//   const { season_id } = req.params;
+//   const { seasonId } = req.params;
 //   try {
 //     const result = await pool.query(
-//       "SELECT * ",
-//       +"w.id",
-//       +"w.titel",
-//       +"w.aothor_id",
-//       +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
-//       +"w.category_id",
-//       +"w.season",
-//       +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
-//       +"FROM work w",
-//       +"LEFT JOIN image i ON i.work_id = w.id",
-//       +"LEFT JOIN work_material wm ON wm.work_id = w.id",
-//       +"WHERE season_id = $1",
-//       +"GROUP BY w.id",
-//       +"ORDER BY w.id ASC",
-//       [season_id]
+//       `SELECT
+//       w.id,
+//       w.title,
+//       w.author_id,
+//       w.category_id,
+//       w.season_id
+//       FROM work w
+//       WHERE w.season_id = $1
+//       `,
+//       [seasonId]
 //     );
 //     res.json(result.rows);
 //   } catch (err) {
@@ -150,9 +138,21 @@ app.get("/seasons/:seasonId", async (req, res) => {
 
 // // -- 季節の作品の取得
 // app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
-//   const { id } = req.params;
+//   const { seasonId, workId } = req.params;
 //   try {
-//     const result = await pool.query("SELECT * FROM work WHERE id = $1", [id]);
+//     const result = await pool.query(
+//       `SELECT
+//       w.id,
+//       w.title,
+//       w.author_id,
+//       w.category_id,
+//       w.season_id
+//       FROM work w
+//       WHERE w.season_id = $1
+//       AND w.id = $2
+//       `,
+//       [seasonId, workId]
+//     );
 //     res.json(result.rows);
 //   } catch (err) {
 //     console.error("DB Error:", err);
