@@ -183,28 +183,46 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
   const { seasonId } = req.params;
   try {
     const result = await pool.query(
-      `WITH ordered_works AS (
+      `
+      WITH base AS (
         SELECT 
-        w.id,
-        w.title,
-        w.author_id,
-        w.category_id,
-        w.season AS season_id,
-        COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
-        COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+          w.id,
+          w.title,
+          w.author_id,
+          w.category_id,
+          w.season AS season_id,
+          w.create_date,
+          COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
+          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
-        WHERE w.season = $1
+        WHERE w.season_id = $1
         GROUP BY w.id
-        ORDER BY w.create_date ASC
+      ),
+      numbered AS (
+        SELECT 
+          *,
+          LAG(id) OVER (ORDER BY create_date ASC) AS previous,
+          LEAD(id) OVER (ORDER BY create_date ASC) AS next
+        FROM base
       )
       SELECT 
-        *,
-        LAG(id) OVER (ORDER BY id) AS previous,
-        LEAD(id) OVER (ORDER BY id) AS next
-      FROM ordered_works
-      ORDER BY id;
+        json_build_object(
+          'id', id,
+          'title', title,
+          'author_id', author_id,
+          'material_ids', material_ids,
+          'category_id', category_id,
+          'season_id', season_id,
+          'image_urls', image_urls
+        ) AS work,
+        json_build_object(
+          'previous', previous,
+          'next', next
+        ) AS navigation
+      FROM numbered
+      ORDER BY create_date ASC;
       `,
       [seasonId]
     );
