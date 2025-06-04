@@ -36,27 +36,24 @@ app.get("/exhibitions", async (req, res) => {
   }
 });
 
-// category
-// -- カテゴリの情報の取得
-app.get("/categories/:categoryId", async (req, res) => {
-  const { categoryId } = req.params;
-  console.log("テゴリの情報の取得");
-  try {
-    const result = await pool.query("SELECT * FROM category WHERE id = $1", [
-      categoryId,
-    ]);
-    console.log("テゴリの情報の取得");
-    res.json(result.rows);
-  } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
+// // category
+// // -- カテゴリの情報の取得
+// app.get("/categories/:categoryId", async (req, res) => {
+//   const { categoryId } = req.params;
+//   try {
+//     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
+//       categoryId,
+//     ]);
+//     res.json(result.rows);
+//   } catch (err) {
+//     console.error("DB Error:", err);
+//     res.status(500).json({ error: "Database query failed" });
+//   }
+// });
 
 // -- カテゴリの作品の一覧
-app.get("/categories/:categoryId/works", async (req, res) => {
+app.get("/categories/:categoryId", async (req, res) => {
   const { categoryId } = req.params;
-  console.log("カテゴリの作品の一覧");
   try {
     const result = await pool.query(
       "SELECT w.id, w.title, w.author_id, w.category_id, w.season_id FROM work w, WHERE w.category_id = $1",
@@ -68,7 +65,6 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       // +"ORDER BY w.id ASC",
       [categoryId]
     );
-    console.log(result);
     // // 作品情報を整形
     // const works = result.rows.map((work) => ({
     //   work: {
