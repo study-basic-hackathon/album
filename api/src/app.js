@@ -56,7 +56,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
   const { categoryId } = req.params;
   try {
     const result = await pool.query(
-      `WITH ordered_works AS (
+      `WITH base AS (
         SELECT 
         w.id,
         w.title,
@@ -71,13 +71,32 @@ app.get("/categories/:categoryId/works", async (req, res) => {
         WHERE w.category_id = $1
         GROUP BY w.id
         ORDER BY w.create_date ASC
+      ),
+      numbered AS (
+        SELECT 
+          *,
+          LAG(id) OVER (ORDER BY create_date ASC) AS previous,
+          LEAD(id) OVER (ORDER BY create_date ASC) AS next
+        FROM base
       )
       SELECT 
-        *,
-        LAG(id) OVER (ORDER BY id) AS previous,
-        LEAD(id) OVER (ORDER BY id) AS next
-      FROM ordered_works
-      ORDER BY id;
+        json_build_object(
+          'work', json_build_object(
+            'id', id,
+            'title', title,
+            'author_id', author_id,
+            'material_ids', material_ids,
+            'category_id', category_id,
+            'season_id', season_id,
+            'image_urls', image_urls
+          ),
+          'navigation', json_build_object(
+            'previous', previous,
+            'next', next
+          )
+        ) AS result
+      FROM numbered
+      ORDER BY create_date ASC;
       `,
       [categoryId]
     );
