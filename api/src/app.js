@@ -62,7 +62,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       "w.author_id",
       // +"COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids",
       "w.category_id",
-      "w.season",
+      "w.season_id",
       // +"COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.id IS NOT NULL), '[]') AS image_urls",
       "FROM work w",
       // +"LEFT JOIN image i ON i.work_id = w.id",
