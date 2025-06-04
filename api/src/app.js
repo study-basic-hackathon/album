@@ -126,7 +126,6 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
         WHERE w.category_id = $1
-        AND w.id = $2
         GROUP BY w.id
       ),
       numbered AS (
@@ -151,6 +150,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
           'next', next
         ) AS navigation
       FROM numbered
+      w.id = $2
       ORDER BY create_date ASC;
       `,
       [categoryId, workId]
