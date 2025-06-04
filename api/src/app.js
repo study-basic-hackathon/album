@@ -64,6 +64,8 @@ app.get("/categories/:categoryId/works", async (req, res) => {
       w.season AS season_id,
       COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
       COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+      LAG(w.id) OVER (ORDER BY w.id) AS previous,
+      LEAD(w.id) OVER (ORDER BY w.id) AS next
       FROM work w
       LEFT JOIN work_material wm ON wm.work_id = w.id
       LEFT JOIN image i ON i.work_id = w.id
