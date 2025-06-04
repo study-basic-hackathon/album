@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-schema": "npx openapi-typescript ../docs/api.yml --output src/types/api.ts",
-    "format": "prettier --write **/*.{ts,tsx}",
+    "format": "prettier --write **/*.{css,ts,tsx}",
     "fix": "npm run format && npm run lint"
   },
   "dependencies": {
