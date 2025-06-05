@@ -73,32 +73,32 @@ paths:
         default:
           description: Unexpected error
 
-  /authors/{authorId}:
+  /arrangers/{arrangerId}:
     get:
       tags:
-        - author
+        - arranger
       summary: 作者の情報の取得
       description: 作者の情報を取得する
-      operationId: getAuthor
+      operationId: getArranger
       parameters:
-        - $ref: '#/components/parameters/AuthorIdParam'
+        - $ref: '#/components/parameters/ArrangerIdParam'
       responses:
         '200':
-          $ref: '#/components/responses/AuthorResponse'
+          $ref: '#/components/responses/ArrangerResponse'
         '404':
           $ref: '#/components/responses/NotFound'
         default:
           description: Unexpected error
 
-  /authors/{authorId}/works:
+  /arrangers/{arrangerId}/works:
     get:
       tags:
-        - author
+        - arranger
       summary: 作者の作品の一覧
       description: 作者ごとの作品の一覧を日付順で取得する
-      operationId: listAuthorWorks
+      operationId: listArrangerWorks
       parameters:
-        - $ref: '#/components/parameters/AuthorIdParam'
+        - $ref: '#/components/parameters/ArrangerIdParam'
       responses:
         '200':
           $ref: '#/components/responses/WorkListItemsResponse'
@@ -107,15 +107,15 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
 
-  /authors/{authorId}/works/{workId}:
+  /arrangers/{arrangerId}/works/{workId}:
     get:
       tags:
-        - author
+        - arranger
       summary: 作者の作品の取得
       description: 作者ごとの作品の情報を取得する
-      operationId: getAuthorWork
+      operationId: getArrangerWork
       parameters:
-        - $ref: '#/components/parameters/AuthorIdParam'
+        - $ref: '#/components/parameters/ArrangerIdParam'
         - $ref: '#/components/parameters/WorkIdParam'
       responses:
         '200':
@@ -324,7 +324,7 @@ components:
           type: integer
           description: 花展のID
           nullable: true
-        author_id:
+        arranger_id:
           type: integer
           description: 作者のID
         season_id:
@@ -348,7 +348,7 @@ components:
         - id
         - title
         - exhibition_id
-        - author_id
+        - arranger_id
         - material_ids
         - season_id
         - category_id
@@ -356,7 +356,7 @@ components:
       example:
         id: 1
         title: "桜のアレンジメント"
-        author_id: "author123"
+        arranger_id: "arranger123"
         material_ids: [1, 2, 3]
         season_id: 1
         category_id: 1
@@ -390,7 +390,7 @@ components:
       example:
         next: 2
         previous: null
-    Author:
+    Arranger:
       type: object
       properties:
         id:
@@ -465,8 +465,8 @@ components:
       description: 作品のID
       schema:
         type: integer
-    AuthorIdParam:
-      name: authorId
+    ArrangerIdParam:
+      name: arrangerId
       in: path
       required: true
       description: 作者のID
@@ -549,7 +549,7 @@ components:
               - work:
                   id: 1
                   title: "桜のアレンジメント"
-                  author_id: "author123"
+                  arranger_id: "arranger123"
                   material_ids: [1, 2, 3]
                   category_id: 1
                   season_id: 1
@@ -562,7 +562,7 @@ components:
               - work:
                   id: 2
                   title: "梅の花束"
-                  author_id: "author456"
+                  arranger_id: "arranger456"
                   material_ids: [4, 5]
                   season_id: 1
                   category_id: 2
@@ -574,7 +574,7 @@ components:
               - work:
                   id: 3
                   title: null
-                  author_id: "author789"
+                  arranger_id: "arranger789"
                   material_ids: [6]
                   season_id: 2
                   category_id: 1
@@ -589,12 +589,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/WorkListItem'
-    AuthorResponse:
-      description: A single author
+    ArrangerResponse:
+      description: A single arranger
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Author'
+            $ref: '#/components/schemas/Arranger'
     MaterialResponse:
       description: A single material
       content:
