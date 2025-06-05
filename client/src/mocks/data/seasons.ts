@@ -1,6 +1,6 @@
-import { type components } from '../../types/api';
+import { type components } from "../../types/api";
 
-type Season = components['schemas']['Season'];
+type Season = components["schemas"]["Season"];
 
 export const seasons: Record<number, Season> = {
   1: {
@@ -18,5 +18,5 @@ export const seasons: Record<number, Season> = {
   4: {
     id: 4,
     name: "冬",
-  }
-}
+  },
+};
