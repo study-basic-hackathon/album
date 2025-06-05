@@ -58,8 +58,23 @@ app.get("/exhibitions/:exhibitionId", async (req, res) => {
 app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT * FROM work WHERE exhibition_id = $1",
+    const result = await pool.query(`
+      SELECT
+        wk.id,
+        wk.title,
+        wk.author_id,
+        wm.material_ids,
+        wk.season_id,
+        wk.category_id,
+        wk.image_urls
+      FROM
+        work AS wk
+      JOIN
+        work_material AS wm ON wk.id = wm.work_id
+      JOIN
+        exhibition AS en ON wk.exhibition_id = en.id
+      WHERE
+        en.id = $1`,
       [exhibitionId]
     );
     if (result.rows.length === 0) {
@@ -76,8 +91,23 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
 app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
   const { exhibitionId, workId } = req.params;
   try {
-    const result = await pool.query(
-       "SELECT * FROM work WHERE exhibition_id = $1 AND id = $2",
+    const result = await pool.query(`
+      SELECT
+        wk.id,
+        wk.title,
+        wk.author_id,
+        wm.material_ids,
+        wk.season_id,
+        wk.category_id,
+        wk.image_urls
+      FROM
+        work AS wk
+      JOIN
+        work_material AS wm ON wk.id = wm.work_id
+      JOIN
+        exhibition AS en ON wk.exhibition_id = en.id
+      WHERE
+        en.id = $1 AND wk.id = $2`,
       [exhibitionId, workId]
     );
     if (result.rows.length === 0) {
@@ -113,8 +143,21 @@ app.get("/authors/:authorId", async (req, res) => {
 app.get("/authors/:authorId/works", async (req, res) => {
   const { authorId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT * FROM work WHERE author_id = $1",
+    const result = await pool.query(`
+      SELECT
+        wk.id,
+        wk.title,
+        wk.author_id,
+        wm.material_ids,
+        wk.season_id,
+        wk.category_id,
+        wk.image_urls
+      FROM
+        work AS wk
+      JOIN
+        work_material AS wm ON wk.id = wm.work_id
+      WHERE
+        wk.author_id = $1`,
       [authorId]
     );
     if (result.rows.length === 0) {
@@ -131,8 +174,21 @@ app.get("/authors/:authorId/works", async (req, res) => {
 app.get("/authors/:authorId/works/:workId", async (req, res) => {
   const { authorId, workId } = req.params;
   try {
-    const result = await pool.query(
-       "SELECT * FROM work WHERE author_id = $1 AND id = $2",
+    const result = await pool.query(`
+      SELECT
+        wk.id,
+        wk.title,
+        wk.author_id,
+        wm.material_ids,
+        wk.season_id,
+        wk.category_id,
+        wk.image_urls
+      FROM
+        work AS wk
+      JOIN
+        work_material AS wm ON wk.id = wm.work_id
+      WHERE
+        wk.author_id = $1 AND wk.id = $2`,     
       [authorId, workId]
     );
     if (result.rows.length === 0) {
@@ -168,8 +224,21 @@ app.get("/materials/:materialId", async (req, res) => {
 app.get("/materials/:materialId/works", async (req, res) => {
   const { materialId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT * FROM work_material WHERE material_id = $1",
+    const result = await pool.query(`
+      SELECT
+        wk.id,
+        wk.title,
+        wk.author_id,
+        wm.material_ids,
+        wk.season_id,
+        wk.category_id,
+        wk.image_urls
+      FROM
+        work AS wk
+      JOIN
+        work_material AS wm ON wk.id = wm.work_id
+      WHERE
+        wm.material_id = $1`,
       [materialId]
     );
     if (result.rows.length === 0) {
@@ -183,11 +252,24 @@ app.get("/materials/:materialId/works", async (req, res) => {
 });
 
 // --材料の作品の取得
-app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
+app.get("/materials/:materialId/works/:workId", async (req, res) => {
   const { materialId, workId } = req.params;
   try {
-    const result = await pool.query(
-       "SELECT * FROM work_material WHERE material_id = $1 AND work_id = $2",
+    const result = await pool.query(`
+      SELECT
+        wk.id,
+        wk.title,
+        wk.author_id,
+        wm.material_ids,
+        wk.season_id,
+        wk.category_id,
+        wk.image_urls
+      FROM
+        work AS wk
+      JOIN
+        work_material AS wm ON wk.id = wm.work_id
+      WHERE
+        wm.material_id = $1 AND wk.id = $2`,
       [materialId, workId]
     );
     if (result.rows.length === 0) {
