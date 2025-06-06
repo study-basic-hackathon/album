@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS work (
   exhibition_id INTEGER REFERENCES exhibition(id),
   arranger_id INTEGER REFERENCES arranger(id),
   category_id INTEGER REFERENCES category(id),
-  seaosn_id INTEGER REFERENCES season(id),
+  season_id INTEGER REFERENCES season(id),
   create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
@@ -63,7 +63,7 @@ COMMENT ON COLUMN work.title IS 'タイトル';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.arranger_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
-COMMENT ON COLUMN work.seaosn_id IS '季節ID';
+COMMENT ON COLUMN work.season_id IS '季節ID';
 COMMENT ON COLUMN work.create_date IS '登録日';
 
 -- 作品 + 花材 -> 複合キーテーブル
