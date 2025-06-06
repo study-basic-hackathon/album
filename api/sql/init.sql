@@ -64,7 +64,6 @@ COMMENT ON COLUMN work.title IS 'タイトル';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
-COMMENT ON COLUMN work.season_id IS '季節ID';
 COMMENT ON COLUMN work.create_date IS '登録日';
 
 -- 作品 + 花材 -> 複合キーテーブル
