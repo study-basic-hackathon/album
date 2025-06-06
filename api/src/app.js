@@ -40,13 +40,12 @@ app.get("/exhibitions", async (req, res) => {
 app.get("/exhibitions/:exhibitionId", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT * FROM exhibition WHERE id = $1",
-      [exhibitionId]
-    );
+    const result = await pool.query("SELECT * FROM exhibition WHERE id = $1", [
+      exhibitionId,
+    ]);
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -58,13 +57,14 @@ app.get("/exhibitions/:exhibitionId", async (req, res) => {
 app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -79,7 +79,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -91,13 +91,14 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
 app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
   const { exhibitionId, workId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -112,7 +113,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -125,13 +126,12 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
 app.get("/authors/:authorId", async (req, res) => {
   const { authorId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT * FROM author WHERE id = $1",
-      [authorId]
-    );
+    const result = await pool.query("SELECT * FROM author WHERE id = $1", [
+      authorId,
+    ]);
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -143,13 +143,14 @@ app.get("/authors/:authorId", async (req, res) => {
 app.get("/authors/:authorId/works", async (req, res) => {
   const { authorId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -162,7 +163,7 @@ app.get("/authors/:authorId/works", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -174,13 +175,14 @@ app.get("/authors/:authorId/works", async (req, res) => {
 app.get("/authors/:authorId/works/:workId", async (req, res) => {
   const { authorId, workId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -188,12 +190,12 @@ app.get("/authors/:authorId/works/:workId", async (req, res) => {
       JOIN
         work_material AS wm ON wk.id = wm.work_id
       WHERE
-        wk.author_id = $1 AND wk.id = $2`,     
+        wk.author_id = $1 AND wk.id = $2`,
       [authorId, workId]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -206,13 +208,12 @@ app.get("/authors/:authorId/works/:workId", async (req, res) => {
 app.get("/materials/:materialId", async (req, res) => {
   const { materialId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT * FROM material WHERE id = $1",
-      [materialId]
-    );
+    const result = await pool.query("SELECT * FROM material WHERE id = $1", [
+      materialId,
+    ]);
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -224,13 +225,14 @@ app.get("/materials/:materialId", async (req, res) => {
 app.get("/materials/:materialId/works", async (req, res) => {
   const { materialId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -243,7 +245,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -255,14 +257,14 @@ app.get("/materials/:materialId/works", async (req, res) => {
 app.get("/materials/:materialId/works/:workId", async (req, res) => {
   const { materialId, workId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
-        wk.category_id,
+        wk.season AS category_id,
         wk.image_urls
       FROM
         work AS wk
@@ -274,7 +276,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resourse not found" });
-    };
+    }
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
