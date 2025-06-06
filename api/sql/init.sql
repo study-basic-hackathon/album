@@ -46,7 +46,10 @@ COMMENT ON COLUMN material.name IS '花材名';
 
 -- 季節テーブル
 CREATE TABLE IF NOT EXISTS season (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(10) NOT NULL,
 );
+
 
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
