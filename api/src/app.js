@@ -73,7 +73,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         work_material AS wm ON wk.id = wm.work_id
       JOIN
         exhibition AS en ON wk.exhibition_id = en.id
-      LEFT JOIN image i ON i.work_id = w.id
+      LEFT JOIN image i ON i.work_id = wk.id
       WHERE
         en.id = $1`,
       [exhibitionId]
