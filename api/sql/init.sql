@@ -1,9 +1,3 @@
-CREATE TABLE IF NOT EXISTS post (
-  id SERIAL PRIMARY KEY,
-  body VARCHAR(100) NOT NULL,
-  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- 華展テーブル
 CREATE TABLE IF NOT EXISTS exhibition (
   id SERIAL PRIMARY KEY,
@@ -49,6 +43,9 @@ CREATE TABLE IF NOT EXISTS season (
   id SERIAL PRIMARY KEY,
   name VARCHAR(10)
 );
+COMMENT ON TABLE season IS '季節テーブル';
+COMMENT ON COLUMN season.id IS '季節ID';
+COMMENT ON COLUMN season.name IS '季節名';
 
 
 -- 作品テーブル
@@ -67,6 +64,7 @@ COMMENT ON COLUMN work.title IS 'タイトル';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.author_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
+COMMENT ON COLUMN work.season_id IS '季節ID';
 COMMENT ON COLUMN work.create_date IS '登録日';
 
 -- 作品 + 花材 -> 複合キーテーブル
