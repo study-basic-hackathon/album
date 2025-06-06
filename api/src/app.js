@@ -64,7 +64,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -98,7 +98,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -150,7 +150,7 @@ app.get("/authors/:authorId/works", async (req, res) => {
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -182,7 +182,7 @@ app.get("/authors/:authorId/works/:workId", async (req, res) => {
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -232,7 +232,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
+        wk.season AS season_id,
         wk.category_id,
         wk.image_urls
       FROM
@@ -264,8 +264,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
         wk.title,
         wk.author_id,
         wm.material_ids,
-        wk.season_id,
-        wk.category_id,
+        wk.season AS category_id,
         wk.image_urls
       FROM
         work AS wk
