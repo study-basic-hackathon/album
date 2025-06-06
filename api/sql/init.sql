@@ -86,8 +86,3 @@ CREATE TABLE IF NOT EXISTS image (
   work_id INTEGER REFERENCES work(id),
   create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
-COMMENT ON TABLE image IS '画像テーブル';
-COMMENT ON COLUMN image.id IS '画像ID';
-COMMENT ON COLUMN image.url IS '画像URL';
-COMMENT ON COLUMN image.work_id IS '作品ID';
-COMMENT ON COLUMN image.create_date IS '登録日';
