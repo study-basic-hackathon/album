@@ -47,13 +47,12 @@ COMMENT ON TABLE season IS '季節テーブル';
 COMMENT ON COLUMN season.id IS '季節ID';
 COMMENT ON COLUMN season.name IS '季節名';
 
-
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100),
   exhibition_id INTEGER REFERENCES exhibition(id),
-  author_id INTEGER REFERENCES author(id),
+  arranger_id INTEGER REFERENCES arranger(id),
   category_id INTEGER REFERENCES category(id),
   seaosn_id INTEGER REFERENCES season(id),
   create_date DATE DEFAULT CURRENT_TIMESTAMP
@@ -62,7 +61,7 @@ COMMENT ON TABLE work IS '作品テーブル';
 COMMENT ON COLUMN work.id IS '作品ID';
 COMMENT ON COLUMN work.title IS 'タイトル';
 COMMENT ON COLUMN work.exhibition_id IS '華展ID';
-COMMENT ON COLUMN work.author_id IS '作者ID';
+COMMENT ON COLUMN work.arranger_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
 COMMENT ON COLUMN work.seaosn_id IS '季節ID';
 COMMENT ON COLUMN work.create_date IS '登録日';
