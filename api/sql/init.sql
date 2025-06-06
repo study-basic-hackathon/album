@@ -12,13 +12,13 @@ COMMENT ON COLUMN exhibition.started_date IS '開始日';
 COMMENT ON COLUMN exhibition.ended_date IS '終了日';
 
 -- 作者テーブル
-CREATE TABLE IF NOT EXISTS author (
+CREATE TABLE IF NOT EXISTS arranger (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL
 );
-COMMENT ON TABLE author IS '作者テーブル';
-COMMENT ON COLUMN author.id IS '作者ID';
-COMMENT ON COLUMN author.name IS '作者名';
+COMMENT ON TABLE arranger IS '作者テーブル';
+COMMENT ON COLUMN arranger.id IS '作者ID';
+COMMENT ON COLUMN arranger.name IS '作者名';
 
 -- 作品分類テーブル
 CREATE TABLE IF NOT EXISTS category (
