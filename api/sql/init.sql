@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS work (
   exhibition_id INTEGER REFERENCES exhibition(id),
   author_id INTEGER REFERENCES author(id),
   category_id INTEGER REFERENCES category(id),
+  seaosn_id INTEGER REFERENCES season(id),
   create_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
