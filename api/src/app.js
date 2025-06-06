@@ -66,14 +66,13 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         wm.material_ids,
         wk.season AS season_id,
         wk.category_id,
-        COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+        wk.image_urls
       FROM
         work AS wk
       JOIN
         work_material AS wm ON wk.id = wm.work_id
       JOIN
         exhibition AS en ON wk.exhibition_id = en.id
-      LEFT JOIN image i ON i.work_id = wk.id
       WHERE
         en.id = $1`,
       [exhibitionId]
