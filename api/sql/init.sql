@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS work (
   arranger_id INTEGER REFERENCES arranger(id),
   category_id INTEGER REFERENCES category(id),
   season_id INTEGER REFERENCES season(id),
-  create_date DATE DEFAULT CURRENT_TIMESTAMP
+  created_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
 COMMENT ON COLUMN work.id IS '作品ID';
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS image (
   id SERIAL PRIMARY KEY,
   url TEXT NOT NULL,
   work_id INTEGER REFERENCES work(id),
-  create_date DATE DEFAULT CURRENT_TIMESTAMP
+  created_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE image IS '画像テーブル';
 COMMENT ON COLUMN image.id IS '画像ID';
