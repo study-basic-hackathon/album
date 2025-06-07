@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-
 import { pool } from "./db.js";
 
 const app = express();
@@ -12,12 +11,49 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+function formatWorksWithNavigation(works) {
+  const formattedResults = works.map((work, index) => {
+    let previousWorkId = null;
+    let nextWorkId = null;
+
+    if (index > 0) {
+      previousWorkId = works[index - 1].id;
+    }
+    if (index < works.length - 1) {
+      nextWorkId = works[index + 1].id;
+    }
+
+    return {
+      work: {
+        id: work.id,
+        title: work.title,
+        arranger_id: work.arranger_id,
+        material_ids: work.material_ids,
+        season_id: work.season_id,
+        category_id: work.category_id,
+        image_urls: work.image_urls,
+      },
+      navigation: {
+        previous: previousWorkId,
+        next: nextWorkId,
+      },
+    };
+  });
+  return formattedResults;
+}
+
 // exhibition
 // -- 華展の一覧
 app.get("/exhibitions", async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT id, name,TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date, TO_CHAR(ended_date, 'YYYY-MM-DD')AS ended_date FROM exhibition"
+    const result = await pool.query(`
+      SELECT
+        id, 
+        name,
+        TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date, 
+        TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date 
+      FROM 
+        exhibition`
     );
     res.json(result.rows);
   } catch (err) {
@@ -30,13 +66,22 @@ app.get("/exhibitions", async (req, res) => {
 app.get("/exhibitions/:exhibitionId", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM exhibition WHERE id = $1", [
-      exhibitionId,
-    ]);
+    const result = await pool.query(`
+      SELECT 
+        id,
+        name,
+        TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date,
+        TO_CHAR(started_date, 'YYYY-MM-DD') AS ended_date
+      FROM
+        exhibition
+      WHERE
+        id = $1`, 
+      [exhibitionId]
+    );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    res.json(result.rows[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -47,30 +92,40 @@ app.get("/exhibitions/:exhibitionId", async (req, res) => {
 app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       SELECT
         wk.id,
         wk.title,
-        wk.author_id,
-        wm.material_ids,
-        wk.season AS season_id,
+        ar.name AS arranger_id,
+        ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
-        wk.image_urls
+        wk.season_id,
+        ARRAY_AGG(ie.url) AS image_urls
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id
+        work_material AS wm ON wk.id = wm.work_id 
+      JOIN
+        season AS sn ON wk.season_id = sn.id
       JOIN
         exhibition AS en ON wk.exhibition_id = en.id
+      JOIN
+        image AS ie ON wk.id = ie.work_id
+      JOIN
+        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        en.id = $1`,
+        en.id = $1
+      GROUP BY
+        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+      ORDER BY
+        wk.id ASC`,
       [exhibitionId]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    const formattedResults = formatWorksWithNavigation(result.rows);
+    res.json(formattedResults);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -81,48 +136,58 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
 app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
   const { exhibitionId, workId } = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       SELECT
         wk.id,
         wk.title,
-        wk.author_id,
-        wm.material_ids,
-        wk.season AS season_id,
+        ar.name AS arranger_id,
+        ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
-        wk.image_urls
+        wk.season_id,
+        ARRAY_AGG(ie.url) AS image_urls
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id
+        work_material AS wm ON wk.id = wm.work_id 
+      JOIN
+        season AS sn ON wk.season_id = sn.id
       JOIN
         exhibition AS en ON wk.exhibition_id = en.id
+      JOIN
+        image AS ie ON wk.id = ie.work_id
+      JOIN
+        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        en.id = $1 AND wk.id = $2`,
+        en.id = $1 AND wk.id = $2
+      GROUP BY
+        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+      ORDER BY
+        wk.id ASC`,
       [exhibitionId, workId]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    const formattedResults = formatWorksWithNavigation(result.rows);
+    res.json(formattedResults[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
   }
 });
 
-//author
+//arranger
 // -- 作者の情報の取得
-app.get("/authors/:authorId", async (req, res) => {
-  const { authorId } = req.params;
+app.get("/arrangers/:arrangerId", async (req, res) => {
+  const { arrangerId } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM author WHERE id = $1", [
-      authorId,
+    const result = await pool.query("SELECT * FROM arranger WHERE id = $1", [
+      arrangerId,
     ]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    res.json(result.rows[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -130,31 +195,44 @@ app.get("/authors/:authorId", async (req, res) => {
 });
 
 // -- 作者の作品の一覧
-app.get("/authors/:authorId/works", async (req, res) => {
-  const { authorId } = req.params;
+app.get("/arrangers/:arrangerId/works", async (req, res) => {
+  const { arrangerId } = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       SELECT
         wk.id,
         wk.title,
-        wk.author_id,
-        wm.material_ids,
-        wk.season AS season_id,
+        ar.name AS arranger_id,
+        ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
-        wk.image_urls
+        wk.season_id,
+        ARRAY_AGG(ie.url) AS image_urls
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id
+        work_material AS wm ON wk.id = wm.work_id 
+      JOIN
+        season AS sn ON wk.season_id = sn.id
+      JOIN
+        exhibition AS en ON wk.exhibition_id = en.id
+      JOIN
+        image AS ie ON wk.id = ie.work_id
+      JOIN
+        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        wk.author_id = $1`,
-      [authorId]
+        wk.arranger_id = $1
+      GROUP BY
+        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+      ORDER BY
+        wk.id ASC        
+        `,
+      [arrangerId]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    const formattedResults = formatWorksWithNavigation(result.rows);
+    res.json(formattedResults);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -162,31 +240,43 @@ app.get("/authors/:authorId/works", async (req, res) => {
 });
 
 // --作者の作品の取得
-app.get("/authors/:authorId/works/:workId", async (req, res) => {
-  const { authorId, workId } = req.params;
+app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
+  const { arrangerId, workId } = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       SELECT
         wk.id,
         wk.title,
-        wk.author_id,
-        wm.material_ids,
-        wk.season AS season_id,
+        ar.name AS arranger_id,
+        ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
-        wk.image_urls
+        wk.season_id,
+        ARRAY_AGG(ie.url) AS image_urls
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id
+        work_material AS wm ON wk.id = wm.work_id 
+      JOIN
+        season AS sn ON wk.season_id = sn.id
+      JOIN
+        exhibition AS en ON wk.exhibition_id = en.id
+      JOIN
+        image AS ie ON wk.id = ie.work_id
+      JOIN
+        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        wk.author_id = $1 AND wk.id = $2`,
-      [authorId, workId]
+        wk.arranger_id = $1 AND wk.id = $2
+      GROUP BY
+        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+      ORDER BY
+        wk.id ASC`,
+      [arrangerId, workId]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    const formattedResults = formatWorksWithNavigation(result.rows);
+    res.json(formattedResults[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -202,9 +292,9 @@ app.get("/materials/:materialId", async (req, res) => {
       materialId,
     ]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    res.json(result.rows[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -215,28 +305,40 @@ app.get("/materials/:materialId", async (req, res) => {
 app.get("/materials/:materialId/works", async (req, res) => {
   const { materialId } = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       SELECT
         wk.id,
         wk.title,
-        wk.author_id,
-        wm.material_ids,
-        wk.season AS season_id,
+        ar.name AS arranger_id,
+        ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
-        wk.image_urls
+        wk.season_id,
+        ARRAY_AGG(ie.url) AS image_urls
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id
+        work_material AS wm ON wk.id = wm.work_id 
+      JOIN
+        season AS sn ON wk.season_id = sn.id
+      JOIN
+        exhibition AS en ON wk.exhibition_id = en.id
+      JOIN
+        image AS ie ON wk.id = ie.work_id
+      JOIN
+        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        wm.material_id = $1`,
+        wm.material_id = $1
+      GROUP BY
+        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+      ORDER BY
+        wk.id ASC`,
       [materialId]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    const formattedResults = formatWorksWithNavigation(result.rows);
+    res.json(formattedResults);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -247,27 +349,40 @@ app.get("/materials/:materialId/works", async (req, res) => {
 app.get("/materials/:materialId/works/:workId", async (req, res) => {
   const { materialId, workId } = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       SELECT
         wk.id,
         wk.title,
-        wk.author_id,
-        wm.material_ids,
-        wk.season AS category_id,
-        wk.image_urls
+        ar.name AS arranger_id,
+        ARRAY_AGG(wm.material_id) AS material_ids,
+        wk.category_id,
+        wk.season_id,
+        ARRAY_AGG(ie.url) AS image_urls
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id
+        work_material AS wm ON wk.id = wm.work_id 
+      JOIN
+        season AS sn ON wk.season_id = sn.id
+      JOIN
+        exhibition AS en ON wk.exhibition_id = en.id
+      JOIN
+        image AS ie ON wk.id = ie.work_id
+      JOIN
+        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        wm.material_id = $1 AND wk.id = $2`,
+        wk.id = $2 AND wm.material_id = $1
+      GROUP BY
+        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+      ORDER BY
+        wk.id ASC`,
       [materialId, workId]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resourse not found" });
+      return res.status(404).json({ message: "Resource not found" });
     }
-    res.json(result.rows);
+    const formattedResults = formatWorksWithNavigation(result.rows);
+    res.json(formattedResults[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
