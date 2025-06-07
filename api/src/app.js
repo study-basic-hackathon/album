@@ -12,16 +12,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/posts", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM post");
-    res.json(result.rows);
-  } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
-
 // exhibition
 // -- 華展の一覧
 app.get("/exhibitions", async (req, res) => {
@@ -292,7 +282,11 @@ app.get("/categories/:categoryId", async (req, res) => {
     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
       categoryId,
     ]);
-    res.json(result.rows);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: "Category not found" });
+    }
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -418,7 +412,11 @@ app.get("/seasons/:seasonId", async (req, res) => {
     const result = await pool.query("SELECT * FROM season WHERE id = $1", [
       seasonId,
     ]);
-    res.json(result.rows);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: "Category not found" });
+    }
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
