@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-
 import { pool } from "./db.js";
 
 const app = express();
@@ -12,16 +11,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/posts", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM post");
-    res.json(result.rows);
-  } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
-
 function formatWorksWithNavigation(works) {
   const formattedResults = works.map((work, index) => {
     let previousWorkId = null;
@@ -30,7 +19,6 @@ function formatWorksWithNavigation(works) {
     if (index > 0) {
       previousWorkId = works[index - 1].id;
     }
-
     if (index < works.length - 1) {
       nextWorkId = works[index + 1].id;
     }
@@ -409,7 +397,11 @@ app.get("/categories/:categoryId", async (req, res) => {
     const result = await pool.query("SELECT * FROM category WHERE id = $1", [
       categoryId,
     ]);
-    res.json(result.rows);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: "Category not found" });
+    }
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -428,7 +420,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           w.title,
           w.arranger_id,
           w.category_id,
-          w.season AS season_id,
+          w.season_id,
           w.create_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
@@ -483,7 +475,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
           w.title,
           w.arranger_id,
           w.category_id,
-          w.season AS season_id,
+          w.season_id,
           w.create_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
@@ -532,11 +524,14 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
 app.get("/seasons/:seasonId", async (req, res) => {
   const { seasonId } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT id, season FROM work WHERE id = $1",
-      [seasonId]
-    );
-    res.json(result.rows);
+    const result = await pool.query("SELECT * FROM season WHERE id = $1", [
+      seasonId,
+    ]);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: "Season not found" });
+    }
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -555,14 +550,14 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
           w.title,
           w.arranger_id,
           w.category_id,
-          w.season AS season_id,
+          w.season_id,
           w.create_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
-        WHERE w.season = $1
+        WHERE w.season_id = $1
         GROUP BY w.id
       ),
       numbered AS (
@@ -610,14 +605,14 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
           w.title,
           w.arranger_id,
           w.category_id,
-          w.season AS season_id,
+          w.season_id,
           w.create_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
-        WHERE w.season = $1
+        WHERE w.season_id = $1
         GROUP BY w.id
       ),
       numbered AS (
@@ -648,36 +643,6 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
       [seasonId, workId]
     );
     res.json(result.rows);
-  } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
-
-app.get("/posts/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const result = await pool.query("SELECT * FROM post WHERE id = $1", [id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
-
-// WARNING: SQL Injection Attack
-// REFERENCE: https://developer.mozilla.org/ja/docs/Glossary/SQL_Injection
-app.post("/posts", express.json(), async (req, res) => {
-  const { body } = req.body;
-  try {
-    const result = await pool.query(
-      "INSERT INTO post (body) VALUES ($1) RETURNING *",
-      [body]
-    );
-    res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });

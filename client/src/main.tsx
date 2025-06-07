@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./reset.css";
-import App from "./App.tsx";
+import App from "./Index.tsx";
 
 async function setup() {
   if (import.meta.env.VITE_MOCK_SERVER_ENABELD) {

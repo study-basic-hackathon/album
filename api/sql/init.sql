@@ -47,7 +47,6 @@ COMMENT ON TABLE season IS '季節テーブル';
 COMMENT ON COLUMN season.id IS '季節ID';
 COMMENT ON COLUMN season.name IS '季節名';
 
-
 -- 作品テーブル
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
