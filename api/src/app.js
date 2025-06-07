@@ -439,7 +439,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           w.arranger_id,
           w.category_id,
           w.season_id,
-          w.create_date,
+          w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
@@ -470,7 +470,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           'next', next
         ) AS navigation
       FROM numbered
-      ORDER BY create_date ASC;
+      ORDER BY created_date ASC;
       `,
       [categoryId]
     );
@@ -494,7 +494,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
           w.arranger_id,
           w.category_id,
           w.season_id,
-          w.create_date,
+          w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
@@ -526,7 +526,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
         ) AS navigation
       FROM numbered
       WHERE id = $2
-      ORDER BY create_date ASC;
+      ORDER BY created_date ASC;
       `,
       [categoryId, workId]
     );
@@ -569,7 +569,7 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
           w.arranger_id,
           w.category_id,
           w.season_id,
-          w.create_date,
+          w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
@@ -600,7 +600,7 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
           'next', next
         ) AS navigation
       FROM numbered
-      ORDER BY create_date ASC;
+      ORDER BY created_date ASC;
       `,
       [seasonId]
     );
@@ -624,7 +624,7 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
           w.arranger_id,
           w.category_id,
           w.season_id,
-          w.create_date,
+          w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
@@ -656,7 +656,7 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
         ) AS navigation
       FROM numbered
       WHERE id = $2
-      ORDER BY create_date ASC;
+      ORDER BY created_date ASC;
       `,
       [seasonId, workId]
     );
