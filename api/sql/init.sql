@@ -64,7 +64,7 @@ COMMENT ON COLUMN work.exhibition_id IS '華展ID';
 COMMENT ON COLUMN work.arranger_id IS '作者ID';
 COMMENT ON COLUMN work.category_id IS '作品分類ID';
 COMMENT ON COLUMN work.season_id IS '季節ID';
-COMMENT ON COLUMN work.create_date IS '登録日';
+COMMENT ON COLUMN work.created_date IS '登録日';
 
 -- 作品 + 花材 -> 複合キーテーブル
 CREATE TABLE IF NOT EXISTS work_material (
@@ -89,4 +89,4 @@ COMMENT ON TABLE image IS '画像テーブル';
 COMMENT ON COLUMN image.id IS '画像ID';
 COMMENT ON COLUMN image.url IS '画像URL';
 COMMENT ON COLUMN image.work_id IS '作品ID';
-COMMENT ON COLUMN image.create_date IS '登録日';
+COMMENT ON COLUMN image.created_date IS '登録日';
