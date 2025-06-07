@@ -285,7 +285,7 @@ app.get("/categories/:categoryId", async (req, res) => {
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
     } else {
-      res.status(404).json({ error: "category not found" });
+      res.status(404).json({ error: "Category not found" });
     }
   } catch (err) {
     console.error("DB Error:", err);
@@ -415,7 +415,7 @@ app.get("/seasons/:seasonId", async (req, res) => {
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
     } else {
-      res.status(404).json({ error: "season not found" });
+      res.status(404).json({ error: "Season not found" });
     }
   } catch (err) {
     console.error("DB Error:", err);
