@@ -1,20 +1,16 @@
 import { exhibitions } from "./mocks/data/exhibitions";
+import type { components } from "./types/api";
 
-type Exhibition = {
-  id: number;
-  name: string;
-  started_date: string;
-  ended_date: string;
-};
+type Exhibition = components["schemas"]["Exhibition"];
 
 // ToDo: 日付フォーマットの方法について検討
-function ExhibitionInfo({ id }: { id: number }) {
-  const startedDate = new Date(exhibitions[id].started_date);
-  const endedDate = new Date(exhibitions[id].ended_date);
+function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
+  const startedDate = new Date(exhibition.started_date);
+  const endedDate = new Date(exhibition.ended_date);
 
   return (
     <article>
-      <h3>{exhibitions[id].name}</h3>
+      <h3>{exhibition.name}</h3>
       <p>
         開催期間: {startedDate.toLocaleDateString("ja-JP")}-{endedDate.toLocaleDateString("ja-JP")}
       </p>
@@ -23,34 +19,30 @@ function ExhibitionInfo({ id }: { id: number }) {
 }
 
 // ToDo: より良いソートのアルゴリズムがないか検討
-function getSortedExhibitions(): Exhibition[] {
-  return Object.values(exhibitions)
-    .sort((a, b) => new Date(b.started_date).getTime() - new Date(a.started_date).getTime());
-}
-
-function ExhibitionList() {
-  const sortedExhibitions = getSortedExhibitions();
+function ExhibitionList({ exhibitions }: { exhibitions: Record<number, Exhibition> }) {
+  const sortedExhibitions: Exhibition[] = Object.values(exhibitions).sort(
+    (a, b) => new Date(b.started_date).getTime() - new Date(a.started_date).getTime()
+  );
   return (
     <>
       <h2>華展一覧</h2>
       <ul role="list">
         {sortedExhibitions.map((exhibition) => (
           <li key={exhibition.id}>
-            <ExhibitionInfo id={exhibition.id} />
+            <ExhibitionInfo exhibition={exhibition} />
           </li>
         ))}
       </ul>
     </>
   );
 }
-
 export default function Index() {
   return (
     <>
       <main>
         <h1>華道用写真共有Webアプリ</h1>
         <p>このアプリは、華道の写真を共有するための Web アプリケーションです。</p>
-        <ExhibitionList />
+        <ExhibitionList exhibitions={exhibitions} />
       </main>
     </>
   );
