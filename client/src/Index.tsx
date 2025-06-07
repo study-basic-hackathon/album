@@ -1,5 +1,13 @@
 import { exhibitions } from "./mocks/data/exhibitions";
 
+type Exhibition = {
+  id: number;
+  name: string;
+  started_date: string;
+  ended_date: string;
+};
+
+// ToDo: 日付フォーマットの方法について検討
 function ExhibitionInfo({ id }: { id: number }) {
   const startedDate = new Date(exhibitions[id].started_date);
   const endedDate = new Date(exhibitions[id].ended_date);
@@ -14,29 +22,36 @@ function ExhibitionInfo({ id }: { id: number }) {
   );
 }
 
+// ToDo: より良いソートのアルゴリズムがないか検討
+function getSortedExhibitions(): Exhibition[] {
+  return Object.values(exhibitions)
+    .sort((a, b) => new Date(b.started_date).getTime() - new Date(a.started_date).getTime());
+}
+
+function ExhibitionList() {
+  const sortedExhibitions = getSortedExhibitions();
+  return (
+    <>
+      <h2>華展一覧</h2>
+      <ul role="list">
+        {sortedExhibitions.map((exhibition) => (
+          <li key={exhibition.id}>
+            <ExhibitionInfo id={exhibition.id} />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
 export default function Index() {
   return (
     <>
-      <h1>華道用写真共有Webアプリ</h1>
-      <p>このアプリは、華道の写真を共有するための Web アプリケーションです。</p>
-      <h2>華展一覧</h2>
-      <ul role="list">
-        <li>
-          <ExhibitionInfo id={1} />
-        </li>
-        <li>
-          <ExhibitionInfo id={2} />
-        </li>
-        <li>
-          <ExhibitionInfo id={3} />
-        </li>
-        <li>
-          <ExhibitionInfo id={4} />
-        </li>
-        <li>
-          <ExhibitionInfo id={5} />
-        </li>
-      </ul>
+      <main>
+        <h1>華道用写真共有Webアプリ</h1>
+        <p>このアプリは、華道の写真を共有するための Web アプリケーションです。</p>
+        <ExhibitionList />
+      </main>
     </>
   );
 }
