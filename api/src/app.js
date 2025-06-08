@@ -53,10 +53,7 @@ app.get("/exhibitions", async (req, res) => {
         TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date, 
         TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date 
       FROM 
-        exhibition
-      ORDER BY
-        started_date DESC`
-    );
+        exhibition`);
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -68,7 +65,8 @@ app.get("/exhibitions", async (req, res) => {
 app.get("/exhibitions/:exhibitionId", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT 
         id,
         name,
@@ -77,7 +75,7 @@ app.get("/exhibitions/:exhibitionId", async (req, res) => {
       FROM
         exhibition
       WHERE
-        id = $1`, 
+        id = $1`,
       [exhibitionId]
     );
     if (result.rows.length === 0) {
@@ -94,7 +92,8 @@ app.get("/exhibitions/:exhibitionId", async (req, res) => {
 app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
@@ -139,7 +138,8 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
   const { exhibitionId, workId } = req.params;
   const targetWorkId = parseInt(workId, 10);
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
@@ -170,12 +170,14 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    };
+    }
     const formattedWorks = formatWorksWithNavigation(result.rows);
-    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
+    const foundWork = formattedWorks.find(
+      (item) => item.work.id === targetWorkId
+    );
     if (!foundWork) {
       return res.status(404).json({ message: "Resource not found" });
-    };
+    }
     res.json(foundWork);
   } catch (err) {
     console.error("DB Error:", err);
@@ -205,7 +207,8 @@ app.get("/arrangers/:arrangerId", async (req, res) => {
 app.get("/arrangers/:arrangerId/works", async (req, res) => {
   const { arrangerId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
@@ -251,7 +254,8 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
   const { arrangerId, workId } = req.params;
   const targetWorkId = parseInt(workId, 10);
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
@@ -278,16 +282,18 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
         wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC`,
-      [arrangerId]     
+      [arrangerId]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    };
+    }
     const formattedWorks = formatWorksWithNavigation(result.rows);
-    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
+    const foundWork = formattedWorks.find(
+      (item) => item.work.id === targetWorkId
+    );
     if (!foundWork) {
       return res.status(404).json({ message: "Resource not found" });
-    };
+    }
     res.json(foundWork);
   } catch (err) {
     console.error("DB Error:", err);
@@ -317,7 +323,8 @@ app.get("/materials/:materialId", async (req, res) => {
 app.get("/materials/:materialId/works", async (req, res) => {
   const { materialId } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
@@ -362,7 +369,8 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
   const { materialId, workId } = req.params;
   const targetWorkId = parseInt(workId, 10);
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT
         wk.id,
         wk.title,
@@ -394,12 +402,14 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    }    
+    }
     const formattedWorks = formatWorksWithNavigation(result.rows);
-    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
+    const foundWork = formattedWorks.find(
+      (item) => item.work.id === targetWorkId
+    );
     if (!foundWork) {
       return res.status(404).json({ message: "Resource not found" });
-    };
+    }
     res.json(foundWork);
   } catch (err) {
     console.error("DB Error:", err);
@@ -436,23 +446,24 @@ app.get("/categories/:categoryId/works", async (req, res) => {
         SELECT 
           w.id,
           w.title,
-          w.arranger_id,
+          a.name AS arranger_id,
           w.category_id,
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
+        LEFT JOIN arranger a ON a.id = w.arranger_id
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
         WHERE w.category_id = $1
-        GROUP BY w.id
+        GROUP BY w.id, a.name
       ),
       numbered AS (
         SELECT 
           *,
-          LAG(id) OVER (ORDER BY create_date ASC) AS previous,
-          LEAD(id) OVER (ORDER BY create_date ASC) AS next
+          LAG(id) OVER (ORDER BY created_date ASC) AS previous,
+          LEAD(id) OVER (ORDER BY created_date ASC) AS next
         FROM base
       )
       SELECT 
@@ -491,23 +502,24 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
         SELECT 
           w.id,
           w.title,
-          w.arranger_id,
+          a.name AS arranger_id,
           w.category_id,
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
+        JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
         WHERE w.category_id = $1
-        GROUP BY w.id
+        GROUP BY w.id, a.name
       ),
       numbered AS (
         SELECT 
           *,
-          LAG(id) OVER (ORDER BY create_date ASC) AS previous,
-          LEAD(id) OVER (ORDER BY create_date ASC) AS next
+          LAG(id) OVER (ORDER BY created_date ASC) AS previous,
+          LEAD(id) OVER (ORDER BY created_date ASC) AS next
         FROM base
       )
       SELECT 
@@ -566,23 +578,24 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
         SELECT 
           w.id,
           w.title,
-          w.arranger_id,
+          a.name AS arranger_id,
           w.category_id,
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
+        JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
         WHERE w.season_id = $1
-        GROUP BY w.id
+        GROUP BY w.id, a.name
       ),
       numbered AS (
         SELECT 
           *,
-          LAG(id) OVER (ORDER BY create_date ASC) AS previous,
-          LEAD(id) OVER (ORDER BY create_date ASC) AS next
+          LAG(id) OVER (ORDER BY created_date ASC) AS previous,
+          LEAD(id) OVER (ORDER BY created_date ASC) AS next
         FROM base
       )
       SELECT 
@@ -621,23 +634,24 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
         SELECT 
           w.id,
           w.title,
-          w.arranger_id,
+          a.name AS arranger_id,
           w.category_id,
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
         FROM work w
+        JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
         LEFT JOIN image i ON i.work_id = w.id
         WHERE w.season_id = $1
-        GROUP BY w.id
+        GROUP BY w.id, a.name
       ),
       numbered AS (
         SELECT 
           *,
-          LAG(id) OVER (ORDER BY create_date ASC) AS previous,
-          LEAD(id) OVER (ORDER BY create_date ASC) AS next
+          LAG(id) OVER (ORDER BY created_date ASC) AS previous,
+          LEAD(id) OVER (ORDER BY created_date ASC) AS next
         FROM base
       )
       SELECT 
