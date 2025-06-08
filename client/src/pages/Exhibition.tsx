@@ -20,7 +20,7 @@ export function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
   const exhibitionWorks = getWorksForExhibition(exhibition_id);
   return (
     <>
-      <section>
+      <div>
         <ul role="list" className="image-list">
           {exhibitionWorks.map((work, index) => (
             <li>
@@ -34,7 +34,7 @@ export function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
             </li>
           ))}
         </ul>
-      </section>
+      </div>
     </>
   );
 }
