@@ -32,6 +32,7 @@ function formatWorksWithNavigation(works) {
         season_id: work.season_id,
         category_id: work.category_id,
         image_urls: work.image_urls,
+        created_at: work.created_at,
       },
       navigation: {
         previous: previousWorkId,
@@ -101,7 +102,8 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(ie.url) AS image_urls
+        ARRAY_AGG(ie.url) AS image_urls,
+        wk.created_at
       FROM
         work AS wk
       JOIN
@@ -147,7 +149,8 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(ie.url) AS image_urls
+        ARRAY_AGG(ie.url) AS image_urls,
+        wk.created_at
       FROM
         work AS wk
       JOIN
@@ -216,7 +219,8 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(ie.url) AS image_urls
+        ARRAY_AGG(ie.url) AS image_urls,
+        wk.created_at
       FROM
         work AS wk
       JOIN
@@ -263,7 +267,8 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(ie.url) AS image_urls
+        ARRAY_AGG(ie.url) AS image_urls,
+        wk.created_at
       FROM
         work AS wk
       JOIN
@@ -332,7 +337,8 @@ app.get("/materials/:materialId/works", async (req, res) => {
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(ie.url) AS image_urls
+        ARRAY_AGG(ie.url) AS image_urls,
+        wk.created_at
       FROM
         work AS wk
       JOIN
@@ -378,7 +384,8 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(ie.url) AS image_urls
+        ARRAY_AGG(ie.url) AS image_urls,
+        wk.created_at
       FROM
         work AS wk
       JOIN
@@ -451,7 +458,8 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
-          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
+          w.created_at
         FROM work w
         LEFT JOIN arranger a ON a.id = w.arranger_id
         LEFT JOIN work_material wm ON wm.work_id = w.id
@@ -474,7 +482,8 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           'material_ids', material_ids,
           'category_id', category_id,
           'season_id', season_id,
-          'image_urls', image_urls
+          'image_urls', image_urls,
+          'cerated_at', created_at
         ) AS work,
         json_build_object(
           'previous', previous,
@@ -507,7 +516,8 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
-          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
+          w.created_at
         FROM work w
         JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
@@ -530,7 +540,8 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
           'material_ids', material_ids,
           'category_id', category_id,
           'season_id', season_id,
-          'image_urls', image_urls
+          'image_urls', image_urls,
+          'created_at', created_at
         ) AS work,
         json_build_object(
           'previous', previous,
@@ -583,7 +594,8 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
-          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
+          w.created_at
         FROM work w
         JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
@@ -606,7 +618,8 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
           'material_ids', material_ids,
           'category_id', category_id,
           'season_id', season_id,
-          'image_urls', image_urls
+          'image_urls', image_urls,
+          'created_at', created_at
         ) AS work,
         json_build_object(
           'previous', previous,
@@ -639,7 +652,8 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
           w.season_id,
           w.created_date,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
-          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls
+          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
+          w.created_at
         FROM work w
         JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
@@ -662,7 +676,8 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
           'material_ids', material_ids,
           'category_id', category_id,
           'season_id', season_id,
-          'image_urls', image_urls
+          'image_urls', image_urls,
+          'created_at', created_at
         ) AS work,
         json_build_object(
           'previous', previous,
