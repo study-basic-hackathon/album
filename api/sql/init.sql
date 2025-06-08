@@ -90,3 +90,122 @@ COMMENT ON COLUMN image.id IS '画像ID';
 COMMENT ON COLUMN image.url IS '画像URL';
 COMMENT ON COLUMN image.work_id IS '作品ID';
 COMMENT ON COLUMN image.create_date IS '登録日';
+
+INSERT INTO exhibition (
+  name,
+  started_date,
+  ended_date
+) VALUES 
+  ('春の展覧会', '2023-03-01', '2023-05-31'),
+  ('夏の展覧会', '2023-06-01', '2023-08-31');
+
+INSERT INTO arranger (
+  name
+) VALUES 
+  ('田中太郎'),
+  ('佐藤花子'),
+  ('鈴木一郎'),
+  ('高橋次郎'),
+  ('伊藤三郎'),
+  ('山田四郎'),
+  ('小林五郎');
+
+INSERT INTO season (
+  name
+) VALUES 
+  ('春'),
+  ('夏'),
+  ('秋'),
+  ('冬');
+
+INSERT INTO material (name) VALUES
+('菊'),
+('桜'),
+('梅'),
+('松'),
+('竹'),
+('柳'),
+('楓'),
+('柿'),
+('栗'),
+('桃');
+
+INSERT INTO category (
+  name
+) VALUES 
+  ('格花'),
+  ('新花'),
+  ('造形');
+
+INSERT INTO work (
+  title,
+  exhibition_id,
+  arranger_id,
+  category_id,
+  season_id
+) VALUES 
+  ('作品1',  1, 1, 1, 1),
+  ('作品2',  1, 2, 1, 1),
+  ('作品3',  1, 3, 2, 1),
+  ('作品4',  1, 4, 2, 1),
+  ('作品5',  1, 5, 3, 1),
+  ('作品6',  1, 6, 3, 1),
+  ('作品7',  1, 7, 3, 1),
+  ('作品8',  2, 1, 1, 1),
+  ('作品9',  2, 2, 1, 2),
+  ('作品10',  2, 3, 2, 2),
+  ('作品11',  2, 4, 2, 2),
+  ('作品12',  2, 5, 3, 2),
+  ('作品13',  2, 6, 3, 2),
+  ('作品14',  2, 7, 3, 2);
+
+INSERT INTO work_material (work_id, material_id) VALUES
+  (1, 2),
+  (2, 1),
+  (2, 2),
+  (3, 2),
+  (3, 3),
+  (3, 4),
+  (4, 1),
+  (5, 3),
+  (6, 2),
+  (7, 1),
+  (8, 3),
+  (9, 2),
+  (10, 1),
+  (11, 3),
+  (12, 2),
+  (13, 1),
+  (14, 3)
+  ON CONFLICT (work_id, material_id) DO NOTHING; 
+
+INSERT INTO image (work_id, url) VALUES 
+  (1, 'http://localhost:3000/images/1_0.jpg'),
+  (1, 'http://localhost:3000/images/1_1.jpg'),
+  (2, 'http://localhost:3000/images/2_0.jpg'),
+  (2, 'http://localhost:3000/images/2_1.jpg'),
+  (2, 'http://localhost:3000/images/2_2.jpg'),
+  (3, 'http://localhost:3000/images/3_0.jpg'),
+  (4, 'http://localhost:3000/images/4_0.jpg'),
+  (4, 'http://localhost:3000/images/4_1.jpg'),
+  (4, 'http://localhost:3000/images/4_2.jpg'),
+  (4, 'http://localhost:3000/images/4_3.jpg'),
+  (5, 'http://localhost:3000/images/5_0.jpg'),
+  (6, 'http://localhost:3000/images/6_0.jpg'),
+  (6, 'http://localhost:3000/images/6_1.jpg'),
+  (6, 'http://localhost:3000/images/6_2.jpg'),
+  (7, 'http://localhost:3000/images/7_0.jpg'),
+  (7, 'http://localhost:3000/images/7_1.jpg'),
+  (8, 'http://localhost:3000/images/8_0.jpg'),
+  (9, 'http://localhost:3000/images/9_0.jpg'),
+  (9, 'http://localhost:3000/images/9_1.jpg'),
+  (10, 'http://localhost:3000/images/10_0.jpg'),
+  (10, 'http://localhost:3000/images/10_1.jpg'),
+  (11, 'http://localhost:3000/images/11_0.jpg'),
+  (11, 'http://localhost:3000/images/11_1.jpg'),
+  (11, 'http://localhost:3000/images/11_2.jpg'),
+  (12, 'http://localhost:3000/images/12_0.jpg'),
+  (12, 'http://localhost:3000/images/12_1.jpg'),
+  (13, 'http://localhost:3000/images/13_0.jpg'),
+  (14, 'http://localhost:3000/images/14_0.jpg'),
+  (14, 'http://localhost:3000/images/14_2.jpg');
