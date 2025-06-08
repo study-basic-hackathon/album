@@ -1,8 +1,8 @@
 import { type components } from "../../types/api";
 
-type Author = components["schemas"]["Author"];
+type Arranger = components["schemas"]["Arranger"];
 
-export const authors: Record<number, Author> = {
+export const arrangers: Record<number, Arranger> = {
   1: {
     id: 1,
     name: "山田 太郎",
