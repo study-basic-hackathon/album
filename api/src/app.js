@@ -482,7 +482,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           'category_id', category_id,
           'season_id', season_id,
           'image_urls', image_urls,
-          'cerated_at', created_at
+          'created_at', created_at
         ) AS work,
         json_build_object(
           'previous', previous,
