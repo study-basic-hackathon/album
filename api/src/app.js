@@ -551,7 +551,11 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
       `,
       [categoryId, workId]
     );
-    res.json(result.rows);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: "Category not found" });
+    }
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -685,7 +689,11 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
       `,
       [seasonId, workId]
     );
-    res.json(result.rows);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: "Season not found" });
+    }
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
