@@ -53,7 +53,9 @@ app.get("/exhibitions", async (req, res) => {
         TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date, 
         TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date 
       FROM 
-        exhibition`
+        exhibition
+      ORDER BY
+        started_date ASC`
     );
     res.json(result.rows);
   } catch (err) {
