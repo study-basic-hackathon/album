@@ -53,7 +53,10 @@ app.get("/exhibitions", async (req, res) => {
         TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date, 
         TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date 
       FROM 
-        exhibition`);
+        exhibition
+      ORDER BY
+        started_date DESC`
+    );
     res.json(result.rows);
   } catch (err) {
     console.error("DB Error:", err);
@@ -136,6 +139,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
 // --華展の作品の取得
 app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
   const { exhibitionId, workId } = req.params;
+  const targetWorkId = parseInt(workId, 10);
   try {
     const result = await pool.query(
       `
@@ -159,13 +163,17 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
         wk.id
       ORDER BY
         wk.id ASC`,
-      [exhibitionId, workId]
+      [exhibitionId]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    }
-    const formattedResults = formatWorksWithNavigation(result.rows);
-    res.json(formattedResults[0]);
+    };
+    const formattedWorks = formatWorksWithNavigation(result.rows);
+    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
+    if (!foundWork) {
+      return res.status(404).json({ message: "Resource not found" });
+    };
+    res.json(foundWork);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -239,6 +247,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
 // --作者の作品の取得
 app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
   const { arrangerId, workId } = req.params;
+  const targetWorkId = parseInt(workId, 10);
   try {
     const result = await pool.query(
       `
@@ -263,18 +272,22 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
       JOIN
         arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        wk.arranger_id = $1 AND wk.id = $2
+        wk.arranger_id = $1
       GROUP BY
         wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC`,
-      [arrangerId, workId]
+      [arrangerId]     
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    }
-    const formattedResults = formatWorksWithNavigation(result.rows);
-    res.json(formattedResults[0]);
+    };
+    const formattedWorks = formatWorksWithNavigation(result.rows);
+    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
+    if (!foundWork) {
+      return res.status(404).json({ message: "Resource not found" });
+    };
+    res.json(foundWork);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
@@ -347,6 +360,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
 // --材料の作品の取得
 app.get("/materials/:materialId/works/:workId", async (req, res) => {
   const { materialId, workId } = req.params;
+  const targetWorkId = parseInt(workId, 10);
   try {
     const result = await pool.query(
       `
@@ -371,18 +385,23 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
       JOIN
         arranger AS ar ON wk.arranger_id = ar.id
       WHERE
-        wk.id = $2 AND wm.material_id = $1
+        wm.material_id = $1
       GROUP BY
         wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
-        wk.id ASC`,
-      [materialId, workId]
+        wk.id ASC
+        `,
+      [materialId]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    }
-    const formattedResults = formatWorksWithNavigation(result.rows);
-    res.json(formattedResults[0]);
+    }    
+    const formattedWorks = formatWorksWithNavigation(result.rows);
+    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
+    if (!foundWork) {
+      return res.status(404).json({ message: "Resource not found" });
+    };
+    res.json(foundWork);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
