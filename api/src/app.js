@@ -55,7 +55,7 @@ app.get("/exhibitions", async (req, res) => {
       FROM 
         exhibition
       ORDER BY
-        started_date ASC`
+        started_date DESC`
     );
     res.json(result.rows);
   } catch (err) {
