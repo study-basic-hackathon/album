@@ -1,0 +1,13 @@
+/* 仮で MindBEMding 的な命名規則を使用 */
+.image-list {
+  display: grid;
+  padding-inline-start: 0;
+  grid-template-columns: repeat(2, minmax(auto, 1fr));
+  gap: 16px;
+}
+
+/* 仮置きのグリッドスタイル */
+.image-list__image {
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
