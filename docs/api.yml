@@ -344,6 +344,10 @@ components:
             type: string
             format: uri
           description: 作品の画像URLのリスト
+        created_at:
+          type: string
+          format: date-time
+          description: 作品の登録日時
       required:
         - id
         - title
