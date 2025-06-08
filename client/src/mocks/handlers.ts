@@ -4,7 +4,7 @@ import { endpoint } from "./util";
 
 import { exhibitions } from "./data/exhibitions";
 import { works } from "./data/works";
-import { authors } from "./data/authors";
+import { arrangers } from "./data/arranger";
 import { materials } from "./data/materials";
 import { categories } from "./data/categories";
 import { seasons } from "./data/seasons";
@@ -92,36 +92,36 @@ export const handlers = [
       paths["/exhibitions/{exhibitionId}/works/{workId}"]["get"]["responses"]["200"]["content"]["application/json"]
     >(workListItem);
   }),
-  http.get<MswPathParameter<paths["/authors/{authorId}"]["get"]["parameters"]["path"]>>(
-    endpoint("/authors/{authorId}"),
+  http.get<MswPathParameter<paths["/arrangers/{arrangerId}"]["get"]["parameters"]["path"]>>(
+    endpoint("/arrangers/{arrangerId}"),
     (req) => {
-      const authorId = req.params.authorId as string;
-      const author = authors[parseInt(authorId, 10)];
-      if (!author) {
+      const arrangerId = req.params.arrangerId as string;
+      const arranger = arrangers[parseInt(arrangerId, 10)];
+      if (!arranger) {
         return HttpResponse.json<
-          paths["/authors/{authorId}"]["get"]["responses"]["404"]["content"]["application/json"]
-        >({ message: "Author not found" }, { status: 404 });
+          paths["/arrangers/{arrangerId}"]["get"]["responses"]["404"]["content"]["application/json"]
+        >({ message: "Arranger not found" }, { status: 404 });
       }
       return HttpResponse.json<
-        paths["/authors/{authorId}"]["get"]["responses"]["200"]["content"]["application/json"]
-      >(author);
+        paths["/arrangers/{arrangerId}"]["get"]["responses"]["200"]["content"]["application/json"]
+      >(arranger);
     }
   ),
-  http.get<MswPathParameter<paths["/authors/{authorId}/works"]["get"]["parameters"]["path"]>>(
-    endpoint("/authors/{authorId}/works"),
+  http.get<MswPathParameter<paths["/arrangers/{arrangerId}/works"]["get"]["parameters"]["path"]>>(
+    endpoint("/arrangers/{arrangerId}/works"),
     (req) => {
-      const authorId = req.params.authorId as string;
-      const author = authors[parseInt(authorId, 10)];
-      if (!author) {
+      const arrangerId = req.params.arrangerId as string;
+      const arranger = arrangers[parseInt(arrangerId, 10)];
+      if (!arranger) {
         return HttpResponse.json<
-          paths["/authors/{authorId}/works"]["get"]["responses"]["404"]["content"]["application/json"]
-        >({ message: "Author not found" }, { status: 404 });
+          paths["/arrangers/{arrangerId}/works"]["get"]["responses"]["404"]["content"]["application/json"]
+        >({ message: "Arranger not found" }, { status: 404 });
       }
       return HttpResponse.json<
-        paths["/authors/{authorId}/works"]["get"]["responses"]["200"]["content"]["application/json"]
+        paths["/arrangers/{arrangerId}/works"]["get"]["responses"]["200"]["content"]["application/json"]
       >(
         worksToWorkListItem(
-          Object.values(works).filter((work) => work.author_id === parseInt(authorId, 10))
+          Object.values(works).filter((work) => work.arranger_id === parseInt(arrangerId, 10))
         )
       );
     }
