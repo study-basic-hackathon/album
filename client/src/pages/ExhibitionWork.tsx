@@ -1,4 +1,5 @@
 import { type components } from "../types/api";
+import { arrangers } from "../mocks/data/arranger";
 import { categories } from "../mocks/data/categories";
 import { exhibitions } from "../mocks/data/exhibitions";
 import { materials } from "../mocks/data/materials";
@@ -6,12 +7,6 @@ import { seasons } from "../mocks/data/seasons";
 import { works } from "../mocks/data/works";
 import "./exhibition-work.css";
 
-// ToDo: モックデータを author -> arranger に変更後、作者情報を表示するように修正
-
-type Category = components["schemas"]["Category"];
-type Exhibition = components["schemas"]["Exhibition"];
-type Material = components["schemas"]["Material"];
-type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
 
 // ToDo: exhibition_id, work_id を URL パラメータから取得するように変更
@@ -20,7 +15,7 @@ const work_id: number = 1;
 const work: Work = works[work_id];
 
 // ToDo: 作品ページ共通で使えるようにコンポーネント化する
-function WorkImages() {
+function WorkImages({ work }: { work: Work }) {
   return (
     <>
       <h2>作品写真</h2>
@@ -42,7 +37,7 @@ function WorkImages() {
 }
 
 // ToDo: 作品ページ共通で使えるようにコンポーネント化する
-function WorkMetadata() {
+function WorkMetadata({ work }: { work: Work }) {
   return (
     <section className="work-metadata">
       <h2>作品情報</h2>
@@ -53,7 +48,7 @@ function WorkMetadata() {
         </div>
         <div>
           <dt>作者</dt>
-          <dd>ToDo</dd>
+          <dd>{arrangers[work.arranger_id].name}</dd>
         </div>
         <div>
           <dt>季節</dt>
@@ -89,8 +84,8 @@ export default function () {
     <>
       <main>
         <h1>{exhibitions[exhibition_id].name}</h1>
-        <WorkImages />
-        <WorkMetadata />
+        <WorkImages work={work} />
+        <WorkMetadata work={work} />
       </main>
     </>
   );
