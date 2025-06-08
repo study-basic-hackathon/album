@@ -103,7 +103,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(ie.url) AS image_urls,
-        TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
       JOIN
@@ -150,7 +150,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(ie.url) AS image_urls,
-        TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
       JOIN
@@ -220,7 +220,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(ie.url) AS image_urls,
-        TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
       JOIN
@@ -268,7 +268,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(ie.url) AS image_urls,
-        TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
       JOIN
@@ -338,7 +338,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(ie.url) AS image_urls,
-        TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
       JOIN
@@ -385,7 +385,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(ie.url) AS image_urls,
-        TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
       JOIN
@@ -458,7 +458,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           w.season_id,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
-          TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+          TO_CHAR(w.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
         FROM work w
         LEFT JOIN arranger a ON a.id = w.arranger_id
         LEFT JOIN work_material wm ON wm.work_id = w.id
@@ -515,7 +515,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
           w.season_id,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
-          TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+          TO_CHAR(w.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
         FROM work w
         JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
@@ -592,7 +592,7 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
           w.season_id,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
-          TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+          TO_CHAR(w.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
         FROM work w
         JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
@@ -649,7 +649,7 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
           w.season_id,
           COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
           COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
-          TO_CHAR(wk.craeted_at, 'YYYY-MM-DD') AS craeted_at
+          TO_CHAR(w.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
         FROM work w
         JOIN arranger a ON w.arranger_id = a.id
         LEFT JOIN work_material wm ON wm.work_id = w.id
