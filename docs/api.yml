@@ -43,7 +43,7 @@ paths:
       tags:
         - exhibition
       summary: 花展の作品の一覧
-      description: 花展ごとの作品の一覧を日付順で取得する
+      description: 花展ごとの作品の一覧を登録の作品の登録日の昇順で取得する
       operationId: listExhibitionWorks
       parameters:
         - $ref: '#/components/parameters/ExhibitionIdParam'
@@ -95,7 +95,7 @@ paths:
       tags:
         - arranger
       summary: 作者の作品の一覧
-      description: 作者ごとの作品の一覧を日付順で取得する
+      description: 作者ごとの作品の一覧を作品の登録日の昇順で取得する
       operationId: listArrangerWorks
       parameters:
         - $ref: '#/components/parameters/ArrangerIdParam'
@@ -147,7 +147,7 @@ paths:
       tags:
         - material
       summary: 材料の作品の一覧
-      description: 材料ごとの作品の一覧を日付順で取得する
+      description: 材料ごとの作品の一覧を作品の登録日の昇順で取得する
       operationId: listMaterialWorks
       parameters:
         - $ref: '#/components/parameters/MaterialIdParam'
@@ -199,7 +199,7 @@ paths:
       tags:
         - category
       summary: カテゴリの作品の一覧
-      description: カテゴリごとの作品の一覧を日付順で取得する
+      description: カテゴリごとの作品の一覧を作品の登録日の昇順で取得する
       operationId: listCategoryWorks
       parameters:
         - $ref: '#/components/parameters/CategoryIdParam'
@@ -251,7 +251,7 @@ paths:
       tags:
         - season
       summary: 季節の作品の一覧
-      description: 季節ごとの作品の一覧を日付順で取得する
+      description: 季節ごとの作品の一覧を作品の登録日の昇順で取得する
       operationId: listSeasonWorks
       parameters:
         - $ref: '#/components/parameters/SeasonIdParam'
