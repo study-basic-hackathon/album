@@ -53,7 +53,7 @@ export interface paths {
     };
     /**
      * 花展の作品の一覧
-     * @description 花展ごとの作品の一覧を日付順で取得する
+     * @description 花展ごとの作品の一覧を登録の作品の登録日の昇順で取得する
      */
     get: operations["listExhibitionWorks"];
     put?: never;
@@ -84,7 +84,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/authors/{authorId}": {
+  "/arrangers/{arrangerId}": {
     parameters: {
       query?: never;
       header?: never;
@@ -95,7 +95,7 @@ export interface paths {
      * 作者の情報の取得
      * @description 作者の情報を取得する
      */
-    get: operations["getAuthor"];
+    get: operations["getArranger"];
     put?: never;
     post?: never;
     delete?: never;
@@ -104,7 +104,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/authors/{authorId}/works": {
+  "/arrangers/{arrangerId}/works": {
     parameters: {
       query?: never;
       header?: never;
@@ -113,9 +113,9 @@ export interface paths {
     };
     /**
      * 作者の作品の一覧
-     * @description 作者ごとの作品の一覧を日付順で取得する
+     * @description 作者ごとの作品の一覧を作品の登録日の昇順で取得する
      */
-    get: operations["listAuthorWorks"];
+    get: operations["listArrangerWorks"];
     put?: never;
     post?: never;
     delete?: never;
@@ -124,7 +124,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/authors/{authorId}/works/{workId}": {
+  "/arrangers/{arrangerId}/works/{workId}": {
     parameters: {
       query?: never;
       header?: never;
@@ -135,7 +135,7 @@ export interface paths {
      * 作者の作品の取得
      * @description 作者ごとの作品の情報を取得する
      */
-    get: operations["getAuthorWork"];
+    get: operations["getArrangerWork"];
     put?: never;
     post?: never;
     delete?: never;
@@ -173,7 +173,7 @@ export interface paths {
     };
     /**
      * 材料の作品の一覧
-     * @description 材料ごとの作品の一覧を日付順で取得する
+     * @description 材料ごとの作品の一覧を作品の登録日の昇順で取得する
      */
     get: operations["listMaterialWorks"];
     put?: never;
@@ -233,9 +233,29 @@ export interface paths {
     };
     /**
      * カテゴリの作品の一覧
-     * @description カテゴリごとの作品の一覧を日付順で取得する
+     * @description カテゴリごとの作品の一覧を作品の登録日の昇順で取得する
      */
     get: operations["listCategoryWorks"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/categories/{categoryId}/works/{workId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * カテゴリの作品の取得
+     * @description カテゴリごとの作品の情報を取得する
+     */
+    get: operations["getCategoryWork"];
     put?: never;
     post?: never;
     delete?: never;
@@ -273,7 +293,7 @@ export interface paths {
     };
     /**
      * 季節の作品の一覧
-     * @description 季節ごとの作品の一覧を日付順で取得する
+     * @description 季節ごとの作品の一覧を作品の登録日の昇順で取得する
      */
     get: operations["listSeasonWorks"];
     put?: never;
@@ -333,7 +353,7 @@ export interface components {
     /** @example {
      *       "id": 1,
      *       "title": "桜のアレンジメント",
-     *       "author_id": "author123",
+     *       "arranger_id": 1,
      *       "material_ids": [
      *         1,
      *         2,
@@ -354,7 +374,7 @@ export interface components {
       /** @description 花展のID */
       exhibition_id: number | null;
       /** @description 作者のID */
-      author_id: number;
+      arranger_id: number;
       /** @description 季節のID */
       season_id: number;
       /** @description 使用された材料のIDのリスト */
@@ -363,6 +383,11 @@ export interface components {
       category_id: number;
       /** @description 作品の画像URLのリスト */
       image_urls: string[];
+      /**
+       * Format: date-time
+       * @description 作品の登録日時
+       */
+      created_at?: string;
     };
     WorkListItem: {
       work: components["schemas"]["Work"];
@@ -382,7 +407,7 @@ export interface components {
      *       "id": 1,
      *       "name": "山田太郎"
      *     } */
-    Author: {
+    Arranger: {
       /** @description 作者のID */
       id: number;
       /** @description 作者の名前 */
@@ -475,13 +500,13 @@ export interface components {
         "application/json": components["schemas"]["WorkListItem"];
       };
     };
-    /** @description A single author */
-    AuthorResponse: {
+    /** @description A single arranger */
+    ArrangerResponse: {
       headers: {
         [name: string]: unknown;
       };
       content: {
-        "application/json": components["schemas"]["Author"];
+        "application/json": components["schemas"]["Arranger"];
       };
     };
     /** @description A single material */
@@ -518,7 +543,7 @@ export interface components {
     /** @description 作品のID */
     WorkIdParam: number;
     /** @description 作者のID */
-    AuthorIdParam: number;
+    ArrangerIdParam: number;
     /** @description 材料のID */
     MaterialIdParam: number;
     /** @description カテゴリのID */
@@ -610,19 +635,19 @@ export interface operations {
       };
     };
   };
-  getAuthor: {
+  getArranger: {
     parameters: {
       query?: never;
       header?: never;
       path: {
         /** @description 作者のID */
-        authorId: components["parameters"]["AuthorIdParam"];
+        arrangerId: components["parameters"]["ArrangerIdParam"];
       };
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      200: components["responses"]["AuthorResponse"];
+      200: components["responses"]["ArrangerResponse"];
       404: components["responses"]["NotFound"];
       /** @description Unexpected error */
       default: {
@@ -633,13 +658,13 @@ export interface operations {
       };
     };
   };
-  listAuthorWorks: {
+  listArrangerWorks: {
     parameters: {
       query?: never;
       header?: never;
       path: {
         /** @description 作者のID */
-        authorId: components["parameters"]["AuthorIdParam"];
+        arrangerId: components["parameters"]["ArrangerIdParam"];
       };
       cookie?: never;
     };
@@ -650,13 +675,13 @@ export interface operations {
       default: components["responses"]["UnexpectedError"];
     };
   };
-  getAuthorWork: {
+  getArrangerWork: {
     parameters: {
       query?: never;
       header?: never;
       path: {
         /** @description 作者のID */
-        authorId: components["parameters"]["AuthorIdParam"];
+        arrangerId: components["parameters"]["ArrangerIdParam"];
         /** @description 作品のID */
         workId: components["parameters"]["WorkIdParam"];
       };
@@ -752,6 +777,25 @@ export interface operations {
     requestBody?: never;
     responses: {
       200: components["responses"]["WorkListItemsResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  getCategoryWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description カテゴリのID */
+        categoryId: components["parameters"]["CategoryIdParam"];
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemResponse"];
       404: components["responses"]["NotFound"];
       default: components["responses"]["UnexpectedError"];
     };
