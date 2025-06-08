@@ -1,5 +1,5 @@
-import { exhibitions } from "./mocks/data/exhibitions";
-import type { components } from "./types/api";
+import { exhibitions } from "../mocks/data/exhibitions";
+import type { components } from "../types/api";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
