@@ -54,14 +54,10 @@ function AdjacentNavigation() {
     <nav className="adjacent-nav">
       <ul>
         <li>
-          <a href={""}>
-            前の作品
-          </a>
+          <a href={""}>前の作品</a>
         </li>
         <li>
-          <a href={""}>
-            次の作品
-          </a>
+          <a href={""}>次の作品</a>
         </li>
       </ul>
     </nav>
