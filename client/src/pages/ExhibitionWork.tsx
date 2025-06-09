@@ -123,7 +123,7 @@ function WorkMetadata({
   );
 }
 
-export default function () {
+export default function ExhibitionWork() {
   return (
     <>
       <main>
