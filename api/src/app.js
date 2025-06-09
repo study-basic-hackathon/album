@@ -48,11 +48,11 @@ app.get("/exhibitions", async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT
-        id, 
+        id,
         name,
-        TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date, 
-        TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date 
-      FROM 
+        TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date,
+        TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date
+      FROM
         exhibition
       ORDER BY
         started_date DESC`
@@ -69,7 +69,7 @@ app.get("/exhibitions/:exhibitionId", async (req, res) => {
   const { exhibitionId } = req.params;
   try {
     const result = await pool.query(`
-      SELECT 
+      SELECT
         id,
         name,
         TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date,
@@ -77,7 +77,7 @@ app.get("/exhibitions/:exhibitionId", async (req, res) => {
       FROM
         exhibition
       WHERE
-        id = $1`, 
+        id = $1`,
       [exhibitionId]
     );
     if (result.rows.length === 0) {
@@ -106,7 +106,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id 
+        work_material AS wm ON wk.id = wm.work_id
       JOIN
         season AS sn ON wk.season_id = sn.id
       JOIN
@@ -151,7 +151,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id 
+        work_material AS wm ON wk.id = wm.work_id
       JOIN
         season AS sn ON wk.season_id = sn.id
       JOIN
@@ -217,7 +217,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id 
+        work_material AS wm ON wk.id = wm.work_id
       JOIN
         season AS sn ON wk.season_id = sn.id
       JOIN
@@ -231,7 +231,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       GROUP BY
         wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
-        wk.id ASC        
+        wk.id ASC
         `,
       [arrangerId]
     );
@@ -263,7 +263,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id 
+        work_material AS wm ON wk.id = wm.work_id
       JOIN
         season AS sn ON wk.season_id = sn.id
       JOIN
@@ -278,7 +278,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
         wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC`,
-      [arrangerId]     
+      [arrangerId]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
@@ -329,7 +329,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id 
+        work_material AS wm ON wk.id = wm.work_id
       JOIN
         season AS sn ON wk.season_id = sn.id
       JOIN
@@ -374,7 +374,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
       FROM
         work AS wk
       JOIN
-        work_material AS wm ON wk.id = wm.work_id 
+        work_material AS wm ON wk.id = wm.work_id
       JOIN
         season AS sn ON wk.season_id = sn.id
       JOIN
@@ -394,7 +394,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    }    
+    }
     const formattedWorks = formatWorksWithNavigation(result.rows);
     const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
     if (!foundWork) {
@@ -433,7 +433,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
     const result = await pool.query(
       `
       WITH base AS (
-        SELECT 
+        SELECT
           w.id,
           w.title,
           w.arranger_id,
@@ -449,13 +449,13 @@ app.get("/categories/:categoryId/works", async (req, res) => {
         GROUP BY w.id
       ),
       numbered AS (
-        SELECT 
+        SELECT
           *,
           LAG(id) OVER (ORDER BY create_date ASC) AS previous,
           LEAD(id) OVER (ORDER BY create_date ASC) AS next
         FROM base
       )
-      SELECT 
+      SELECT
         json_build_object(
           'id', id,
           'title', title,
@@ -488,7 +488,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
     const result = await pool.query(
       `
       WITH base AS (
-        SELECT 
+        SELECT
           w.id,
           w.title,
           w.arranger_id,
@@ -504,13 +504,13 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
         GROUP BY w.id
       ),
       numbered AS (
-        SELECT 
+        SELECT
           *,
           LAG(id) OVER (ORDER BY create_date ASC) AS previous,
           LEAD(id) OVER (ORDER BY create_date ASC) AS next
         FROM base
       )
-      SELECT 
+      SELECT
         json_build_object(
           'id', id,
           'title', title,
@@ -563,7 +563,7 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
     const result = await pool.query(
       `
       WITH base AS (
-        SELECT 
+        SELECT
           w.id,
           w.title,
           w.arranger_id,
@@ -579,13 +579,13 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
         GROUP BY w.id
       ),
       numbered AS (
-        SELECT 
+        SELECT
           *,
           LAG(id) OVER (ORDER BY create_date ASC) AS previous,
           LEAD(id) OVER (ORDER BY create_date ASC) AS next
         FROM base
       )
-      SELECT 
+      SELECT
         json_build_object(
           'id', id,
           'title', title,
@@ -618,7 +618,7 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
     const result = await pool.query(
       `
       WITH base AS (
-        SELECT 
+        SELECT
           w.id,
           w.title,
           w.arranger_id,
@@ -634,13 +634,13 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
         GROUP BY w.id
       ),
       numbered AS (
-        SELECT 
+        SELECT
           *,
           LAG(id) OVER (ORDER BY create_date ASC) AS previous,
           LEAD(id) OVER (ORDER BY create_date ASC) AS next
         FROM base
       )
-      SELECT 
+      SELECT
         json_build_object(
           'id', id,
           'title', title,
