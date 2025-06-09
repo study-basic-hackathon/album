@@ -461,8 +461,6 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           LAG(id) OVER (ORDER BY created_at ASC) AS previous,
           LEAD(id) OVER (ORDER BY created_at ASC) AS next
         FROM base
-        ORDER BY
-          created_at ASC
       )
       SELECT
         json_build_object(
@@ -479,7 +477,8 @@ app.get("/categories/:categoryId/works", async (req, res) => {
           'previous', previous,
           'next', next
         ) AS navigation
-      FROM numbered;
+      FROM numbered
+      ORDER BY created_at ASC;
       `,
       [categoryId]
     );
@@ -650,8 +649,6 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
           LAG(id) OVER (ORDER BY created_at ASC) AS previous,
           LEAD(id) OVER (ORDER BY created_at ASC) AS next
         FROM base
-        ORDER BY
-          created_at ASC
       )
       SELECT
         json_build_object(
@@ -669,7 +666,8 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
           'next', next
         ) AS navigation
       FROM numbered
-      WHERE id = $2;
+      WHERE id = $2
+      ORDER BY created_at ASC;
       `,
       [seasonId, workId]
     );
