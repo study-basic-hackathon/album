@@ -7,12 +7,20 @@ import { seasons } from "../mocks/data/seasons";
 import { works } from "../mocks/data/works";
 import "./exhibition-work.css";
 
+type Arranger = components["schemas"]["Arranger"];
+type Category = components["schemas"]["Category"];
+type Material = components["schemas"]["Material"];
+type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
 
 // ToDo: exhibition_id, work_id を URL パラメータから取得するように変更
 const exhibition_id: number = 1;
 const work_id: number = 1;
 const work: Work = works[work_id];
+const arranger: Arranger = arrangers[work.arranger_id];
+const category: Category = categories[work.category_id];
+const material_array: Material[] = work.material_ids.map((material_id) => materials[material_id]);
+const season: Season = seasons[work.season_id];
 
 // ToDo: 作品ページ共通で使えるようにコンポーネント化する
 function WorkImages({ work }: { work: Work }) {
@@ -37,7 +45,19 @@ function WorkImages({ work }: { work: Work }) {
 }
 
 // ToDo: 作品ページ共通で使えるようにコンポーネント化する
-function WorkMetadata({ work }: { work: Work }) {
+function WorkMetadata({
+  arranger,
+  category,
+  material_array,
+  season,
+  work,
+}: {
+  arranger: Arranger;
+  category: Category;
+  material_array: Material[];
+  season: Season;
+  work: Work;
+}) {
   return (
     <section className="work-metadata">
       <h2>作品情報</h2>
@@ -48,22 +68,22 @@ function WorkMetadata({ work }: { work: Work }) {
         </div>
         <div>
           <dt>作者</dt>
-          <dd>{arrangers[work.arranger_id].name}</dd>
+          <dd>{arranger.name}</dd>
         </div>
         <div>
           <dt>季節</dt>
-          <dd>{seasons[work.season_id].name}</dd>
+          <dd>{season.name}</dd>
         </div>
         <div>
           <dt>素材</dt>
-          {work.material_ids.length === 0 ? (
+          {material_array.length === 0 ? (
             <dd>不明</dd>
           ) : (
             <dd>
               <ul className="work-metadata__materials">
-                {work.material_ids.map((material_id) => (
-                  <li key={material_id} className="work-metadata__material">
-                    {materials[material_id].name}
+                {material_array.map((material) => (
+                  <li key={material.id} className="work-metadata__material">
+                    {material.name}
                   </li>
                 ))}
               </ul>
@@ -72,7 +92,7 @@ function WorkMetadata({ work }: { work: Work }) {
         </div>
         <div>
           <dt>カテゴリー</dt>
-          <dd>{categories[work.category_id].name}</dd>
+          <dd>{category.name}</dd>
         </div>
       </dl>
     </section>
@@ -85,7 +105,13 @@ export default function () {
       <main>
         <h1>{exhibitions[exhibition_id].name}</h1>
         <WorkImages work={work} />
-        <WorkMetadata work={work} />
+        <WorkMetadata
+          arranger={arranger}
+          category={category}
+          material_array={material_array}
+          season={season}
+          work={work}
+        />
       </main>
     </>
   );
