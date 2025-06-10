@@ -9,6 +9,7 @@ import "./work.css";
 
 type Arranger = components["schemas"]["Arranger"];
 type Category = components["schemas"]["Category"];
+type Exhibition = components["schemas"]["Exhibition"];
 type Material = components["schemas"]["Material"];
 type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
@@ -21,6 +22,7 @@ const work: Work = works[work_id];
 // ToDo: これらの定数の取得処理は、関数として切り出したほうが良いかも
 const arranger: Arranger = arrangers[work.arranger_id];
 const category: Category = categories[work.category_id];
+const exhibition: Exhibition = exhibitions[work.exhibition_id]; // ToDo: exhibition_id が null の場合の処理
 const material_array: Material[] = work.material_ids.map((material_id) => materials[material_id]);
 const season: Season = seasons[work.season_id];
 
@@ -68,12 +70,14 @@ function AdjacentNavigation() {
 function WorkMetadata({
   arranger,
   category,
+  exhibition,
   material_array,
   season,
   work,
 }: {
   arranger: Arranger;
   category: Category;
+  exhibition: Exhibition;
   material_array: Material[];
   season: Season;
   work: Work;
@@ -85,6 +89,10 @@ function WorkMetadata({
         <div>
           <dt>タイトル</dt>
           <dd>{work.title ? work.title : "無題の作品"}</dd>
+        </div>
+        <div>
+          <dt>華展</dt>
+          <dd>{exhibition.name}</dd>
         </div>
         <div>
           <dt>作者</dt>
@@ -129,6 +137,7 @@ export default function ExhibitionWork() {
         <WorkMetadata
           arranger={arranger}
           category={category}
+          exhibition={exhibition}
           material_array={material_array}
           season={season}
           work={work}
