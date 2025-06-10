@@ -5,7 +5,7 @@ import { exhibitions } from "../mocks/data/exhibitions";
 import { materials } from "../mocks/data/materials";
 import { seasons } from "../mocks/data/seasons";
 import { works } from "../mocks/data/works";
-import "./exhibition-work.css";
+import "./work.css";
 
 type Arranger = components["schemas"]["Arranger"];
 type Category = components["schemas"]["Category"];
