@@ -108,13 +108,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
       JOIN
         work_material AS wm ON wk.id = wm.work_id 
       JOIN
-        season AS sn ON wk.season_id = sn.id
-      JOIN
-        exhibition AS en ON wk.exhibition_id = en.id
-      JOIN
         image AS ie ON wk.id = ie.work_id
-      JOIN
-        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
         en.id = $1
       GROUP BY
@@ -153,13 +147,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
       JOIN
         work_material AS wm ON wk.id = wm.work_id 
       JOIN
-        season AS sn ON wk.season_id = sn.id
-      JOIN
-        exhibition AS en ON wk.exhibition_id = en.id
-      JOIN
         image AS ie ON wk.id = ie.work_id
-      JOIN
-        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
         en.id = $1
       GROUP BY
@@ -219,13 +207,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       JOIN
         work_material AS wm ON wk.id = wm.work_id 
       JOIN
-        season AS sn ON wk.season_id = sn.id
-      JOIN
-        exhibition AS en ON wk.exhibition_id = en.id
-      JOIN
         image AS ie ON wk.id = ie.work_id
-      JOIN
-        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
         wk.arranger_id = $1
       GROUP BY
@@ -265,13 +247,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
       JOIN
         work_material AS wm ON wk.id = wm.work_id 
       JOIN
-        season AS sn ON wk.season_id = sn.id
-      JOIN
-        exhibition AS en ON wk.exhibition_id = en.id
-      JOIN
         image AS ie ON wk.id = ie.work_id
-      JOIN
-        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
         wk.arranger_id = $1
       GROUP BY
@@ -331,13 +307,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
       JOIN
         work_material AS wm ON wk.id = wm.work_id 
       JOIN
-        season AS sn ON wk.season_id = sn.id
-      JOIN
-        exhibition AS en ON wk.exhibition_id = en.id
-      JOIN
         image AS ie ON wk.id = ie.work_id
-      JOIN
-        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
         wm.material_id = $1
       GROUP BY
@@ -376,13 +346,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
       JOIN
         work_material AS wm ON wk.id = wm.work_id 
       JOIN
-        season AS sn ON wk.season_id = sn.id
-      JOIN
-        exhibition AS en ON wk.exhibition_id = en.id
-      JOIN
         image AS ie ON wk.id = ie.work_id
-      JOIN
-        arranger AS ar ON wk.arranger_id = ar.id
       WHERE
         wm.material_id = $1
       GROUP BY
