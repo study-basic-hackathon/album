@@ -23,7 +23,7 @@ const work: Work = works[work_id];
 const arranger: Arranger = arrangers[work.arranger_id];
 const category: Category = categories[work.category_id];
 const exhibition: Exhibition = exhibitions[work.exhibition_id]; // ToDo: exhibition_id が null の場合の処理
-const material_array: Material[] = work.material_ids.map((material_id) => materials[material_id]);
+const materialArray: Material[] = work.material_ids.map((material_id) => materials[material_id]);
 const season: Season = seasons[work.season_id];
 
 // ToDo: 作品ページ共通で使えるようにコンポーネント化する
@@ -71,14 +71,14 @@ function WorkMetadata({
   arranger,
   category,
   exhibition,
-  material_array,
+  materialArray,
   season,
   work,
 }: {
   arranger: Arranger;
   category: Category;
   exhibition: Exhibition;
-  material_array: Material[];
+  materialArray: Material[];
   season: Season;
   work: Work;
 }) {
@@ -104,12 +104,12 @@ function WorkMetadata({
         </div>
         <div>
           <dt>素材</dt>
-          {material_array.length === 0 ? (
+          {materialArray.length === 0 ? (
             <dd>不明</dd>
           ) : (
             <dd>
               <ul className="work-metadata__materials">
-                {material_array.map((material) => (
+                {materialArray.map((material) => (
                   <li key={material.id} className="work-metadata__material">
                     {material.name}
                   </li>
@@ -138,7 +138,7 @@ export default function ExhibitionWork() {
           arranger={arranger}
           category={category}
           exhibition={exhibition}
-          material_array={material_array}
+          materialArray={materialArray}
           season={season}
           work={work}
         />
