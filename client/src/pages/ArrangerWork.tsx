@@ -15,8 +15,8 @@ type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
 type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 
-// ToDo: exhibition_id, work_id を URL パラメータから取得するように変更
-const exhibition_id: number = 1;
+// ToDo: arranger_id, work_id を URL パラメータから取得するように変更
+const arranger_id: number = 1;
 const work_id: number = 1;
 const work: Work = works[work_id];
 const workListNavigation: WorkListNavigation = {
@@ -134,7 +134,7 @@ export default function ExhibitionWork() {
   return (
     <>
       <main>
-        <h1>{exhibitions[exhibition_id].name}</h1>
+        <h1>{arrangers[arranger_id].name}の作品</h1>
         <WorkImages work={work} />
         <AdjacentNavigation workListNavigation={workListNavigation} />
         <WorkMetadata

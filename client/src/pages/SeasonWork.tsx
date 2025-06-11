@@ -15,13 +15,13 @@ type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
 type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 
-// ToDo: exhibition_id, work_id を URL パラメータから取得するように変更
-const exhibition_id: number = 1;
-const work_id: number = 1;
+// ToDo: season_id, work_id を URL パラメータから取得するように変更
+const season_id: number = 3;
+const work_id: number = 3;
 const work: Work = works[work_id];
 const workListNavigation: WorkListNavigation = {
-  previous: null,
-  next: 2,
+  previous: 2,
+  next: 4,
 }; // workListNavigation は仮のデータ
 
 // ToDo: これらの定数の取得処理は、関数として切り出したほうが良いかも
@@ -134,7 +134,7 @@ export default function ExhibitionWork() {
   return (
     <>
       <main>
-        <h1>{exhibitions[exhibition_id].name}</h1>
+        <h1>{seasons[season_id].name}の作品</h1>
         <WorkImages work={work} />
         <AdjacentNavigation workListNavigation={workListNavigation} />
         <WorkMetadata
