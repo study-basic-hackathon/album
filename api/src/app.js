@@ -99,7 +99,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
       SELECT
         wk.id,
         wk.title,
-        ar.name AS arranger_id,
+        wk.arranger_id,
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
@@ -145,7 +145,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
       SELECT
         wk.id,
         wk.title,
-        ar.name AS arranger_id,
+        wk.arranger_id,
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
@@ -212,7 +212,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       SELECT
         wk.id,
         wk.title,
-        ar.name AS arranger_id,
+        wk.arranger_id,
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
@@ -259,7 +259,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
       SELECT
         wk.id,
         wk.title,
-        ar.name AS arranger_id,
+        wk.arranger_id,
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
@@ -326,7 +326,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
       SELECT
         wk.id,
         wk.title,
-        ar.name AS arranger_id,
+        wk.arranger_id,
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
@@ -372,7 +372,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
       SELECT
         wk.id,
         wk.title,
-        ar.name AS arranger_id,
+        wk.arranger_id,
         ARRAY_AGG(wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
