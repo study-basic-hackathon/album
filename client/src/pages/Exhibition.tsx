@@ -1,18 +1,17 @@
 import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { exhibitions } from "../mocks/data/exhibitions";
+import { useParams } from "react-router";
 import "./works.css"; // ToDo: CSS のインポートの変更
 
 type Work = components["schemas"]["Work"];
 type Exhibition = components["schemas"]["Exhibition"];
 
-const exhibition_id: number = 1; // ToDo: exhibition_id を URL パラメータから取得するように変更
-
 function getWorksForExhibition(exhibitionId: number): Work[] {
   return Object.values(works).filter((work) => work.exhibition_id === exhibitionId);
 }
 
-export function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
+function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
   if (!exhibition_id) {
     return <p>No exhibition selected.</p>;
   }
@@ -39,8 +38,15 @@ export function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
 }
 
 export default function Exhibition() {
+  const { id } = useParams();
+  const exhibition_id = Number(id); // ToDo: id が無効な値のときのエラーハンドリング
   return (
     <>
+      <header>
+        <nav>
+          <a href="/">ホームへ戻る</a>
+        </nav>
+      </header>
       <main>
         <h1>{exhibitions[exhibition_id].name}の作品一覧</h1>
         <ExhibitionImages exhibition_id={exhibition_id} />

@@ -10,7 +10,9 @@ function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
 
   return (
     <article>
-      <h3>{exhibition.name}</h3>
+      <h3>
+        <a href={"exhibition/" + exhibition.id}>{exhibition.name}</a>
+      </h3>
       <p>
         開催期間: {startedDate.toLocaleDateString("ja-JP")}-{endedDate.toLocaleDateString("ja-JP")}
       </p>
