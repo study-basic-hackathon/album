@@ -13,11 +13,16 @@ type Exhibition = components["schemas"]["Exhibition"];
 type Material = components["schemas"]["Material"];
 type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
+type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 
 // ToDo: material_id, work_id を URL パラメータから取得するように変更
 const material_id: number = 5;
 const work_id: number = 2;
 const work: Work = works[work_id];
+const workListNavigation: WorkListNavigation = {
+  previous: 1,
+  next: 3,
+}; // workListNavigation は仮のデータ
 
 // ToDo: これらの定数の取得処理は、関数として切り出したほうが良いかも
 const arranger: Arranger = arrangers[work.arranger_id];
@@ -48,10 +53,8 @@ function WorkImages({ work }: { work: Work }) {
   );
 }
 
-// `Exhibition.tsx` の `getWorksForExhibition` はここでも必要になりそう
-// ToDo: 作品を並べる順番の基準はどのパラメータにするか検討する
 // ToDo: 作品ページ共通で使えるようにコンポーネント化する
-function AdjacentNavigation() {
+function AdjacentNavigation({ workListNavigation }: { workListNavigation: WorkListNavigation }) {
   return (
     <nav className="adjacent-nav">
       <ul>
@@ -133,7 +136,7 @@ export default function ExhibitionWork() {
       <main>
         <h1>{materials[material_id].name}の作品</h1>
         <WorkImages work={work} />
-        <AdjacentNavigation />
+        <AdjacentNavigation workListNavigation={workListNavigation} />
         <WorkMetadata
           arranger={arranger}
           category={category}
