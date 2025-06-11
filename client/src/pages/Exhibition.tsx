@@ -3,6 +3,7 @@ import { works } from "../mocks/data/works";
 import { exhibitions } from "../mocks/data/exhibitions";
 import { useParams } from "react-router";
 import "./works.css"; // ToDo: CSS のインポートの変更
+import { Link } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Exhibition = components["schemas"]["Exhibition"];
@@ -44,7 +45,7 @@ export default function Exhibition() {
     <>
       <header>
         <nav>
-          <a href="/">ホームへ戻る</a>
+          <Link to="/">ホームへ戻る</Link>
         </nav>
       </header>
       <main>

@@ -1,5 +1,6 @@
 import { exhibitions } from "../mocks/data/exhibitions";
 import type { components } from "../types/api";
+import { Link } from "react-router";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
@@ -11,7 +12,7 @@ function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
   return (
     <article>
       <h3>
-        <a href={"exhibition/" + exhibition.id}>{exhibition.name}</a>
+        <Link to={`exhibition/${exhibition.id}`}>{exhibition.name}</Link>
       </h3>
       <p>
         開催期間: {startedDate.toLocaleDateString("ja-JP")}-{endedDate.toLocaleDateString("ja-JP")}
