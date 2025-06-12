@@ -1,9 +1,8 @@
 import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { exhibitions } from "../mocks/data/exhibitions";
-import { useParams } from "react-router";
 import "./works.css"; // ToDo: CSS のインポートの変更
-import { Link, NavLink } from "react-router";
+import { Link, useParams } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Exhibition = components["schemas"]["Exhibition"];
@@ -42,14 +41,10 @@ function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
 
 export default function Exhibition() {
   const params = useParams();
-  const exhibition_id = Number(params.exhibition_id); // ToDo: id が無効な値のときのエラーハンドリング
+  const exhibition_id = Number(params.exhibition_id); // ToDo: exhibition_id が無効な値のときのエラーハンドリング
+  
   return (
     <>
-      <header>
-        <nav>
-          <NavLink to="/">ホームへ戻る</NavLink>
-        </nav>
-      </header>
       <main>
         <h1>{exhibitions[exhibition_id].name}の作品一覧</h1>
         <ExhibitionImages exhibition_id={exhibition_id} />

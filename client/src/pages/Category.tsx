@@ -2,11 +2,10 @@ import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { categories } from "../mocks/data/categories";
 import "./works.css"; // ToDo: CSS のインポートの変更
+import { Link, useParams } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Category = components["schemas"]["Category"];
-
-const category_id: number = 3; // ToDo: category_id を URL パラメータから取得するように変更
 
 function getWorksForCategory(categoryId: number): Work[] {
   return Object.values(works).filter((work) => work.category_id === categoryId);
@@ -23,11 +22,13 @@ function CategoryImages({ category_id }: { category_id: number }) {
         <ul role="list" className="works-image-list">
           {categoryWorks.map((work, index) => (
             <li key={index}>
-              <img
-                className="works-image-list__image"
-                src={work.image_urls[0]}
-                alt={work.title ? work.title : "無題の作品"}
-              />
+              <Link to={`work/${work.id}`}>
+                <img
+                  className="works-image-list__image"
+                  src={work.image_urls[0]}
+                  alt={work.title ? work.title : "無題の作品"}
+                />
+              </Link>
             </li>
           ))}
         </ul>
@@ -37,6 +38,9 @@ function CategoryImages({ category_id }: { category_id: number }) {
 }
 
 export default function Category() {
+  const params = useParams();
+  const category_id = Number(params.category_id); // ToDo: category_id が無効な値のときのエラーハンドリング
+
   return (
     <>
       <main>

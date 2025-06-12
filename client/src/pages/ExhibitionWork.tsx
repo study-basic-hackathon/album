@@ -6,7 +6,7 @@ import { materials } from "../mocks/data/materials";
 import { seasons } from "../mocks/data/seasons";
 import { works } from "../mocks/data/works";
 import "./work.css";
-import { useParams, Link, NavLink } from "react-router";
+import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 
@@ -52,7 +52,7 @@ function AdjacentNavigation({ workListNavigation }: { workListNavigation: WorkLi
   );
 }
 
-export default function Work() {
+export default function ExhibitionWork() {
   const { exhibition_id, work_id } = useParams(); // exhibition_id はまだ使わないが、API 関連の実装時におそらく必要になる
   const work: Work = works[Number(work_id)]; // ToDo: work_id が無効な値のときのエラーハンドリング
   const arranger: Arranger = arrangers[work.arranger_id];
@@ -63,11 +63,6 @@ export default function Work() {
 
   return (
     <>
-      <header>
-        <nav>
-          <NavLink to="/">ホームへ戻る</NavLink>
-        </nav>
-      </header>
       <main>
         <WorkHeading exhibition={exhibition} />
         <WorkImages work={work} />

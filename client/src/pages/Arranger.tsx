@@ -2,11 +2,10 @@ import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { arrangers } from "../mocks/data/arranger";
 import "./works.css"; // ToDo: CSS のインポートの変更
+import { Link, useParams } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Arranger = components["schemas"]["Arranger"];
-
-const arranger_id: number = 2; // ToDo: arranger_id を URL パラメータから取得するように変更
 
 function getWorksForArranger(arrangerId: number): Work[] {
   return Object.values(works).filter((work) => work.arranger_id === arrangerId);
@@ -23,11 +22,13 @@ function ArrangerImages({ arranger_id }: { arranger_id: number }) {
         <ul role="list" className="works-image-list">
           {arrangerWorks.map((work, index) => (
             <li key={index}>
-              <img
-                className="works-image-list__image"
-                src={work.image_urls[0]}
-                alt={work.title ? work.title : "無題の作品"}
-              />
+              <Link to={`work/${work.id}`}>
+                <img
+                  className="works-image-list__image"
+                  src={work.image_urls[0]}
+                  alt={work.title ? work.title : "無題の作品"}
+                />
+              </Link>
             </li>
           ))}
         </ul>
@@ -37,6 +38,8 @@ function ArrangerImages({ arranger_id }: { arranger_id: number }) {
 }
 
 export default function Arranger() {
+  const params = useParams();
+  const arranger_id = Number(params.arranger_id); // ToDo: arranger_id が無効な値のときのエラーハンドリング
   return (
     <>
       <main>
