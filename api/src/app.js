@@ -114,7 +114,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
       WHERE
         en.id = $1
       GROUP BY
-        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC`,
       [exhibitionId]
@@ -154,7 +154,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
       WHERE
         en.id = $1
       GROUP BY
-        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC`,
       [exhibitionId]
@@ -215,7 +215,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       WHERE
         wk.arranger_id = $1
       GROUP BY
-        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC
         `,
@@ -256,7 +256,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
       WHERE
         wk.arranger_id = $1
       GROUP BY
-        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC`,
       [arrangerId]
@@ -317,7 +317,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
       WHERE
         wm.material_id = $1
       GROUP BY
-        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC`,
       [materialId]
@@ -357,7 +357,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
       WHERE
         wm.material_id = $1
       GROUP BY
-        wk.id, wk.title, ar.name, wk.arranger_id, wk.season_id, wk.category_id
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC
         `,
