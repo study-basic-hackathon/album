@@ -15,7 +15,8 @@ function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
         <Link to={`/exhibition/${exhibition.id}`}>{exhibition.name}</Link>
       </h3>
       <p>
-        開催期間: {started_date.toLocaleDateString("ja-JP")}-{ended_date.toLocaleDateString("ja-JP")}
+        開催期間: {started_date.toLocaleDateString("ja-JP")}-
+        {ended_date.toLocaleDateString("ja-JP")}
       </p>
     </article>
   );
