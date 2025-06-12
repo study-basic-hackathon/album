@@ -39,11 +39,15 @@ export default function WorkMetadata({
         </div>
         <div>
           <dt>作者</dt>
-          <dd>{arranger.name}</dd>
+          <dd>
+            <Link to={`/arranger/${arranger.id}`}>{arranger.name}</Link>
+          </dd>
         </div>
         <div>
           <dt>季節</dt>
-          <dd>{season.name}</dd>
+          <dd>
+            <Link to={`/season/${season.id}`}>{season.name}</Link>
+          </dd>
         </div>
         <div>
           <dt>素材</dt>
@@ -54,7 +58,7 @@ export default function WorkMetadata({
               <ul className="work-metadata__materials">
                 {materialArray.map((material) => (
                   <li key={material.id} className="work-metadata__material">
-                    {material.name}
+                    <Link to={`/material/${material.id}`}>{material.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -63,7 +67,9 @@ export default function WorkMetadata({
         </div>
         <div>
           <dt>カテゴリー</dt>
-          <dd>{category.name}</dd>
+          <dd>
+            <Link to={`/category/${category.id}`}>{category.name}</Link>
+          </dd>
         </div>
       </dl>
     </section>
