@@ -1,11 +1,24 @@
-openapi: 3.0.4
+openapi: 3.0.3
 info:
   title: 花道展写真共有用アルバム
+  description: 花道展の作品や花展の情報を管理するためのAPIです。
   version: 1.0.0
 
 tags:
   - name: exhibition
     description: 花展の情報を取得するAPI
+  - name: arranger
+    description: 作者の情報を取得するAPI
+  - name: material
+    description: 材料の情報を取得するAPI
+  - name: category
+    description: カテゴリの情報を取得するAPI
+  - name: season
+    description: 季節の情報を取得するAPI
+
+servers:
+  - url: http://localhost:3000
+    description: ローカル環境
 
 paths:
   /exhibitions:
@@ -18,6 +31,25 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ExhibitionsResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    post:
+      tags:
+        - exhibition
+      summary: 花展の登録
+      description: 花展を登録する
+      operationId: createExhibition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExhibitionPayload'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedExhibitionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         default:
           $ref: '#/components/responses/UnexpectedError'
 
@@ -33,6 +65,44 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ExhibitionResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    put:
+      tags:
+        - exhibition
+      summary: 花展の更新
+      description: 花展の情報を更新する
+      operationId: updateExhibition
+      parameters:
+        - $ref: '#/components/parameters/ExhibitionIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateExhibitionPayload'
+      responses:
+        '204':
+          description: 花展が更新された
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags:
+        - exhibition
+      summary: 花展の削除
+      description: 花展を削除する
+      operationId: deleteExhibition
+      parameters:
+        - $ref: '#/components/parameters/ExhibitionIdParam'
+      responses:
+        '204':
+          description: 花展が削除された
         '404':
           $ref: '#/components/responses/NotFound'
         default:
@@ -73,6 +143,38 @@ paths:
         default:
           description: Unexpected error
 
+  /arrangers:
+    get:
+      tags:
+        - arranger
+      summary: 作者の一覧
+      description: 登録されている作者の一覧を取得する
+      operationId: listArrangers
+      responses:
+        '200':
+          $ref: '#/components/responses/ArrangersResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    post:
+      tags:
+        - arranger
+      summary: 作者の登録
+      description: 作者を登録する
+      operationId: createArranger
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArrangerPayload'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedArrangerResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+
   /arrangers/{arrangerId}:
     get:
       tags:
@@ -89,6 +191,44 @@ paths:
           $ref: '#/components/responses/NotFound'
         default:
           description: Unexpected error
+    put:
+      tags:
+        - arranger
+      summary: 作者の更新
+      description: 作者の情報を更新する
+      operationId: updateArranger
+      parameters:
+        - $ref: '#/components/parameters/ArrangerIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArrangerPayload'
+      responses:
+        '204':
+          description: 作者が更新された
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags:
+        - arranger
+      summary: 作者の削除
+      description: 作者を削除する
+      operationId: deleteArranger
+      parameters:
+        - $ref: '#/components/parameters/ArrangerIdParam'
+      responses:
+        '204':
+          description: 作者が削除された
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
 
   /arrangers/{arrangerId}/works:
     get:
@@ -125,6 +265,38 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
 
+  /materials:
+    get:
+      tags:
+        - material
+      summary: 材料の一覧
+      description: 登録されている材料の一覧を取得する
+      operationId: listMaterials
+      responses:
+        '200':
+          $ref: '#/components/responses/MaterialsResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    post:
+      tags:
+        - material
+      summary: 材料の登録
+      description: 材料を登録する
+      operationId: createMaterial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMaterialPayload'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedMaterialResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+
   /materials/{materialId}:
     get:
       tags:
@@ -137,6 +309,44 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MaterialResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    put:
+      tags:
+        - material
+      summary: 材料の更新
+      description: 材料の情報を更新する
+      operationId: updateMaterial
+      parameters:
+        - $ref: '#/components/parameters/MaterialIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMaterialPayload'
+      responses:
+        '204':
+          description: 材料が更新された
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags:
+        - material
+      summary: 材料の削除
+      description: 材料を削除する
+      operationId: deleteMaterial
+      parameters:
+        - $ref: '#/components/parameters/MaterialIdParam'
+      responses:
+        '204':
+          description: 材料が削除された
         '404':
           $ref: '#/components/responses/NotFound'
         default:
@@ -177,6 +387,38 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
 
+  /categories:
+    get:
+      tags:
+        - category
+      summary: カテゴリの一覧
+      description: 登録されているカテゴリの一覧を取得する
+      operationId: listCategories
+      responses:
+        '200':
+          $ref: '#/components/responses/CategoriesResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    post:
+      tags:
+        - category
+      summary: カテゴリの登録
+      description: カテゴリを登録する
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryPayload'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedCategoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+
   /categories/{categoryId}:
     get:
       tags:
@@ -189,6 +431,44 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/CategoryResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    put:
+      tags:
+        - category
+      summary: カテゴリの更新
+      description: カテゴリの情報を更新する
+      operationId: updateCategory
+      parameters:
+        - $ref: '#/components/parameters/CategoryIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryPayload'
+      responses:
+        '204':
+          description: カテゴリが更新された
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags:
+        - category
+      summary: カテゴリの削除
+      description: カテゴリを削除する
+      operationId: deleteCategory
+      parameters:
+        - $ref: '#/components/parameters/CategoryIdParam'
+      responses:
+        '204':
+          description: カテゴリが削除された
         '404':
           $ref: '#/components/responses/NotFound'
         default:
@@ -229,6 +509,38 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
 
+  /seasons:
+    get:
+      tags:
+        - season
+      summary: 季節の一覧
+      description: 季節の一覧を取得する
+      operationId: listSeasons
+      responses:
+        '200':
+          $ref: '#/components/responses/SeasonsResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    post:
+      tags:
+        - season
+      summary: 季節の登録
+      description: 季節を登録する
+      operationId: createSeason
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Season'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedSeasonResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+
   /seasons/{seasonId}:
     get:
       tags:
@@ -241,6 +553,44 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SeasonResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    put:
+      tags:
+        - season
+      summary: 季節の更新
+      description: 季節の情報を更新する
+      operationId: updateSeason
+      parameters:
+        - $ref: '#/components/parameters/SeasonIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Season'
+      responses:
+        '204':
+          description: 季節が更新された
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags:
+        - season
+      summary: 季節の削除
+      description: 季節を削除する
+      operationId: deleteSeason
+      parameters:
+        - $ref: '#/components/parameters/SeasonIdParam'
+      responses:
+        '204':
+          description: 季節が削除された
         '404':
           $ref: '#/components/responses/NotFound'
         default:
@@ -281,6 +631,127 @@ paths:
         default:
           $ref: '#/components/responses/UnexpectedError'
 
+  /works:
+    post:
+      tags:
+        - work
+      summary: 作品の登録
+      description: 作品を登録する
+      operationId: createWork
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkPayload'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedWorkResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+
+  /works/{workId}:
+    get:
+      tags:
+        - work
+      summary: 作品の取得
+      description: 作品の情報を取得する
+      operationId: getWork
+      parameters:
+        - $ref: '#/components/parameters/WorkIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/WorkListItemResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    put:
+      tags:
+        - work
+      summary: 作品の更新
+      description: 作品の情報を更新する
+      operationId: updateWork
+      parameters:
+        - $ref: '#/components/parameters/WorkIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWorkPayload'
+      responses:
+        '204':
+          description: 作品が更新された
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags:
+        - work
+      summary: 作品の削除
+      description: 作品を削除する
+      operationId: deleteWork
+      parameters:
+        - $ref: '#/components/parameters/WorkIdParam'
+      responses:
+        '204':
+          description: 作品が削除された
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  /works/{workId}/images:
+    post:
+      tags:
+        - work
+      summary: 作品の画像の登録
+      description: 作品に画像を登録する
+      operationId: uploadWorkImage
+      parameters:
+        - $ref: '#/components/parameters/WorkIdParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateWorkImagePayload'
+      responses:
+        '201':
+          description: 画像が登録された
+          headers:
+            Location:
+              description: 登録された画像のURL
+              schema:
+                type: string
+                example: "https://example.com/work/1/image/1"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+
+  /works/{workId}/images/{imageId}:
+    delete:
+      tags:
+        - work
+      summary: 作品の画像の削除
+      description: 作品の画像を削除する
+      operationId: deleteWorkImage
+      parameters:
+        - $ref: '#/components/parameters/WorkIdParam'
+        - $ref: '#/components/parameters/ImageIdParam'
+      responses:
+        '204':
+          description: 画像が削除された
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
 components:
   schemas:
     Exhibition:
@@ -323,7 +794,6 @@ components:
         exhibition_id:
           type: integer
           description: 花展のID
-          nullable: true
         arranger_id:
           type: integer
           description: 作者のID
@@ -454,6 +924,207 @@ components:
       example:
         id: 1
         name: "春"
+    CreateExhibitionPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 花展の名前
+        started_date:
+          type: string
+          format: date
+          description: 花展の開始日
+        ended_date:
+          type: string
+          format: date
+          description: 花展の終了日
+      required:
+        - name
+        - started_date
+        - ended_date
+      example:
+        name: "春の花展"
+        started_date: "2023-03-01"
+        ended_date: "2023-03-31"
+    UpdateExhibitionPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 花展の名前
+        started_date:
+          type: string
+          format: date
+          description: 花展の開始日
+        ended_date:
+          type: string
+          format: date
+          description: 花展の終了日
+      required:
+        - name
+        - started_date
+        - ended_date
+      example:
+        name: "春の花展"
+        started_date: "2023-03-01"
+        ended_date: "2023-03-31"
+    CreateWorkPayload:
+      type: object
+      properties:
+        title:
+          type: string
+          description: 作品のタイトル
+          nullable: true
+        arranger_id:
+          type: integer
+          description: 作者のID
+        material_ids:
+          type: array
+          items:
+            type: integer
+          description: 使用された材料のIDのリスト
+        season_id:
+          type: integer
+          description: 季節のID
+        category_id:
+          type: integer
+          description: カテゴリのID
+      required:
+        - title
+        - arranger_id
+        - material_ids
+        - season_id
+        - category_id
+      example:
+        title: "桜のアレンジメント"
+        arranger_id: 1
+        material_ids: [1, 2, 3]
+        season_id: 1
+        category_id: 1
+    UpdateWorkPayload:
+      type: object
+      properties:
+        title:
+          type: string
+          description: 作品のタイトル
+          nullable: true
+        arranger_id:
+          type: integer
+          description: 作者のID
+        material_ids:
+          type: array
+          items:
+            type: integer
+          description: 使用された材料のIDのリスト
+        season_id:
+          type: integer
+          description: 季節のID
+        category_id:
+          type: integer
+          description: カテゴリのID
+      required:
+        - title
+        - arranger_id
+        - material_ids
+        - season_id
+        - category_id
+      example:
+        title: "桜のアレンジメント"
+        arranger_id: 1
+        material_ids: [1, 2, 3]
+        season_id: 1
+        category_id: 1
+    CreateArrangerPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 作者の名前
+      required:
+        - name
+      example:
+        name: "山田太郎"
+    UpdateArrangerPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 作者の名前
+      required:
+        - name
+      example:
+        name: "山田太郎"
+    CreateMaterialPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 材料の名前
+      required:
+        - name
+      example:
+        name: "芍薬"
+    UpdateMaterialPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 材料の名前
+      required:
+        - name
+      example:
+        name: "芍薬"
+    CreateCategoryPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: カテゴリの名前
+      required:
+        - name
+      example:
+        name: "格花"
+    UpdateCategoryPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: カテゴリの名前
+      required:
+        - name
+      example:
+        name: "格花"
+    CreateSeasonPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 季節の名前
+      required:
+        - name
+      example:
+        name: "春"
+    SeasonResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 季節の名前
+      required:
+        - id
+        - name
+      example:
+        id: 1
+        name: "春"
+    CreateWorkImagePayload:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+          description: 作品の画像ファイル
+      required:
+        - image
   parameters:
     ExhibitionIdParam:
       name: exhibitionId
@@ -497,11 +1168,18 @@ components:
       description: 季節のID
       schema:
         type: integer
+    ImageIdParam:
+      name: imageId
+      in: path
+      required: true
+      description: 画像のID
+      schema:
+        type: integer
   responses:
     UnexpectedError:
       description: An unexpected error occurred
     NotFound:
-      description: Resource not found
+      description: データが見つからない
       content:
         application/json:
           schema:
@@ -509,15 +1187,25 @@ components:
             properties:
               message:
                 type: string
-                example: "Resource not found"
+                example: "データが見つかりません"
+    BadRequest:
+      description: 不正なリクエスト
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "入力内容が正しくありません"
     ExhibitionResponse:
-      description: A single exhibition
+      description: 単一の花展の情報
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Exhibition'
     ExhibitionsResponse:
-      description: A list of exhibitions
+      description: 花展の一覧
       content:
         application/json:
           schema:
@@ -542,7 +1230,7 @@ components:
                 started_date: "2023-12-01"
                 ended_date: "2023-12-31"
     WorkListItemsResponse:
-      description: A list of work list items
+      description: 花展の作品の一覧
       content:
         application/json:
           schema:
@@ -588,32 +1276,150 @@ components:
                   next: null
                   previous: 2
     WorkListItemResponse:
-      description: A single work list item
+      description: 花展の作品一覧の中の単一の作品
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/WorkListItem'
+    ArrangersResponse:
+      description: 作者の一覧
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Arranger'
+            example:
+              - id: 1
+                name: "山田太郎"
+              - id: 2
+                name: "佐藤花子"
+              - id: 3
+                name: "鈴木一郎"
     ArrangerResponse:
-      description: A single arranger
+      description: 単一の作者
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Arranger'
+    MaterialsResponse:
+      description: 材料の一覧
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Material'
+            example:
+              - id: 1
+                name: "芍薬"
+              - id: 2
+                name: "バラ"
+              - id: 3
+                name: "ユリ"
     MaterialResponse:
-      description: A single material
+      description: 単一の材料
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Material'
+    CategoriesResponse:
+      description: 作品分類の一覧
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Category'
+            example:
+              - id: 1
+                name: "格花"
+              - id: 2
+                name: "新花"
+              - id: 3
+                name: "造形"
     CategoryResponse:
-      description: A single category
+      description: 単一の作品分類
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Category'
+    SeasonsResponse:
+      description: 季節の一覧
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Season'
+            example:
+              - id: 1
+                name: "春"
+              - id: 2
+                name: "夏"
+              - id: 3
+                name: "秋"
+              - id: 4
+                name: "冬"
     SeasonResponse:
-      description: A single season
+      description: 単一の季節
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Season'
+    CreatedExhibitionResponse:
+      description: 花展の作成の成功
+      headers:
+        Location:
+          description: 作成された花展のパス
+          schema:
+            type: string
+            example: "/exhibitions/1"
+    CreatedWorkResponse:
+      description: 作品の作成の成功
+      headers:
+        Location:
+          description: 作成された作品のパス
+          schema:
+            type: string
+            example: "/works/1"
+    CreatedArrangerResponse:
+      description: 作者の作成の成功
+      headers:
+        Location:
+          description: 作成された作者のパス
+          schema:
+            type: string
+            example: "/arrangers/1"
+    CreatedMaterialResponse:
+      description: 材料の作成の成功
+      headers:
+        Location:
+          description: 作成された材料のパス
+          schema:
+            type: string
+            example: "/materials/1"
+    CreatedCategoryResponse:
+      description: 作品分類の作成の成功
+      headers:
+        Location:
+          description: 作成された作品分類のパス
+          schema:
+            type: string
+            example: "/categories/1"
+    CreatedSeasonResponse:
+      description: 季節の作成の成功
+      headers:
+        Location:
+          description: 作成された季節のパス
+          schema:
+            type: string
+            example: "/seasons/1"
+    CreatedWorkImageResponse:
+      description: 作品の画像の登録の成功
+      headers:
+        Location:
+          description: 作成された画像のURL
+          schema:
+            type: string
+            example: "/works/1/images/1"

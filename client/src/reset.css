@@ -11,7 +11,7 @@ html {
   font-family:
     "BIZ UDGothic", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans",
     "Noto Sans JP", sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   -moz-text-size-adjust: none;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
@@ -32,9 +32,10 @@ dd {
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role="list"],
-ol[role="list"] {
+ul,
+ol {
   list-style: none;
+  padding-inline-start: 0;
 }
 
 /* Set core body defaults */
@@ -51,7 +52,7 @@ h4,
 button,
 input,
 label {
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 /* Balance text wrapping on headings */
@@ -60,12 +61,6 @@ h2,
 h3,
 h4 {
   text-wrap: balance;
-}
-
-/* A elements that don't have a class get default styles */
-a:not([class]) {
-  text-decoration-skip-ink: auto;
-  color: currentColor;
 }
 
 /* Make images easier to work with */
