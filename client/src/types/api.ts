@@ -4,1879 +4,1879 @@
  */
 
 export interface paths {
-    "/exhibitions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 花展の一覧
-         * @description 花展の一覧を取得する。花展は開催日の降順。
-         */
-        get: operations["listExhibitions"];
-        put?: never;
-        /**
-         * 花展の登録
-         * @description 花展を登録する
-         */
-        post: operations["createExhibition"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/exhibitions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/exhibitions/{exhibitionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 花展の取得
-         * @description 花展の情報を取得する
-         */
-        get: operations["getExhibition"];
-        /**
-         * 花展の更新
-         * @description 花展の情報を更新する
-         */
-        put: operations["updateExhibition"];
-        post?: never;
-        /**
-         * 花展の削除
-         * @description 花展を削除する
-         */
-        delete: operations["deleteExhibition"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 花展の一覧
+     * @description 花展の一覧を取得する。花展は開催日の降順。
+     */
+    get: operations["listExhibitions"];
+    put?: never;
+    /**
+     * 花展の登録
+     * @description 花展を登録する
+     */
+    post: operations["createExhibition"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/exhibitions/{exhibitionId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/exhibitions/{exhibitionId}/works": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 花展の作品の一覧
-         * @description 花展ごとの作品の一覧を登録の作品の登録日の昇順で取得する
-         */
-        get: operations["listExhibitionWorks"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 花展の取得
+     * @description 花展の情報を取得する
+     */
+    get: operations["getExhibition"];
+    /**
+     * 花展の更新
+     * @description 花展の情報を更新する
+     */
+    put: operations["updateExhibition"];
+    post?: never;
+    /**
+     * 花展の削除
+     * @description 花展を削除する
+     */
+    delete: operations["deleteExhibition"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/exhibitions/{exhibitionId}/works": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/exhibitions/{exhibitionId}/works/{workId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 花展の作品の取得
-         * @description 花展ごとの作品の情報を取得する
-         */
-        get: operations["getExhibitionWork"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 花展の作品の一覧
+     * @description 花展ごとの作品の一覧を登録の作品の登録日の昇順で取得する
+     */
+    get: operations["listExhibitionWorks"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/exhibitions/{exhibitionId}/works/{workId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/arrangers": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 作者の一覧
-         * @description 登録されている作者の一覧を取得する
-         */
-        get: operations["listArrangers"];
-        put?: never;
-        /**
-         * 作者の登録
-         * @description 作者を登録する
-         */
-        post: operations["createArranger"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 花展の作品の取得
+     * @description 花展ごとの作品の情報を取得する
+     */
+    get: operations["getExhibitionWork"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/arrangers": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/arrangers/{arrangerId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 作者の情報の取得
-         * @description 作者の情報を取得する
-         */
-        get: operations["getArranger"];
-        /**
-         * 作者の更新
-         * @description 作者の情報を更新する
-         */
-        put: operations["updateArranger"];
-        post?: never;
-        /**
-         * 作者の削除
-         * @description 作者を削除する
-         */
-        delete: operations["deleteArranger"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 作者の一覧
+     * @description 登録されている作者の一覧を取得する
+     */
+    get: operations["listArrangers"];
+    put?: never;
+    /**
+     * 作者の登録
+     * @description 作者を登録する
+     */
+    post: operations["createArranger"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/arrangers/{arrangerId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/arrangers/{arrangerId}/works": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 作者の作品の一覧
-         * @description 作者ごとの作品の一覧を作品の登録日の昇順で取得する
-         */
-        get: operations["listArrangerWorks"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 作者の情報の取得
+     * @description 作者の情報を取得する
+     */
+    get: operations["getArranger"];
+    /**
+     * 作者の更新
+     * @description 作者の情報を更新する
+     */
+    put: operations["updateArranger"];
+    post?: never;
+    /**
+     * 作者の削除
+     * @description 作者を削除する
+     */
+    delete: operations["deleteArranger"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/arrangers/{arrangerId}/works": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/arrangers/{arrangerId}/works/{workId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 作者の作品の取得
-         * @description 作者ごとの作品の情報を取得する
-         */
-        get: operations["getArrangerWork"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 作者の作品の一覧
+     * @description 作者ごとの作品の一覧を作品の登録日の昇順で取得する
+     */
+    get: operations["listArrangerWorks"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/arrangers/{arrangerId}/works/{workId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/materials": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 材料の一覧
-         * @description 登録されている材料の一覧を取得する
-         */
-        get: operations["listMaterials"];
-        put?: never;
-        /**
-         * 材料の登録
-         * @description 材料を登録する
-         */
-        post: operations["createMaterial"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 作者の作品の取得
+     * @description 作者ごとの作品の情報を取得する
+     */
+    get: operations["getArrangerWork"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/materials": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/materials/{materialId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 材料の情報の取得
-         * @description 材料の情報を取得する
-         */
-        get: operations["getMaterial"];
-        /**
-         * 材料の更新
-         * @description 材料の情報を更新する
-         */
-        put: operations["updateMaterial"];
-        post?: never;
-        /**
-         * 材料の削除
-         * @description 材料を削除する
-         */
-        delete: operations["deleteMaterial"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 材料の一覧
+     * @description 登録されている材料の一覧を取得する
+     */
+    get: operations["listMaterials"];
+    put?: never;
+    /**
+     * 材料の登録
+     * @description 材料を登録する
+     */
+    post: operations["createMaterial"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/materials/{materialId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/materials/{materialId}/works": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 材料の作品の一覧
-         * @description 材料ごとの作品の一覧を作品の登録日の昇順で取得する
-         */
-        get: operations["listMaterialWorks"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 材料の情報の取得
+     * @description 材料の情報を取得する
+     */
+    get: operations["getMaterial"];
+    /**
+     * 材料の更新
+     * @description 材料の情報を更新する
+     */
+    put: operations["updateMaterial"];
+    post?: never;
+    /**
+     * 材料の削除
+     * @description 材料を削除する
+     */
+    delete: operations["deleteMaterial"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/materials/{materialId}/works": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/materials/{materialId}/works/{workId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 材料の作品の取得
-         * @description 材料ごとの作品の情報を取得する
-         */
-        get: operations["getMaterialWork"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 材料の作品の一覧
+     * @description 材料ごとの作品の一覧を作品の登録日の昇順で取得する
+     */
+    get: operations["listMaterialWorks"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/materials/{materialId}/works/{workId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/categories": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * カテゴリの一覧
-         * @description 登録されているカテゴリの一覧を取得する
-         */
-        get: operations["listCategories"];
-        put?: never;
-        /**
-         * カテゴリの登録
-         * @description カテゴリを登録する
-         */
-        post: operations["createCategory"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 材料の作品の取得
+     * @description 材料ごとの作品の情報を取得する
+     */
+    get: operations["getMaterialWork"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/categories": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/categories/{categoryId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * カテゴリの情報の取得
-         * @description カテゴリの情報を取得する
-         */
-        get: operations["getCategory"];
-        /**
-         * カテゴリの更新
-         * @description カテゴリの情報を更新する
-         */
-        put: operations["updateCategory"];
-        post?: never;
-        /**
-         * カテゴリの削除
-         * @description カテゴリを削除する
-         */
-        delete: operations["deleteCategory"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * カテゴリの一覧
+     * @description 登録されているカテゴリの一覧を取得する
+     */
+    get: operations["listCategories"];
+    put?: never;
+    /**
+     * カテゴリの登録
+     * @description カテゴリを登録する
+     */
+    post: operations["createCategory"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/categories/{categoryId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/categories/{categoryId}/works": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * カテゴリの作品の一覧
-         * @description カテゴリごとの作品の一覧を作品の登録日の昇順で取得する
-         */
-        get: operations["listCategoryWorks"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * カテゴリの情報の取得
+     * @description カテゴリの情報を取得する
+     */
+    get: operations["getCategory"];
+    /**
+     * カテゴリの更新
+     * @description カテゴリの情報を更新する
+     */
+    put: operations["updateCategory"];
+    post?: never;
+    /**
+     * カテゴリの削除
+     * @description カテゴリを削除する
+     */
+    delete: operations["deleteCategory"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/categories/{categoryId}/works": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/categories/{categoryId}/works/{workId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * カテゴリの作品の取得
-         * @description カテゴリごとの作品の情報を取得する
-         */
-        get: operations["getCategoryWork"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * カテゴリの作品の一覧
+     * @description カテゴリごとの作品の一覧を作品の登録日の昇順で取得する
+     */
+    get: operations["listCategoryWorks"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/categories/{categoryId}/works/{workId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/seasons": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 季節の一覧
-         * @description 季節の一覧を取得する
-         */
-        get: operations["listSeasons"];
-        put?: never;
-        /**
-         * 季節の登録
-         * @description 季節を登録する
-         */
-        post: operations["createSeason"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * カテゴリの作品の取得
+     * @description カテゴリごとの作品の情報を取得する
+     */
+    get: operations["getCategoryWork"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/seasons": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/seasons/{seasonId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 季節の情報の取得
-         * @description 季節の情報を取得する
-         */
-        get: operations["getSeason"];
-        /**
-         * 季節の更新
-         * @description 季節の情報を更新する
-         */
-        put: operations["updateSeason"];
-        post?: never;
-        /**
-         * 季節の削除
-         * @description 季節を削除する
-         */
-        delete: operations["deleteSeason"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 季節の一覧
+     * @description 季節の一覧を取得する
+     */
+    get: operations["listSeasons"];
+    put?: never;
+    /**
+     * 季節の登録
+     * @description 季節を登録する
+     */
+    post: operations["createSeason"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/seasons/{seasonId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/seasons/{seasonId}/works": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 季節の作品の一覧
-         * @description 季節ごとの作品の一覧を作品の登録日の昇順で取得する
-         */
-        get: operations["listSeasonWorks"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 季節の情報の取得
+     * @description 季節の情報を取得する
+     */
+    get: operations["getSeason"];
+    /**
+     * 季節の更新
+     * @description 季節の情報を更新する
+     */
+    put: operations["updateSeason"];
+    post?: never;
+    /**
+     * 季節の削除
+     * @description 季節を削除する
+     */
+    delete: operations["deleteSeason"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/seasons/{seasonId}/works": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/seasons/{seasonId}/works/{workId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 季節の作品の取得
-         * @description 季節ごとの作品の情報を取得する
-         */
-        get: operations["getSeasonWork"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 季節の作品の一覧
+     * @description 季節ごとの作品の一覧を作品の登録日の昇順で取得する
+     */
+    get: operations["listSeasonWorks"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/seasons/{seasonId}/works/{workId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/works": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 作品の登録
-         * @description 作品を登録する
-         */
-        post: operations["createWork"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 季節の作品の取得
+     * @description 季節ごとの作品の情報を取得する
+     */
+    get: operations["getSeasonWork"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/works": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/works/{workId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 作品の取得
-         * @description 作品の情報を取得する
-         */
-        get: operations["getWork"];
-        /**
-         * 作品の更新
-         * @description 作品の情報を更新する
-         */
-        put: operations["updateWork"];
-        post?: never;
-        /**
-         * 作品の削除
-         * @description 作品を削除する
-         */
-        delete: operations["deleteWork"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 作品の登録
+     * @description 作品を登録する
+     */
+    post: operations["createWork"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/works/{workId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/works/{workId}/images": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 作品の画像の登録
-         * @description 作品に画像を登録する
-         */
-        post: operations["uploadWorkImage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 作品の取得
+     * @description 作品の情報を取得する
+     */
+    get: operations["getWork"];
+    /**
+     * 作品の更新
+     * @description 作品の情報を更新する
+     */
+    put: operations["updateWork"];
+    post?: never;
+    /**
+     * 作品の削除
+     * @description 作品を削除する
+     */
+    delete: operations["deleteWork"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/works/{workId}/images": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/works/{workId}/images/{imageId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * 作品の画像の削除
-         * @description 作品の画像を削除する
-         */
-        delete: operations["deleteWorkImage"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 作品の画像の登録
+     * @description 作品に画像を登録する
+     */
+    post: operations["uploadWorkImage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/works/{workId}/images/{imageId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * 作品の画像の削除
+     * @description 作品の画像を削除する
+     */
+    delete: operations["deleteWorkImage"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** @example {
-         *       "id": 1,
-         *       "name": "春の花展",
-         *       "started_date": "2023-03-01",
-         *       "ended_date": "2023-03-31"
-         *     } */
-        Exhibition: {
-            /** @description 花展のID */
-            id: number;
-            /** @description 花展の名前 */
-            name: string;
-            /**
-             * Format: date
-             * @description 花展の開始日
-             */
-            started_date: string;
-            /**
-             * Format: date
-             * @description 花展の終了日
-             */
-            ended_date: string;
-        };
-        /** @example {
-         *       "id": 1,
-         *       "title": "桜のアレンジメント",
-         *       "arranger_id": 1,
-         *       "material_ids": [
-         *         1,
-         *         2,
-         *         3
-         *       ],
-         *       "season_id": 1,
-         *       "category_id": 1,
-         *       "image_urls": [
-         *         "https://example.com/image1",
-         *         "https://example.com/image2"
-         *       ]
-         *     } */
-        Work: {
-            /** @description 作品のID */
-            id: number;
-            /** @description 作品のタイトル */
-            title: string | null;
-            /** @description 花展のID */
-            exhibition_id: number;
-            /** @description 作者のID */
-            arranger_id: number;
-            /** @description 季節のID */
-            season_id: number;
-            /** @description 使用された材料のIDのリスト */
-            material_ids: number[];
-            /** @description カテゴリのID */
-            category_id: number;
-            /** @description 作品の画像URLのリスト */
-            image_urls: string[];
-            /**
-             * Format: date-time
-             * @description 作品の登録日時
-             */
-            created_at?: string;
-        };
-        WorkListItem: {
-            work: components["schemas"]["Work"];
-            navigation: components["schemas"]["WorkListNavigation"];
-        };
-        /** @example {
-         *       "next": 2,
-         *       "previous": null
-         *     } */
-        WorkListNavigation: {
-            /** @description 次の作品のID */
-            next: number | null;
-            /** @description 前の作品のID */
-            previous: number | null;
-        };
-        /** @example {
-         *       "id": 1,
-         *       "name": "山田太郎"
-         *     } */
-        Arranger: {
-            /** @description 作者のID */
-            id: number;
-            /** @description 作者の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "id": 1,
-         *       "name": "芍薬"
-         *     } */
-        Material: {
-            /** @description 材料のID */
-            id: number;
-            /** @description 材料の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "id": 1,
-         *       "name": "格花"
-         *     } */
-        Category: {
-            /** @description カテゴリのID */
-            id: number;
-            /** @description カテゴリの名前 */
-            name: string;
-        };
-        /** @example {
-         *       "id": 1,
-         *       "name": "春"
-         *     } */
-        Season: {
-            /** @description 季節のID */
-            id: number;
-            /** @description 季節の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "name": "春の花展",
-         *       "started_date": "2023-03-01",
-         *       "ended_date": "2023-03-31"
-         *     } */
-        CreateExhibitionPayload: {
-            /** @description 花展の名前 */
-            name: string;
-            /**
-             * Format: date
-             * @description 花展の開始日
-             */
-            started_date: string;
-            /**
-             * Format: date
-             * @description 花展の終了日
-             */
-            ended_date: string;
-        };
-        /** @example {
-         *       "name": "春の花展",
-         *       "started_date": "2023-03-01",
-         *       "ended_date": "2023-03-31"
-         *     } */
-        UpdateExhibitionPayload: {
-            /** @description 花展の名前 */
-            name: string;
-            /**
-             * Format: date
-             * @description 花展の開始日
-             */
-            started_date: string;
-            /**
-             * Format: date
-             * @description 花展の終了日
-             */
-            ended_date: string;
-        };
-        /** @example {
-         *       "title": "桜のアレンジメント",
-         *       "arranger_id": 1,
-         *       "material_ids": [
-         *         1,
-         *         2,
-         *         3
-         *       ],
-         *       "season_id": 1,
-         *       "category_id": 1
-         *     } */
-        CreateWorkPayload: {
-            /** @description 作品のタイトル */
-            title: string | null;
-            /** @description 作者のID */
-            arranger_id: number;
-            /** @description 使用された材料のIDのリスト */
-            material_ids: number[];
-            /** @description 季節のID */
-            season_id: number;
-            /** @description カテゴリのID */
-            category_id: number;
-        };
-        /** @example {
-         *       "title": "桜のアレンジメント",
-         *       "arranger_id": 1,
-         *       "material_ids": [
-         *         1,
-         *         2,
-         *         3
-         *       ],
-         *       "season_id": 1,
-         *       "category_id": 1
-         *     } */
-        UpdateWorkPayload: {
-            /** @description 作品のタイトル */
-            title: string | null;
-            /** @description 作者のID */
-            arranger_id: number;
-            /** @description 使用された材料のIDのリスト */
-            material_ids: number[];
-            /** @description 季節のID */
-            season_id: number;
-            /** @description カテゴリのID */
-            category_id: number;
-        };
-        /** @example {
-         *       "name": "山田太郎"
-         *     } */
-        CreateArrangerPayload: {
-            /** @description 作者の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "name": "山田太郎"
-         *     } */
-        UpdateArrangerPayload: {
-            /** @description 作者の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "name": "芍薬"
-         *     } */
-        CreateMaterialPayload: {
-            /** @description 材料の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "name": "芍薬"
-         *     } */
-        UpdateMaterialPayload: {
-            /** @description 材料の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "name": "格花"
-         *     } */
-        CreateCategoryPayload: {
-            /** @description カテゴリの名前 */
-            name: string;
-        };
-        /** @example {
-         *       "name": "格花"
-         *     } */
-        UpdateCategoryPayload: {
-            /** @description カテゴリの名前 */
-            name: string;
-        };
-        /** @example {
-         *       "name": "春"
-         *     } */
-        CreateSeasonPayload: {
-            /** @description 季節の名前 */
-            name: string;
-        };
-        /** @example {
-         *       "id": 1,
-         *       "name": "春"
-         *     } */
-        SeasonResponse: {
-            /** @description 季節の名前 */
-            name: string;
-        };
-        CreateWorkImagePayload: {
-            /**
-             * Format: binary
-             * @description 作品の画像ファイル
-             */
-            image: string;
-        };
+  schemas: {
+    /** @example {
+     *       "id": 1,
+     *       "name": "春の花展",
+     *       "started_date": "2023-03-01",
+     *       "ended_date": "2023-03-31"
+     *     } */
+    Exhibition: {
+      /** @description 花展のID */
+      id: number;
+      /** @description 花展の名前 */
+      name: string;
+      /**
+       * Format: date
+       * @description 花展の開始日
+       */
+      started_date: string;
+      /**
+       * Format: date
+       * @description 花展の終了日
+       */
+      ended_date: string;
     };
-    responses: {
-        /** @description An unexpected error occurred */
-        UnexpectedError: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
-        /** @description データが見つからない */
-        NotFound: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example データが見つかりません */
-                    message?: string;
-                };
-            };
-        };
-        /** @description 不正なリクエスト */
-        BadRequest: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example 入力内容が正しくありません */
-                    message?: string;
-                };
-            };
-        };
-        /** @description 単一の花展の情報 */
-        ExhibitionResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Exhibition"];
-            };
-        };
-        /** @description 花展の一覧 */
-        ExhibitionsResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Exhibition"][];
-            };
-        };
-        /** @description 花展の作品の一覧 */
-        WorkListItemsResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["WorkListItem"][];
-            };
-        };
-        /** @description 花展の作品一覧の中の単一の作品 */
-        WorkListItemResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["WorkListItem"];
-            };
-        };
-        /** @description 作者の一覧 */
-        ArrangersResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Arranger"][];
-            };
-        };
-        /** @description 単一の作者 */
-        ArrangerResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Arranger"];
-            };
-        };
-        /** @description 材料の一覧 */
-        MaterialsResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Material"][];
-            };
-        };
-        /** @description 単一の材料 */
-        MaterialResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Material"];
-            };
-        };
-        /** @description 作品分類の一覧 */
-        CategoriesResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Category"][];
-            };
-        };
-        /** @description 単一の作品分類 */
-        CategoryResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Category"];
-            };
-        };
-        /** @description 季節の一覧 */
-        SeasonsResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Season"][];
-            };
-        };
-        /** @description 単一の季節 */
-        SeasonResponse: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["Season"];
-            };
-        };
-        /** @description 花展の作成の成功 */
-        CreatedExhibitionResponse: {
-            headers: {
-                /** @description 作成された花展のパス */
-                Location?: string;
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
-        /** @description 作品の作成の成功 */
-        CreatedWorkResponse: {
-            headers: {
-                /** @description 作成された作品のパス */
-                Location?: string;
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
-        /** @description 作者の作成の成功 */
-        CreatedArrangerResponse: {
-            headers: {
-                /** @description 作成された作者のパス */
-                Location?: string;
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
-        /** @description 材料の作成の成功 */
-        CreatedMaterialResponse: {
-            headers: {
-                /** @description 作成された材料のパス */
-                Location?: string;
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
-        /** @description 作品分類の作成の成功 */
-        CreatedCategoryResponse: {
-            headers: {
-                /** @description 作成された作品分類のパス */
-                Location?: string;
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
-        /** @description 季節の作成の成功 */
-        CreatedSeasonResponse: {
-            headers: {
-                /** @description 作成された季節のパス */
-                Location?: string;
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
-        /** @description 作品の画像の登録の成功 */
-        CreatedWorkImageResponse: {
-            headers: {
-                /** @description 作成された画像のURL */
-                Location?: string;
-                [name: string]: unknown;
-            };
-            content?: never;
-        };
+    /** @example {
+     *       "id": 1,
+     *       "title": "桜のアレンジメント",
+     *       "arranger_id": 1,
+     *       "material_ids": [
+     *         1,
+     *         2,
+     *         3
+     *       ],
+     *       "season_id": 1,
+     *       "category_id": 1,
+     *       "image_urls": [
+     *         "https://example.com/image1",
+     *         "https://example.com/image2"
+     *       ]
+     *     } */
+    Work: {
+      /** @description 作品のID */
+      id: number;
+      /** @description 作品のタイトル */
+      title: string | null;
+      /** @description 花展のID */
+      exhibition_id: number;
+      /** @description 作者のID */
+      arranger_id: number;
+      /** @description 季節のID */
+      season_id: number;
+      /** @description 使用された材料のIDのリスト */
+      material_ids: number[];
+      /** @description カテゴリのID */
+      category_id: number;
+      /** @description 作品の画像URLのリスト */
+      image_urls: string[];
+      /**
+       * Format: date-time
+       * @description 作品の登録日時
+       */
+      created_at?: string;
     };
-    parameters: {
-        /** @description 花展のID */
-        ExhibitionIdParam: number;
-        /** @description 作品のID */
-        WorkIdParam: number;
-        /** @description 作者のID */
-        ArrangerIdParam: number;
-        /** @description 材料のID */
-        MaterialIdParam: number;
-        /** @description カテゴリのID */
-        CategoryIdParam: number;
-        /** @description 季節のID */
-        SeasonIdParam: number;
-        /** @description 画像のID */
-        ImageIdParam: number;
+    WorkListItem: {
+      work: components["schemas"]["Work"];
+      navigation: components["schemas"]["WorkListNavigation"];
     };
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    /** @example {
+     *       "next": 2,
+     *       "previous": null
+     *     } */
+    WorkListNavigation: {
+      /** @description 次の作品のID */
+      next: number | null;
+      /** @description 前の作品のID */
+      previous: number | null;
+    };
+    /** @example {
+     *       "id": 1,
+     *       "name": "山田太郎"
+     *     } */
+    Arranger: {
+      /** @description 作者のID */
+      id: number;
+      /** @description 作者の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "id": 1,
+     *       "name": "芍薬"
+     *     } */
+    Material: {
+      /** @description 材料のID */
+      id: number;
+      /** @description 材料の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "id": 1,
+     *       "name": "格花"
+     *     } */
+    Category: {
+      /** @description カテゴリのID */
+      id: number;
+      /** @description カテゴリの名前 */
+      name: string;
+    };
+    /** @example {
+     *       "id": 1,
+     *       "name": "春"
+     *     } */
+    Season: {
+      /** @description 季節のID */
+      id: number;
+      /** @description 季節の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "name": "春の花展",
+     *       "started_date": "2023-03-01",
+     *       "ended_date": "2023-03-31"
+     *     } */
+    CreateExhibitionPayload: {
+      /** @description 花展の名前 */
+      name: string;
+      /**
+       * Format: date
+       * @description 花展の開始日
+       */
+      started_date: string;
+      /**
+       * Format: date
+       * @description 花展の終了日
+       */
+      ended_date: string;
+    };
+    /** @example {
+     *       "name": "春の花展",
+     *       "started_date": "2023-03-01",
+     *       "ended_date": "2023-03-31"
+     *     } */
+    UpdateExhibitionPayload: {
+      /** @description 花展の名前 */
+      name: string;
+      /**
+       * Format: date
+       * @description 花展の開始日
+       */
+      started_date: string;
+      /**
+       * Format: date
+       * @description 花展の終了日
+       */
+      ended_date: string;
+    };
+    /** @example {
+     *       "title": "桜のアレンジメント",
+     *       "arranger_id": 1,
+     *       "material_ids": [
+     *         1,
+     *         2,
+     *         3
+     *       ],
+     *       "season_id": 1,
+     *       "category_id": 1
+     *     } */
+    CreateWorkPayload: {
+      /** @description 作品のタイトル */
+      title: string | null;
+      /** @description 作者のID */
+      arranger_id: number;
+      /** @description 使用された材料のIDのリスト */
+      material_ids: number[];
+      /** @description 季節のID */
+      season_id: number;
+      /** @description カテゴリのID */
+      category_id: number;
+    };
+    /** @example {
+     *       "title": "桜のアレンジメント",
+     *       "arranger_id": 1,
+     *       "material_ids": [
+     *         1,
+     *         2,
+     *         3
+     *       ],
+     *       "season_id": 1,
+     *       "category_id": 1
+     *     } */
+    UpdateWorkPayload: {
+      /** @description 作品のタイトル */
+      title: string | null;
+      /** @description 作者のID */
+      arranger_id: number;
+      /** @description 使用された材料のIDのリスト */
+      material_ids: number[];
+      /** @description 季節のID */
+      season_id: number;
+      /** @description カテゴリのID */
+      category_id: number;
+    };
+    /** @example {
+     *       "name": "山田太郎"
+     *     } */
+    CreateArrangerPayload: {
+      /** @description 作者の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "name": "山田太郎"
+     *     } */
+    UpdateArrangerPayload: {
+      /** @description 作者の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "name": "芍薬"
+     *     } */
+    CreateMaterialPayload: {
+      /** @description 材料の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "name": "芍薬"
+     *     } */
+    UpdateMaterialPayload: {
+      /** @description 材料の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "name": "格花"
+     *     } */
+    CreateCategoryPayload: {
+      /** @description カテゴリの名前 */
+      name: string;
+    };
+    /** @example {
+     *       "name": "格花"
+     *     } */
+    UpdateCategoryPayload: {
+      /** @description カテゴリの名前 */
+      name: string;
+    };
+    /** @example {
+     *       "name": "春"
+     *     } */
+    CreateSeasonPayload: {
+      /** @description 季節の名前 */
+      name: string;
+    };
+    /** @example {
+     *       "id": 1,
+     *       "name": "春"
+     *     } */
+    SeasonResponse: {
+      /** @description 季節の名前 */
+      name: string;
+    };
+    CreateWorkImagePayload: {
+      /**
+       * Format: binary
+       * @description 作品の画像ファイル
+       */
+      image: string;
+    };
+  };
+  responses: {
+    /** @description An unexpected error occurred */
+    UnexpectedError: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description データが見つからない */
+    NotFound: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": {
+          /** @example データが見つかりません */
+          message?: string;
+        };
+      };
+    };
+    /** @description 不正なリクエスト */
+    BadRequest: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": {
+          /** @example 入力内容が正しくありません */
+          message?: string;
+        };
+      };
+    };
+    /** @description 単一の花展の情報 */
+    ExhibitionResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Exhibition"];
+      };
+    };
+    /** @description 花展の一覧 */
+    ExhibitionsResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Exhibition"][];
+      };
+    };
+    /** @description 花展の作品の一覧 */
+    WorkListItemsResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["WorkListItem"][];
+      };
+    };
+    /** @description 花展の作品一覧の中の単一の作品 */
+    WorkListItemResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["WorkListItem"];
+      };
+    };
+    /** @description 作者の一覧 */
+    ArrangersResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Arranger"][];
+      };
+    };
+    /** @description 単一の作者 */
+    ArrangerResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Arranger"];
+      };
+    };
+    /** @description 材料の一覧 */
+    MaterialsResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Material"][];
+      };
+    };
+    /** @description 単一の材料 */
+    MaterialResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Material"];
+      };
+    };
+    /** @description 作品分類の一覧 */
+    CategoriesResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Category"][];
+      };
+    };
+    /** @description 単一の作品分類 */
+    CategoryResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Category"];
+      };
+    };
+    /** @description 季節の一覧 */
+    SeasonsResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Season"][];
+      };
+    };
+    /** @description 単一の季節 */
+    SeasonResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Season"];
+      };
+    };
+    /** @description 花展の作成の成功 */
+    CreatedExhibitionResponse: {
+      headers: {
+        /** @description 作成された花展のパス */
+        Location?: string;
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description 作品の作成の成功 */
+    CreatedWorkResponse: {
+      headers: {
+        /** @description 作成された作品のパス */
+        Location?: string;
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description 作者の作成の成功 */
+    CreatedArrangerResponse: {
+      headers: {
+        /** @description 作成された作者のパス */
+        Location?: string;
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description 材料の作成の成功 */
+    CreatedMaterialResponse: {
+      headers: {
+        /** @description 作成された材料のパス */
+        Location?: string;
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description 作品分類の作成の成功 */
+    CreatedCategoryResponse: {
+      headers: {
+        /** @description 作成された作品分類のパス */
+        Location?: string;
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description 季節の作成の成功 */
+    CreatedSeasonResponse: {
+      headers: {
+        /** @description 作成された季節のパス */
+        Location?: string;
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description 作品の画像の登録の成功 */
+    CreatedWorkImageResponse: {
+      headers: {
+        /** @description 作成された画像のURL */
+        Location?: string;
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+  };
+  parameters: {
+    /** @description 花展のID */
+    ExhibitionIdParam: number;
+    /** @description 作品のID */
+    WorkIdParam: number;
+    /** @description 作者のID */
+    ArrangerIdParam: number;
+    /** @description 材料のID */
+    MaterialIdParam: number;
+    /** @description カテゴリのID */
+    CategoryIdParam: number;
+    /** @description 季節のID */
+    SeasonIdParam: number;
+    /** @description 画像のID */
+    ImageIdParam: number;
+  };
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    listExhibitions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["ExhibitionsResponse"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  listExhibitions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    createExhibition: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateExhibitionPayload"];
-            };
-        };
-        responses: {
-            201: components["responses"]["CreatedExhibitionResponse"];
-            400: components["responses"]["BadRequest"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["ExhibitionsResponse"];
+      default: components["responses"]["UnexpectedError"];
     };
-    getExhibition: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 花展のID */
-                exhibitionId: components["parameters"]["ExhibitionIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["ExhibitionResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  createExhibition: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    updateExhibition: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 花展のID */
-                exhibitionId: components["parameters"]["ExhibitionIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateExhibitionPayload"];
-            };
-        };
-        responses: {
-            /** @description 花展が更新された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateExhibitionPayload"];
+      };
     };
-    deleteExhibition: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 花展のID */
-                exhibitionId: components["parameters"]["ExhibitionIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 花展が削除された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    responses: {
+      201: components["responses"]["CreatedExhibitionResponse"];
+      400: components["responses"]["BadRequest"];
+      default: components["responses"]["UnexpectedError"];
     };
-    listExhibitionWorks: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 花展のID */
-                exhibitionId: components["parameters"]["ExhibitionIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemsResponse"];
-            404: components["responses"]["NotFound"];
-            /** @description Unexpected error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  getExhibition: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 花展のID */
+        exhibitionId: components["parameters"]["ExhibitionIdParam"];
+      };
+      cookie?: never;
     };
-    getExhibitionWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 花展のID */
-                exhibitionId: components["parameters"]["ExhibitionIdParam"];
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemResponse"];
-            404: components["responses"]["NotFound"];
-            /** @description Unexpected error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["ExhibitionResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    listArrangers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["ArrangersResponse"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  updateExhibition: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 花展のID */
+        exhibitionId: components["parameters"]["ExhibitionIdParam"];
+      };
+      cookie?: never;
     };
-    createArranger: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateArrangerPayload"];
-            };
-        };
-        responses: {
-            201: components["responses"]["CreatedArrangerResponse"];
-            400: components["responses"]["BadRequest"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateExhibitionPayload"];
+      };
     };
-    getArranger: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作者のID */
-                arrangerId: components["parameters"]["ArrangerIdParam"];
-            };
-            cookie?: never;
+    responses: {
+      /** @description 花展が更新された */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["ArrangerResponse"];
-            404: components["responses"]["NotFound"];
-            /** @description Unexpected error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    updateArranger: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作者のID */
-                arrangerId: components["parameters"]["ArrangerIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateArrangerPayload"];
-            };
-        };
-        responses: {
-            /** @description 作者が更新された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  deleteExhibition: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 花展のID */
+        exhibitionId: components["parameters"]["ExhibitionIdParam"];
+      };
+      cookie?: never;
     };
-    deleteArranger: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作者のID */
-                arrangerId: components["parameters"]["ArrangerIdParam"];
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description 花展が削除された */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 作者が削除された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+        content?: never;
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    listArrangerWorks: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作者のID */
-                arrangerId: components["parameters"]["ArrangerIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemsResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  listExhibitionWorks: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 花展のID */
+        exhibitionId: components["parameters"]["ExhibitionIdParam"];
+      };
+      cookie?: never;
     };
-    getArrangerWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作者のID */
-                arrangerId: components["parameters"]["ArrangerIdParam"];
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemsResponse"];
+      404: components["responses"]["NotFound"];
+      /** @description Unexpected error */
+      default: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+        content?: never;
+      };
     };
-    listMaterials: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["MaterialsResponse"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  getExhibitionWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 花展のID */
+        exhibitionId: components["parameters"]["ExhibitionIdParam"];
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
     };
-    createMaterial: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemResponse"];
+      404: components["responses"]["NotFound"];
+      /** @description Unexpected error */
+      default: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateMaterialPayload"];
-            };
-        };
-        responses: {
-            201: components["responses"]["CreatedMaterialResponse"];
-            400: components["responses"]["BadRequest"];
-            default: components["responses"]["UnexpectedError"];
-        };
+        content?: never;
+      };
     };
-    getMaterial: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 材料のID */
-                materialId: components["parameters"]["MaterialIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["MaterialResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  listArrangers: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    updateMaterial: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 材料のID */
-                materialId: components["parameters"]["MaterialIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateMaterialPayload"];
-            };
-        };
-        responses: {
-            /** @description 材料が更新された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["ArrangersResponse"];
+      default: components["responses"]["UnexpectedError"];
     };
-    deleteMaterial: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 材料のID */
-                materialId: components["parameters"]["MaterialIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 材料が削除された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  createArranger: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    listMaterialWorks: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 材料のID */
-                materialId: components["parameters"]["MaterialIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemsResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateArrangerPayload"];
+      };
     };
-    getMaterialWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 材料のID */
-                materialId: components["parameters"]["MaterialIdParam"];
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    responses: {
+      201: components["responses"]["CreatedArrangerResponse"];
+      400: components["responses"]["BadRequest"];
+      default: components["responses"]["UnexpectedError"];
     };
-    listCategories: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["CategoriesResponse"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  getArranger: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作者のID */
+        arrangerId: components["parameters"]["ArrangerIdParam"];
+      };
+      cookie?: never;
     };
-    createCategory: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["ArrangerResponse"];
+      404: components["responses"]["NotFound"];
+      /** @description Unexpected error */
+      default: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateCategoryPayload"];
-            };
-        };
-        responses: {
-            201: components["responses"]["CreatedCategoryResponse"];
-            400: components["responses"]["BadRequest"];
-            default: components["responses"]["UnexpectedError"];
-        };
+        content?: never;
+      };
     };
-    getCategory: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description カテゴリのID */
-                categoryId: components["parameters"]["CategoryIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["CategoryResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  updateArranger: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作者のID */
+        arrangerId: components["parameters"]["ArrangerIdParam"];
+      };
+      cookie?: never;
     };
-    updateCategory: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description カテゴリのID */
-                categoryId: components["parameters"]["CategoryIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateCategoryPayload"];
-            };
-        };
-        responses: {
-            /** @description カテゴリが更新された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateArrangerPayload"];
+      };
     };
-    deleteCategory: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description カテゴリのID */
-                categoryId: components["parameters"]["CategoryIdParam"];
-            };
-            cookie?: never;
+    responses: {
+      /** @description 作者が更新された */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description カテゴリが削除された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    listCategoryWorks: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description カテゴリのID */
-                categoryId: components["parameters"]["CategoryIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemsResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  deleteArranger: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作者のID */
+        arrangerId: components["parameters"]["ArrangerIdParam"];
+      };
+      cookie?: never;
     };
-    getCategoryWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description カテゴリのID */
-                categoryId: components["parameters"]["CategoryIdParam"];
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description 作者が削除された */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+        content?: never;
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    listSeasons: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["SeasonsResponse"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  listArrangerWorks: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作者のID */
+        arrangerId: components["parameters"]["ArrangerIdParam"];
+      };
+      cookie?: never;
     };
-    createSeason: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Season"];
-            };
-        };
-        responses: {
-            201: components["responses"]["CreatedSeasonResponse"];
-            400: components["responses"]["BadRequest"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemsResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    getSeason: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 季節のID */
-                seasonId: components["parameters"]["SeasonIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["SeasonResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  getArrangerWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作者のID */
+        arrangerId: components["parameters"]["ArrangerIdParam"];
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
     };
-    updateSeason: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 季節のID */
-                seasonId: components["parameters"]["SeasonIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Season"];
-            };
-        };
-        responses: {
-            /** @description 季節が更新された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    deleteSeason: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 季節のID */
-                seasonId: components["parameters"]["SeasonIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 季節が削除された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  listMaterials: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    listSeasonWorks: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 季節のID */
-                seasonId: components["parameters"]["SeasonIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemsResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["MaterialsResponse"];
+      default: components["responses"]["UnexpectedError"];
     };
-    getSeasonWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 季節のID */
-                seasonId: components["parameters"]["SeasonIdParam"];
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  createMaterial: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    createWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateWorkPayload"];
-            };
-        };
-        responses: {
-            201: components["responses"]["CreatedWorkResponse"];
-            400: components["responses"]["BadRequest"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateMaterialPayload"];
+      };
     };
-    getWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: components["responses"]["WorkListItemResponse"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    responses: {
+      201: components["responses"]["CreatedMaterialResponse"];
+      400: components["responses"]["BadRequest"];
+      default: components["responses"]["UnexpectedError"];
     };
-    updateWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateWorkPayload"];
-            };
-        };
-        responses: {
-            /** @description 作品が更新された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  getMaterial: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 材料のID */
+        materialId: components["parameters"]["MaterialIdParam"];
+      };
+      cookie?: never;
     };
-    deleteWork: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 作品が削除された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["MaterialResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
     };
-    uploadWorkImage: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["CreateWorkImagePayload"];
-            };
-        };
-        responses: {
-            /** @description 画像が登録された */
-            201: {
-                headers: {
-                    /** @description 登録された画像のURL */
-                    Location?: string;
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequest"];
-            default: components["responses"]["UnexpectedError"];
-        };
+  };
+  updateMaterial: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 材料のID */
+        materialId: components["parameters"]["MaterialIdParam"];
+      };
+      cookie?: never;
     };
-    deleteWorkImage: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 作品のID */
-                workId: components["parameters"]["WorkIdParam"];
-                /** @description 画像のID */
-                imageId: components["parameters"]["ImageIdParam"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 画像が削除された */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            404: components["responses"]["NotFound"];
-            default: components["responses"]["UnexpectedError"];
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateMaterialPayload"];
+      };
     };
+    responses: {
+      /** @description 材料が更新された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  deleteMaterial: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 材料のID */
+        materialId: components["parameters"]["MaterialIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 材料が削除された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  listMaterialWorks: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 材料のID */
+        materialId: components["parameters"]["MaterialIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemsResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  getMaterialWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 材料のID */
+        materialId: components["parameters"]["MaterialIdParam"];
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  listCategories: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["CategoriesResponse"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  createCategory: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCategoryPayload"];
+      };
+    };
+    responses: {
+      201: components["responses"]["CreatedCategoryResponse"];
+      400: components["responses"]["BadRequest"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  getCategory: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description カテゴリのID */
+        categoryId: components["parameters"]["CategoryIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["CategoryResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  updateCategory: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description カテゴリのID */
+        categoryId: components["parameters"]["CategoryIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateCategoryPayload"];
+      };
+    };
+    responses: {
+      /** @description カテゴリが更新された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  deleteCategory: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description カテゴリのID */
+        categoryId: components["parameters"]["CategoryIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description カテゴリが削除された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  listCategoryWorks: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description カテゴリのID */
+        categoryId: components["parameters"]["CategoryIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemsResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  getCategoryWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description カテゴリのID */
+        categoryId: components["parameters"]["CategoryIdParam"];
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  listSeasons: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["SeasonsResponse"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  createSeason: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Season"];
+      };
+    };
+    responses: {
+      201: components["responses"]["CreatedSeasonResponse"];
+      400: components["responses"]["BadRequest"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  getSeason: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 季節のID */
+        seasonId: components["parameters"]["SeasonIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["SeasonResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  updateSeason: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 季節のID */
+        seasonId: components["parameters"]["SeasonIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Season"];
+      };
+    };
+    responses: {
+      /** @description 季節が更新された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  deleteSeason: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 季節のID */
+        seasonId: components["parameters"]["SeasonIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 季節が削除された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  listSeasonWorks: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 季節のID */
+        seasonId: components["parameters"]["SeasonIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemsResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  getSeasonWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 季節のID */
+        seasonId: components["parameters"]["SeasonIdParam"];
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  createWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWorkPayload"];
+      };
+    };
+    responses: {
+      201: components["responses"]["CreatedWorkResponse"];
+      400: components["responses"]["BadRequest"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  getWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: components["responses"]["WorkListItemResponse"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  updateWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateWorkPayload"];
+      };
+    };
+    responses: {
+      /** @description 作品が更新された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  deleteWork: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 作品が削除された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  uploadWorkImage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": components["schemas"]["CreateWorkImagePayload"];
+      };
+    };
+    responses: {
+      /** @description 画像が登録された */
+      201: {
+        headers: {
+          /** @description 登録された画像のURL */
+          Location?: string;
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  deleteWorkImage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 作品のID */
+        workId: components["parameters"]["WorkIdParam"];
+        /** @description 画像のID */
+        imageId: components["parameters"]["ImageIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 画像が削除された */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
 }
