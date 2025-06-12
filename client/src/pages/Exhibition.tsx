@@ -3,7 +3,7 @@ import { works } from "../mocks/data/works";
 import { exhibitions } from "../mocks/data/exhibitions";
 import { useParams } from "react-router";
 import "./works.css"; // ToDo: CSS のインポートの変更
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Exhibition = components["schemas"]["Exhibition"];
@@ -23,12 +23,14 @@ function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
         <ul role="list" className="works-image-list">
           {exhibitionWorks.map((work, index) => (
             <li>
-              <img
-                className="works-image-list__image"
-                key={index}
-                src={work.image_urls[0]}
-                alt={work.title ? work.title : "無題の作品"}
-              />
+              <Link to={`/work/${work.id}`} state={{ from: "exhibition", id: exhibition_id }}>
+                <img
+                  className="works-image-list__image"
+                  key={index}
+                  src={work.image_urls[0]}
+                  alt={work.title ? work.title : "無題の作品"}
+                />
+              </Link>
               {/* ToDo: 遅延読み込み */}
             </li>
           ))}
@@ -45,7 +47,7 @@ export default function Exhibition() {
     <>
       <header>
         <nav>
-          <Link to="/">ホームへ戻る</Link>
+          <NavLink to="/">ホームへ戻る</NavLink>
         </nav>
       </header>
       <main>

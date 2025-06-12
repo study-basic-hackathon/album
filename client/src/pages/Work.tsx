@@ -6,6 +6,7 @@ import { materials } from "../mocks/data/materials";
 import { seasons } from "../mocks/data/seasons";
 import { works } from "../mocks/data/works";
 import "./work.css";
+import { useParams, useLocation, Link, NavLink, type Location } from "react-router";
 
 type Arranger = components["schemas"]["Arranger"];
 type Category = components["schemas"]["Category"];
@@ -15,23 +16,42 @@ type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
 type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 
-// ToDo: exhibition_id, work_id を URL パラメータから取得するように変更
-const exhibition_id: number = 1;
-const work_id: number = 1;
-const work: Work = works[work_id];
 const workListNavigation: WorkListNavigation = {
   previous: null,
   next: 2,
 }; // workListNavigation は仮のデータ
 
-// ToDo: これらの定数の取得処理は、関数として切り出したほうが良いかも
-const arranger: Arranger = arrangers[work.arranger_id];
-const category: Category = categories[work.category_id];
-const exhibition: Exhibition = exhibitions[work.exhibition_id]; // ToDo: exhibition_id が null の場合の処理
-const materialArray: Material[] = work.material_ids.map((material_id) => materials[material_id]);
-const season: Season = seasons[work.season_id];
+// location.state に依存する
+function WorkHeading({ location, work }: { location: Location; work: Work }) {
 
-// ToDo: 作品ページ共通で使えるようにコンポーネント化する
+  if (!location.state || !location.state.from || !location.state.id) {
+    return <h1>{work.title ? work.title : "無題の作品"}</h1>; // location.state がない場合 (i.e. 作品ページに直接アクセスした場合) のフォールバック
+  }
+
+  const from: string = location.state.from;
+  const from_id: number = location.state.id;
+
+  let title: string;
+  let works_url: string;
+
+  if (from === "exhibition") {
+    title = `${exhibitions[from_id].name}`;
+    works_url = `/${from}/${from_id}`;
+  } else {
+    return <h1>{work.title ? work.title : "無題の作品"}</h1>; // 定義されていないページから、謎の方法で遷移した場合のフォールバック
+  }
+
+  return (
+    <>
+      <h1>{title}の作品</h1>
+      <nav>
+        <Link to={works_url}>作品一覧へ戻る</Link>
+      </nav>
+    </>
+  );
+}
+
+// location.state に依存しない
 function WorkImages({ work }: { work: Work }) {
   return (
     <>
@@ -53,7 +73,7 @@ function WorkImages({ work }: { work: Work }) {
   );
 }
 
-// ToDo: 作品ページ共通で使えるようにコンポーネント化する
+// location.state に依存する
 function AdjacentNavigation({ workListNavigation }: { workListNavigation: WorkListNavigation }) {
   return (
     <nav className="adjacent-nav">
@@ -69,7 +89,7 @@ function AdjacentNavigation({ workListNavigation }: { workListNavigation: WorkLi
   );
 }
 
-// ToDo: 作品ページ共通で使えるようにコンポーネント化する
+// location.state に依存しない
 function WorkMetadata({
   arranger,
   category,
@@ -95,7 +115,9 @@ function WorkMetadata({
         </div>
         <div>
           <dt>華展</dt>
-          <dd>{exhibition.name}</dd>
+          <dd>
+            <Link to={`/exhibition/${exhibition.id}`}>{exhibition.name}</Link>
+          </dd>
         </div>
         <div>
           <dt>作者</dt>
@@ -130,11 +152,26 @@ function WorkMetadata({
   );
 }
 
-export default function ExhibitionWork() {
+export default function Work() {
+  const { id } = useParams();
+  const work: Work = works[Number(id)]; // ToDo: id が無効な値のときのエラーハンドリング
+  const arranger: Arranger = arrangers[work.arranger_id];
+  const category: Category = categories[work.category_id];
+  const exhibition: Exhibition = exhibitions[work.exhibition_id]; // ToDo: exhibition_id が null の場合の処理
+  const materialArray: Material[] = work.material_ids.map((material_id) => materials[material_id]);
+  const season: Season = seasons[work.season_id];
+
+  const location = useLocation(); // ToDo: location.state が空のときのエラーハンドリング
+
   return (
     <>
+      <header>
+        <nav>
+          <NavLink to="/">ホームへ戻る</NavLink>
+        </nav>
+      </header>
       <main>
-        <h1>{exhibitions[exhibition_id].name}</h1>
+        <WorkHeading location={location} work={work} />
         <WorkImages work={work} />
         <AdjacentNavigation workListNavigation={workListNavigation} />
         <WorkMetadata
