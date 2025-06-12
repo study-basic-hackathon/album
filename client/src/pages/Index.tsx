@@ -6,16 +6,17 @@ type Exhibition = components["schemas"]["Exhibition"];
 
 // ToDo: 日付フォーマットの方法について検討
 function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
-  const startedDate = new Date(exhibition.started_date);
-  const endedDate = new Date(exhibition.ended_date);
+  const started_date = new Date(exhibition.started_date);
+  const ended_date = new Date(exhibition.ended_date);
 
   return (
     <article>
       <h3>
-        <Link to={`exhibition/${exhibition.id}`}>{exhibition.name}</Link>
+        <Link to={`/exhibition/${exhibition.id}`}>{exhibition.name}</Link>
       </h3>
       <p>
-        開催期間: {startedDate.toLocaleDateString("ja-JP")}-{endedDate.toLocaleDateString("ja-JP")}
+        開催期間: {started_date.toLocaleDateString("ja-JP")}-
+        {ended_date.toLocaleDateString("ja-JP")}
       </p>
     </article>
   );
