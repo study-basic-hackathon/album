@@ -2,11 +2,10 @@ import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { materials } from "../mocks/data/materials";
 import "./works.css"; // ToDo: CSS のインポートの変更
+import { Link, NavLink, useParams } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Material = components["schemas"]["Material"];
-
-const material_id: number = 6; // ToDo: material_id を URL パラメータから取得するように変更
 
 function getWorksForMaterial(materialId: number): Work[] {
   return Object.values(works).filter((work) => work.material_ids.includes(materialId));
@@ -37,8 +36,16 @@ function MaterialImages({ material_id }: { material_id: number }) {
 }
 
 export default function Material() {
+  const params = useParams();
+  const material_id = Number(params.material_id); // ToDo: material_id が無効な値のときのエラーハンドリング
+
   return (
     <>
+      <header>
+        <nav>
+          <NavLink to="/">ホームへ戻る</NavLink>
+        </nav>
+      </header>
       <main>
         <h1>{materials[material_id].name}の作品一覧</h1>
         <MaterialImages material_id={material_id} />
