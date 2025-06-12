@@ -2,7 +2,7 @@ import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { materials } from "../mocks/data/materials";
 import "./works.css"; // ToDo: CSS のインポートの変更
-import { Link, NavLink, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Material = components["schemas"]["Material"];
@@ -22,11 +22,13 @@ function MaterialImages({ material_id }: { material_id: number }) {
         <ul role="list" className="works-image-list">
           {materialWorks.map((work, index) => (
             <li key={index}>
-              <img
-                className="works-image-list__image"
-                src={work.image_urls[0]}
-                alt={work.title ? work.title : "無題の作品"}
-              />
+              <Link to={`work/${work.id}`}>
+                <img
+                  className="works-image-list__image"
+                  src={work.image_urls[0]}
+                  alt={work.title ? work.title : "無題の作品"}
+                />
+              </Link>
             </li>
           ))}
         </ul>
@@ -41,11 +43,6 @@ export default function Material() {
 
   return (
     <>
-      <header>
-        <nav>
-          <NavLink to="/">ホームへ戻る</NavLink>
-        </nav>
-      </header>
       <main>
         <h1>{materials[material_id].name}の作品一覧</h1>
         <MaterialImages material_id={material_id} />

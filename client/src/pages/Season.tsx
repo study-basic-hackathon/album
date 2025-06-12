@@ -2,7 +2,7 @@ import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { seasons } from "../mocks/data/seasons";
 import "./works.css"; // ToDo: CSS のインポートの変更
-import { Link, NavLink, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Season = components["schemas"]["Season"];
@@ -22,11 +22,13 @@ function SeasonImages({ season_id }: { season_id: number }) {
         <ul role="list" className="works-image-list">
           {seasonWorks.map((work, index) => (
             <li key={index}>
-              <img
-                className="works-image-list__image"
-                src={work.image_urls[0]}
-                alt={work.title ? work.title : "無題の作品"}
-              />
+              <Link to={`work/${work.id}`}>
+                <img
+                  className="works-image-list__image"
+                  src={work.image_urls[0]}
+                  alt={work.title ? work.title : "無題の作品"}
+                />
+              </Link>
             </li>
           ))}
         </ul>
@@ -40,11 +42,6 @@ export default function Season() {
 
   return (
     <>
-      <header>
-        <nav>
-          <NavLink to="/">ホームへ戻る</NavLink>
-        </nav>
-      </header>
       <main>
         <h1>{seasons[season_id].name}の作品一覧</h1>
         <SeasonImages season_id={season_id} />

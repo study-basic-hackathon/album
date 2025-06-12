@@ -2,7 +2,7 @@ import { type components } from "../types/api";
 import { works } from "../mocks/data/works";
 import { exhibitions } from "../mocks/data/exhibitions";
 import "./works.css"; // ToDo: CSS のインポートの変更
-import { Link, NavLink, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 type Work = components["schemas"]["Work"];
 type Exhibition = components["schemas"]["Exhibition"];
@@ -45,11 +45,6 @@ export default function Exhibition() {
   
   return (
     <>
-      <header>
-        <nav>
-          <NavLink to="/">ホームへ戻る</NavLink>
-        </nav>
-      </header>
       <main>
         <h1>{exhibitions[exhibition_id].name}の作品一覧</h1>
         <ExhibitionImages exhibition_id={exhibition_id} />
