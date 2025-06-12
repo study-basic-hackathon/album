@@ -103,7 +103,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.url) AS image_urls
+        ARRAY_AGG(DISTINCT ie.url) AS image_urls,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
