@@ -23,7 +23,7 @@ function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
         <ul role="list" className="works-image-list">
           {exhibitionWorks.map((work, index) => (
             <li>
-              <Link to={`/work/${work.id}`} state={{ from: "exhibition", id: exhibition_id }}>
+              <Link to={`work/${work.id}`}>
                 <img
                   className="works-image-list__image"
                   key={index}
@@ -41,8 +41,8 @@ function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
 }
 
 export default function Exhibition() {
-  const { id } = useParams();
-  const exhibition_id = Number(id); // ToDo: id が無効な値のときのエラーハンドリング
+  const params = useParams();
+  const exhibition_id = Number(params.exhibition_id); // ToDo: id が無効な値のときのエラーハンドリング
   return (
     <>
       <header>

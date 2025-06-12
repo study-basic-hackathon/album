@@ -6,7 +6,7 @@ import { materials } from "../mocks/data/materials";
 import { seasons } from "../mocks/data/seasons";
 import { works } from "../mocks/data/works";
 import "./work.css";
-import { useParams, useLocation, Link, NavLink, type Location } from "react-router";
+import { useParams, Link, NavLink } from "react-router";
 
 type Arranger = components["schemas"]["Arranger"];
 type Category = components["schemas"]["Category"];
@@ -21,25 +21,10 @@ const workListNavigation: WorkListNavigation = {
   next: 2,
 }; // workListNavigation は仮のデータ
 
-// location.state に依存する
-function WorkHeading({ location, work }: { location: Location; work: Work }) {
+function WorkHeading({ exhibition }: { exhibition: Exhibition }) {
 
-  if (!location.state || !location.state.from || !location.state.id) {
-    return <h1>{work.title ? work.title : "無題の作品"}</h1>; // location.state がない場合 (i.e. 作品ページに直接アクセスした場合) のフォールバック
-  }
-
-  const from: string = location.state.from;
-  const from_id: number = location.state.id;
-
-  let title: string;
-  let works_url: string;
-
-  if (from === "exhibition") {
-    title = `${exhibitions[from_id].name}`;
-    works_url = `/${from}/${from_id}`;
-  } else {
-    return <h1>{work.title ? work.title : "無題の作品"}</h1>; // 定義されていないページから、謎の方法で遷移した場合のフォールバック
-  }
+  let title: string = exhibition.name;
+  let works_url: string = `/exhibition/${exhibition.id}`;
 
   return (
     <>
@@ -51,7 +36,6 @@ function WorkHeading({ location, work }: { location: Location; work: Work }) {
   );
 }
 
-// location.state に依存しない
 function WorkImages({ work }: { work: Work }) {
   return (
     <>
@@ -73,7 +57,6 @@ function WorkImages({ work }: { work: Work }) {
   );
 }
 
-// location.state に依存する
 function AdjacentNavigation({ workListNavigation }: { workListNavigation: WorkListNavigation }) {
   return (
     <nav className="adjacent-nav">
@@ -153,15 +136,13 @@ function WorkMetadata({
 }
 
 export default function Work() {
-  const { id } = useParams();
-  const work: Work = works[Number(id)]; // ToDo: id が無効な値のときのエラーハンドリング
+  const { exhibition_id, work_id } = useParams(); // exhibition_id はまだ使わないが、API 関連の実装時におそらく必要になる
+  const work: Work = works[Number(work_id)]; // ToDo: id が無効な値のときのエラーハンドリング
   const arranger: Arranger = arrangers[work.arranger_id];
   const category: Category = categories[work.category_id];
   const exhibition: Exhibition = exhibitions[work.exhibition_id]; // ToDo: exhibition_id が null の場合の処理
   const materialArray: Material[] = work.material_ids.map((material_id) => materials[material_id]);
   const season: Season = seasons[work.season_id];
-
-  const location = useLocation(); // ToDo: location.state が空のときのエラーハンドリング
 
   return (
     <>
@@ -171,7 +152,7 @@ export default function Work() {
         </nav>
       </header>
       <main>
-        <WorkHeading location={location} work={work} />
+        <WorkHeading exhibition={exhibition} />
         <WorkImages work={work} />
         <AdjacentNavigation workListNavigation={workListNavigation} />
         <WorkMetadata
