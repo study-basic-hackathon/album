@@ -729,21 +729,20 @@ paths:
               description: 登録された画像のURL
               schema:
                 type: string
-                example: "https://example.com/work/1/image/1"
+                example: "http://localhost:3000/image/1/image/1"
         '400':
           $ref: '#/components/responses/BadRequest'
         default:
           $ref: '#/components/responses/UnexpectedError'
 
-  /works/{workId}/images/{imageId}:
+  /images/{imageId}:
     get:
       tags:
         - work
       summary: 作品の画像の取得
       description: 作品の画像を取得する
-      operationId: getWorkImage
+      operationId: getImage
       parameters:
-        - $ref: '#/components/parameters/WorkIdParam'
         - $ref: '#/components/parameters/ImageIdParam'
       responses:
         '200':
@@ -760,11 +759,10 @@ paths:
     delete:
       tags:
         - work
-      summary: 作品の画像の削除
-      description: 作品の画像を削除する
-      operationId: deleteWorkImage
+      summary: 画像の削除
+      description: 画像を削除する
+      operationId: deleteImage
       parameters:
-        - $ref: '#/components/parameters/WorkIdParam'
         - $ref: '#/components/parameters/ImageIdParam'
       responses:
         '204':
@@ -856,8 +854,8 @@ components:
         season_id: 1
         category_id: 1
         image_urls:
-          - "https://example.com/image1"
-          - "https://example.com/image2"
+          - "http://localhost:3000/image/1"
+          - "http://localhost:3000/image/2"
     WorkListItem:
       type: object
       properties:
@@ -1267,8 +1265,8 @@ components:
                   category_id: 1
                   season_id: 1
                   image_urls:
-                    - "https://example.com/image1"
-                    - "https://example.com/image2"
+                    - "http://localhost:3000/image/1"
+                    - "http://localhost:3000/image/2"
                 navigation:
                   next: 2
                   previous: null
@@ -1280,7 +1278,7 @@ components:
                   season_id: 1
                   category_id: 2
                   image_urls:
-                    - "https://example.com/image3"
+                    - "http://localhost:3000/image/3"
                 navigation:
                   next: 3
                   previous: 1
@@ -1292,7 +1290,7 @@ components:
                   season_id: 2
                   category_id: 1
                   image_urls:
-                    - "https://example.com/image4"
+                    - "http://localhost:3000/image/4"
                 navigation:
                   next: null
                   previous: 2
