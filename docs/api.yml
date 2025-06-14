@@ -706,21 +706,19 @@ paths:
           $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/UnexpectedError'
-  /works/{workId}/images:
+  /images:
     post:
       tags:
-        - work
-      summary: 作品の画像の登録
-      description: 作品に画像を登録する
-      operationId: uploadWorkImage
-      parameters:
-        - $ref: '#/components/parameters/WorkIdParam'
+        - image
+      summary: 画像の登録
+      description: 画像を登録する
+      operationId: uploadImage
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateWorkImagePayload'
+              $ref: '#/components/schemas/UploadImagePayload'
       responses:
         '201':
           description: 画像が登録された
@@ -729,7 +727,7 @@ paths:
               description: 登録された画像のURL
               schema:
                 type: string
-                example: "http://localhost:3000/image/1/image/1"
+                example: "/images/1"
         '400':
           $ref: '#/components/responses/BadRequest'
         default:
@@ -827,12 +825,11 @@ components:
         category_id:
           type: integer
           description: カテゴリのID
-        image_urls:
+        image_ids:
           type: array
           items:
-            type: string
-            format: uri
-          description: 作品の画像URLのリスト
+            type: integer
+          description: 作品の画像のIDのリスト
         created_at:
           type: string
           format: date-time
@@ -845,7 +842,7 @@ components:
         - material_ids
         - season_id
         - category_id
-        - image_urls
+        - image_ids
       example:
         id: 1
         title: "桜のアレンジメント"
@@ -853,9 +850,9 @@ components:
         material_ids: [1, 2, 3]
         season_id: 1
         category_id: 1
-        image_urls:
-          - "http://localhost:3000/image/1"
-          - "http://localhost:3000/image/2"
+        image_ids:
+          - 1
+          - 2
     WorkListItem:
       type: object
       properties:
@@ -1008,18 +1005,25 @@ components:
         category_id:
           type: integer
           description: カテゴリのID
+        image_ids:
+          type: array
+          items:
+            type: integer
+          description: 作品の画像のIDのリスト
       required:
         - title
         - arranger_id
         - material_ids
         - season_id
         - category_id
+        - image_ids
       example:
         title: "桜のアレンジメント"
         arranger_id: 1
         material_ids: [1, 2, 3]
         season_id: 1
         category_id: 1
+        image_ids: [1, 2]
     UpdateWorkPayload:
       type: object
       properties:
@@ -1135,7 +1139,7 @@ components:
       example:
         id: 1
         name: "春"
-    CreateWorkImagePayload:
+    UploadImagePayload:
       type: object
       properties:
         image:
@@ -1264,9 +1268,9 @@ components:
                   material_ids: [1, 2, 3]
                   category_id: 1
                   season_id: 1
-                  image_urls:
-                    - "http://localhost:3000/image/1"
-                    - "http://localhost:3000/image/2"
+                  image_ids:
+                    - 1
+                    - 2
                 navigation:
                   next: 2
                   previous: null
@@ -1277,8 +1281,8 @@ components:
                   material_ids: [4, 5]
                   season_id: 1
                   category_id: 2
-                  image_urls:
-                    - "http://localhost:3000/image/3"
+                  image_ids:
+                    - 3
                 navigation:
                   next: 3
                   previous: 1
@@ -1289,8 +1293,8 @@ components:
                   material_ids: [6]
                   season_id: 2
                   category_id: 1
-                  image_urls:
-                    - "http://localhost:3000/image/4"
+                  image_ids:
+                    - 4
                 navigation:
                   next: null
                   previous: 2
