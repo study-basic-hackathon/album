@@ -32,7 +32,7 @@ function formatWorksWithNavigation(works) {
         season_id: work.season_id,
         category_id: work.category_id,
         image_urls: work.image_urls,
-        created_at: work.created_at
+        created_at: work.created_at,
       },
       navigation: {
         previous: previousWorkId,
@@ -554,7 +554,7 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
       WHERE
         wk.season_id = $1
       GROUP BY
-        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, created_at
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
         wk.id ASC`,
       [seasonId]
