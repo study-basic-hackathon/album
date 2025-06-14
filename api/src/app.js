@@ -104,7 +104,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(DISTINCT ie.url) AS image_urls,
-        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS')
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
       JOIN
@@ -112,7 +112,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
       JOIN
         image AS ie ON wk.id = ie.work_id
       WHERE
-        wk.exhibition_id = $1
+        en.id = $1
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
