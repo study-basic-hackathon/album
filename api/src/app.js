@@ -116,7 +116,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
-        wk.id ASC`,
+        wk.created_at ASC`,
       [exhibitionId]
     );
     if (result.rows.length === 0) {
@@ -156,7 +156,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
-        wk.id ASC`,
+        wk.created_at ASC`,
       [exhibitionId]
     );
     if (result.rows.length === 0) {
@@ -217,7 +217,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
-        wk.id ASC
+        wk.created_at ASC
         `,
       [arrangerId]
     );
@@ -258,7 +258,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
-        wk.id ASC`,
+        wk.created_at ASC`,
       [arrangerId]
     );
     if (result.rows.length === 0) {
@@ -319,7 +319,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
-        wk.id ASC`,
+        wk.created_at ASC`,
       [materialId]
     );
     if (result.rows.length === 0) {
@@ -359,7 +359,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
-        wk.id ASC
+        wk.created_at ASC
         `,
       [materialId]
     );
