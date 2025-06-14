@@ -215,7 +215,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       WHERE
         wk.arranger_id = $1
       GROUP BY
-        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id,
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
         wk.id ASC
         `,
