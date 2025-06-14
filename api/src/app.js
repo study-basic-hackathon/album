@@ -32,7 +32,7 @@ function formatWorksWithNavigation(works) {
         season_id: work.season_id,
         category_id: work.category_id,
         image_urls: work.image_urls,
-        created_at: work.created_at,
+        created_at: work.created_at
       },
       navigation: {
         previous: previousWorkId,
@@ -104,7 +104,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(DISTINCT ie.url) AS image_urls,
-        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS')
       FROM
         work AS wk
       JOIN
@@ -112,7 +112,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
       JOIN
         image AS ie ON wk.id = ie.work_id
       WHERE
-        en.id = $1
+        wk.exhibition_id = $1
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
@@ -205,8 +205,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(DISTINCT ie.url) AS image_urls,
-        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
-      FROM
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS')
         work AS wk
       JOIN
         work_material AS wm ON wk.id = wm.work_id
@@ -215,7 +214,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       WHERE
         wk.arranger_id = $1
       GROUP BY
-        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
       ORDER BY
         wk.id ASC
         `,
@@ -401,8 +400,7 @@ app.get("/categories/:categoryId", async (req, res) => {
 app.get("/categories/:categoryId/works", async (req, res) => {
   const { categoryId } = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       WITH base AS (
         SELECT
           w.id,
@@ -537,52 +535,35 @@ app.get("/seasons/:seasonId", async (req, res) => {
 app.get("/seasons/:seasonId/works", async (req, res) => {
   const { seasonId } = req.params;
   try {
-    const result = await pool.query(
-      `
-      WITH base AS (
-        SELECT
-          w.id,
-          w.title,
-          w.arranger_id,
-          w.category_id,
-          w.season_id,
-          COALESCE(json_agg(DISTINCT wm.material_id) FILTER (WHERE wm.material_id IS NOT NULL), '[]') AS material_ids,
-          COALESCE(json_agg(DISTINCT i.url) FILTER (WHERE i.url IS NOT NULL), '[]') AS image_urls,
-          TO_CHAR(w.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
-        FROM work w
-        LEFT JOIN work_material wm ON wm.work_id = w.id
-        LEFT JOIN image i ON i.work_id = w.id
-        WHERE w.season_id = $1
-        GROUP BY w.id
-      ),
-      numbered AS (
-        SELECT
-          *,
-          LAG(id) OVER (ORDER BY created_at ASC) AS previous,
-          LEAD(id) OVER (ORDER BY created_at ASC) AS next
-        FROM base
-      )
+    const result = await pool.query(`
       SELECT
-        json_build_object(
-          'id', id,
-          'title', title,
-          'arranger_id', arranger_id,
-          'material_ids', material_ids,
-          'category_id', category_id,
-          'season_id', season_id,
-          'image_urls', image_urls,
-          'created_at', created_at
-        ) AS work,
-        json_build_object(
-          'previous', previous,
-          'next', next
-        ) AS navigation
-      FROM numbered
-      ORDER BY created_at ASC;
-      `,
+        wk.id,
+        wk.title,
+        wk.arranger_id,
+        ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
+        wk.category_id,
+        wk.season_id,
+        ARRAY_AGG(DISTINCT ie.url) AS image_urls,
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
+      FROM
+        work AS wk
+      JOIN
+        work_material AS wm ON wk.id = wm.work_id
+      JOIN
+        image AS ie ON wk.id = ie.work_id
+      WHERE
+        wk.season_id = $1
+      GROUP BY
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, created_at
+      ORDER BY
+        wk.id ASC`,
       [seasonId]
     );
-    res.json(result.rows);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Resource not found" });
+    }
+    const formattedResults = formatWorksWithNavigation(result.rows);
+    res.json(formattedResults);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
