@@ -206,6 +206,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
         wk.season_id,
         ARRAY_AGG(DISTINCT ie.url) AS image_urls,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
+      FROM  
         work AS wk
       JOIN
         work_material AS wm ON wk.id = wm.work_id
