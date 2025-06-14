@@ -570,7 +570,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Season'
+              $ref: '#/components/schemas/UpdateSeasonPayload'
       responses:
         '204':
           description: 季節が更新された
@@ -1118,6 +1118,16 @@ components:
       example:
         name: "格花"
     CreateSeasonPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 季節の名前
+      required:
+        - name
+      example:
+        name: "春"
+    UpdateSeasonPayload:
       type: object
       properties:
         name:
