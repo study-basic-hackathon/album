@@ -205,7 +205,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
         wk.category_id,
         wk.season_id,
         ARRAY_AGG(DISTINCT ie.url) AS image_urls,
-        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS')
+        TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
         work AS wk
       JOIN
         work_material AS wm ON wk.id = wm.work_id
@@ -214,7 +214,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
       WHERE
         wk.arranger_id = $1
       GROUP BY
-        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
+        wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id,
       ORDER BY
         wk.id ASC
         `,
