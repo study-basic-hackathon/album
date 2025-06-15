@@ -663,7 +663,7 @@ paths:
         - $ref: '#/components/parameters/WorkIdParam'
       responses:
         '200':
-          $ref: '#/components/responses/WorkListItemResponse'
+          $ref: '#/components/responses/WorkResponse'
         '404':
           $ref: '#/components/responses/NotFound'
         default:
@@ -1273,6 +1273,12 @@ components:
                 name: "冬の花展"
                 started_date: "2023-12-01"
                 ended_date: "2023-12-31"
+    WorkResponse:
+      description: 単一の作品の情報
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Work'
     WorkListItemsResponse:
       description: 花展の作品の一覧
       content:

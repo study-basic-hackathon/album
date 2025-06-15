@@ -1,0 +1,39 @@
+import { forwardRef } from "react";
+import type { InputHTMLAttributes } from "react";
+import type { FieldError } from "react-hook-form";
+import Input from "../input/Input";
+import FormField from "../field";
+
+type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+  name: string;
+  error?: FieldError;
+};
+
+const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+  ({ label, name, error, className, ...props }, ref) => {
+    const intent = error ? "error" : "default";
+
+    return (
+      <FormField
+        label={label}
+        htmlFor={name}
+        intent={intent}
+        errorMessage={error?.message}
+      >
+        <Input
+          id={name}
+          name={name}
+          ref={ref}
+          intent={intent}
+          className={className}
+          {...props}
+        />
+      </FormField>
+    );
+  }
+);
+
+InputField.displayName = "InputField";
+
+export default InputField;
