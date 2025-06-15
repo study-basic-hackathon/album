@@ -1015,6 +1015,7 @@ components:
           description: 作品の画像のIDのリスト
       required:
         - title
+        - exhibition_id
         - arranger_id
         - material_ids
         - season_id
