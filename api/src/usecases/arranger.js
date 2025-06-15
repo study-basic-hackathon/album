@@ -19,7 +19,7 @@ export async function getArrangerById(req, res) {
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
     };
-    res.json(result[0]);
+    res.json(result.rows[0]);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });

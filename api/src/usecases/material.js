@@ -34,7 +34,7 @@ export async function getMaterialWorks(req, res) {
       throw new Error("materialId is required");
     }
     const result = await findWorksByCondition({
-      whereClause: "wk.material_id = $1",
+      whereClause: "wm.material_id = $1",
       whereParams: [materialId],
       orderByClause: "wk.created_at ASC"
     });
@@ -58,7 +58,7 @@ export async function getMaterialWorkById(req, res) {
       throw new Error("materialId is required");
     }
     const result = await findWorksByCondition({
-      whereClause: "wk.material_id = $1",
+      whereClause: "wm.material_id = $1",
       whereParams: [materialId],
       orderByClause: "wk.created_at ASC"
     });

@@ -32,7 +32,7 @@ export async function getSeasonWorks(req, res) {
   try {
     if (!seasonId) {
       throw new Error("seasonId is required");
-    }
+    };
     const result = await findWorksByCondition({
       whereClause: "wk.season_id = $1",
       whereParams: [seasonId],
@@ -40,14 +40,14 @@ export async function getSeasonWorks(req, res) {
     });
     if (result.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    }
+    };
     const formattedResults = formatWorksWithNavigation(result);
     res.json(formattedResults);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
-  }
-}
+  };
+};
 
 // 季節の特定の作品の取得
 export async function getSeasonWorkById(req, res) {
@@ -56,7 +56,7 @@ export async function getSeasonWorkById(req, res) {
   try {
     if (!seasonId) {
       throw new Error("seasonId is required");
-    }
+    };
     const result = await findWorksByCondition({
       whereClause: "wk.season_id = $1",
       whereParams: [seasonId],
@@ -64,15 +64,15 @@ export async function getSeasonWorkById(req, res) {
     });
     if (result.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
-    }
+    };
     const formattedWorks = formatWorksWithNavigation(result);
     const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
     if (!foundWork) {
       return res.status(404).json({ message: "Resource not found" });
-    }
+    };
     res.json(foundWork);
   } catch (err) {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
-  }
-}
+  };
+};
