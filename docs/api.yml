@@ -1049,18 +1049,25 @@ components:
         category_id:
           type: integer
           description: カテゴリのID
+        image_ids:
+          type: array
+          items:
+            type: integer
+          description: 作品の画像のIDのリスト
       required:
         - title
         - arranger_id
         - material_ids
         - season_id
         - category_id
+        - image_ids
       example:
         title: "桜のアレンジメント"
         arranger_id: 1
         material_ids: [1, 2, 3]
         season_id: 1
         category_id: 1
+        image_ids: [1, 2]
     CreateArrangerPayload:
       type: object
       properties:
