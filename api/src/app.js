@@ -462,7 +462,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
       GROUP BY
         wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id
       ORDER BY
-        wk.id ASC
+        wk.created_at ASC
         `,
       [categoryId]
     );
