@@ -6,6 +6,7 @@ import InputField from "@/components/parts/field/InputField";
 import Button from "@/components/parts/Button";
 import ChoiceField from "@/components/parts/field/ChoiceField";
 import ImageField from "@/components/parts/field/ImageField";
+import Alert from "@/components/parts/Alert";
 
 type Work = components["schemas"]["Work"];
 type UpdatePayload = components["schemas"]["UpdateWorkPayload"];
@@ -20,7 +21,7 @@ type Props = {
   materials: Material[];
   seasons: Season[];
   arrangers: Arranger[];
-  mutation: UseMutationResult<void, unknown, UpdatePayload, unknown>;
+  mutation: UseMutationResult<void, Error, UpdatePayload, unknown>;
 };
 
 export default function UpdateWorkForm({
@@ -96,9 +97,7 @@ export default function UpdateWorkForm({
             type="checkbox"
             options={materials.map((m) => ({ label: m.name, value: m.id }))}
             value={field.value}
-            onChange={field.onChange}
-            error={errors.material_ids}
-          />
+            onChange={field.onChange} />
         )}
       />
 
@@ -139,6 +138,14 @@ export default function UpdateWorkForm({
         label="作品画像"
         control={control}
       />
+
+      {mutation.isError && (
+        <Alert variant="error" message={mutation.error.message || "作品の更新に失敗しました"} />
+      )}
+
+      {mutation.isSuccess && (
+        <Alert variant="success" message="作品を更新しました" />
+      )}
 
       <div>
         <Button type="submit" variant="primary">

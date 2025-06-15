@@ -10,7 +10,6 @@ import { useGetExhibitionsQuery } from "@/hooks/exhibition";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
-
 export default function ExhibitionCollection() {
   const navigate = useNavigate();
   const query = useGetExhibitionsQuery();

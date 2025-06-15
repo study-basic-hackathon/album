@@ -895,6 +895,15 @@ export interface components {
                 "application/json": components["schemas"]["Exhibition"][];
             };
         };
+        /** @description 単一の作品の情報 */
+        WorkResponse: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Work"];
+            };
+        };
         /** @description 花展の作品の一覧 */
         WorkListItemsResponse: {
             headers: {
@@ -1794,7 +1803,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            200: components["responses"]["WorkListItemResponse"];
+            200: components["responses"]["WorkResponse"];
             404: components["responses"]["NotFound"];
             default: components["responses"]["UnexpectedError"];
         };

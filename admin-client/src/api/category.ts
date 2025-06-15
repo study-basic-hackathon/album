@@ -7,7 +7,7 @@ type CreateCategoryPayload = components['schemas']['CreateCategoryPayload'];
 type UpdateCategoryPayload = components['schemas']['UpdateCategoryPayload'];
 type WorkListItem = components['schemas']['WorkListItem'];
 
-export async function createCategory(payload: CreateCategoryPayload): Promise<string> {
+export async function createCategory(payload: CreateCategoryPayload): Promise<number | null> {
   const path = endpoint('/categories');
   const response = await fetch(path, {
     method: 'POST',
@@ -29,6 +29,9 @@ export async function getCategory(id: number): Promise<Category> {
   const path = endpoint('/categories/{categoryId}')
     .replace('{categoryId}', String(id));
   const response = await fetch(path, { method: 'GET' });
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
   return response.json();
 }
 

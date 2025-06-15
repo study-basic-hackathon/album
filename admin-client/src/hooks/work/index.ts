@@ -22,7 +22,9 @@ export function useGetWorkQuery(id: string | undefined) {
 }
 
 // 作品作成
-export function useCreateWorkMutation(options?: UseMutationOptions<number | null, Error, Parameters<typeof createWork>[0]> = {}) {
+export function useCreateWorkMutation(
+  options: UseMutationOptions<number | null, Error, Parameters<typeof createWork>[0]> = {}
+) {
   return useMutation({
     mutationKey: ["createWork"],
     mutationFn: async (payload: Parameters<typeof createWork>[0]) => {
@@ -33,21 +35,29 @@ export function useCreateWorkMutation(options?: UseMutationOptions<number | null
 }
 
 // 作品更新
-export function useUpdateWorkMutation(id: string | undefined) {
+export function useUpdateWorkMutation(
+  id: string | undefined,
+  options: UseMutationOptions<void, Error, Parameters<typeof updateWork>[1]> = {}
+) {
   return useMutation({
     mutationKey: ["updateWork", id],
     mutationFn: async (payload: Parameters<typeof updateWork>[1]) => {
       return updateWork(Number(id), payload);
     },
+    ...options
   });
 }
 
 // 作品削除
-export function useDeleteWorkMutation(id: string | undefined) {
+export function useDeleteWorkMutation(
+  id: string | undefined,
+  options: UseMutationOptions<void, Error, void> = {}
+) {
   return useMutation({
     mutationKey: ["deleteWork", id],
     mutationFn: async () => {
       return deleteWork(Number(id));
     },
+    ...options
   });
 }

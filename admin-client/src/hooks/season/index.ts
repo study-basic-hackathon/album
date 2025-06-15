@@ -1,6 +1,7 @@
 import {
   useMutation,
   useQuery,
+  type UseMutationOptions,
 } from "@tanstack/react-query";
 import {
   getSeason,
@@ -43,12 +44,16 @@ export function useCreateSeasonMutation() {
 }
 
 // 材料更新
-export function useUpdateSeasonMutation(id: string | undefined) {
+export function useUpdateSeasonMutation(
+  id: string | undefined,
+  options: UseMutationOptions<void, Error, Parameters<typeof updateSeason>[1]> = {}
+) {
   return useMutation({
     mutationKey: ["updateSeason", id],
     mutationFn: async (payload: Parameters<typeof updateSeason>[1]) => {
       return updateSeason(Number(id), payload);
     },
+    ...options
   });
 }
 

@@ -45,13 +45,7 @@ export const work = [
       if (!work) {
         return HttpResponse.json({ message: "Work not found" }, { status: 404 });
       }
-      return HttpResponse.json({
-        work,
-        navigation: {
-          previous: null,
-          next: null,
-        },
-      });
+      return HttpResponse.json(work);
     }
   ),
 
@@ -71,6 +65,7 @@ export const work = [
         material_ids: data.material_ids,
         season_id: data.season_id,
         category_id: data.category_id,
+        image_ids: data.image_ids,
       };
       return new HttpResponse(null, { status: 204 });
     }

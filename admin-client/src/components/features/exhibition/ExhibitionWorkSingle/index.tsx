@@ -19,7 +19,11 @@ export default function ExhibitionWorkSingle() {
   const getExhibitionQuery = useGetExhibitionQuery(exhibitionId);
   const getWorkQuery = useGetWorkQuery(workId);
   const deleteMutation = useDeleteWorkMutation(workId);
-  const updateMutation = useUpdateWorkMutation(workId);
+  const updateMutation = useUpdateWorkMutation(workId, {
+    onSuccess: () => {
+      getWorkQuery.refetch();
+    }
+  });
 
   const getArrangersQuery = useGetArrangersQuery();
   const getMaterialsQuery = useGetMaterialsQuery();

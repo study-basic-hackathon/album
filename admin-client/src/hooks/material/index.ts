@@ -1,6 +1,7 @@
 import {
   useMutation,
   useQuery,
+  type UseMutationOptions,
 } from "@tanstack/react-query";
 import {
   getMaterial,
@@ -43,12 +44,16 @@ export function useCreateMaterialMutation() {
 }
 
 // 材料更新
-export function useUpdateMaterialMutation(id: string | undefined) {
+export function useUpdateMaterialMutation(
+  id: string | undefined,
+  options: UseMutationOptions<void, Error, Parameters<typeof updateMaterial>[1]> = {}
+) {
   return useMutation({
     mutationKey: ["updateMaterial", id],
     mutationFn: async (payload: Parameters<typeof updateMaterial>[1]) => {
       return updateMaterial(Number(id), payload);
     },
+    ...options
   });
 }
 

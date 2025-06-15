@@ -1,6 +1,7 @@
 import {
   useMutation,
   useQuery,
+  type UseMutationOptions,
 } from "@tanstack/react-query";
 import {
   getArranger,
@@ -39,12 +40,16 @@ export function useCreateArrangerMutation () {
   });
 }
 
-export function useUpdateArrangerMutation (id: string | undefined) {
+export function useUpdateArrangerMutation (
+  id: string | undefined,
+  options: UseMutationOptions<void, Error, Parameters<typeof updateArranger>[1]> = {}
+) {
   return useMutation({
     mutationKey: ["updateArranger", id],
     mutationFn: async (payload: Parameters<typeof updateArranger>[1]) => {
       return updateArranger(Number(id), payload);
     },
+    ...options
   });
 }
 
