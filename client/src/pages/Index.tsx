@@ -1,7 +1,7 @@
 // import { exhibitions } from "../mocks/data/exhibitions";
 import type { components } from "../types/api";
 import { Link } from "react-router";
-import { getExhibitions } from "../api/exhibition";
+import { useExhibitions } from "../api/exhibition";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
@@ -43,7 +43,7 @@ function ExhibitionList({ exhibitions }: { exhibitions: Record<number, Exhibitio
 }
 
 export default function Index() {
-  const exhibitions = getExhibitions();
+  const exhibitions = useExhibitions();
 
   return (
     <>

@@ -5,7 +5,7 @@ import { type components } from "../types/api";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
-export async function listExihibitions(): Promise<
+export async function listExhibitions(): Promise<
   paths["/exhibitions"]["get"]["responses"]["200"]["content"]["application/json"]
 > {
   const response = await fetch(endpoint("/exhibitions"));
@@ -15,12 +15,12 @@ export async function listExihibitions(): Promise<
   return response.json();
 }
 
-export function getExhibitions(): Record<number, Exhibition> {
+export function useExhibitions(): Record<number, Exhibition> {
   const [exhibitions, setExhibitions] = useState<Record<number, Exhibition>>({});
   useEffect(() => {
     async function fetchedExhibitions() {
       try {
-        const fetchedExhibitions = await listExihibitions();
+        const fetchedExhibitions = await listExhibitions();
         setExhibitions(fetchedExhibitions);
       } catch (error) {
         console.error("Failed to fetch exhibitions:", error);
