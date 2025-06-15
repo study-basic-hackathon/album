@@ -38,10 +38,10 @@ export async function getArrangerWorks(req, res) {
       whereParams: [arrangerId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
     }
-    const formattedResults = formatWorksWithNavigation(result);
+    const formattedResults = formatWorksWithNavigation(result.rows);
     res.json(formattedResults);
   } catch (err) {
     console.error("DB Error:", err);
@@ -62,10 +62,10 @@ export async function getArrangerWorkById(req, res) {
       whereParams: [arrangerId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
     }
-    const formattedWorks = formatWorksWithNavigation(result);
+    const formattedWorks = formatWorksWithNavigation(result.rows);
     const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
     if (!foundWork) {
       return res.status(404).json({ message: "Resource not found" });

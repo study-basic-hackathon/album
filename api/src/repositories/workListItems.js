@@ -2,8 +2,7 @@ function formatWorksWithNavigation(works) {
   try {
     if (!Array.isArray(works)) {
       throw new Error("works not array");
-    }
-
+    };
     const formattedResults = works.map((work, index) => {
       let previousWorkId = null;
       let nextWorkId = null;

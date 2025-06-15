@@ -28,7 +28,7 @@ try {
       ${orderByClause ? `ORDER BY ${orderByClause}` : ''}
     `;
     const result = await pool.query(baseQuery, whereParams);
-    return result.rows;
+    return result;
 } catch(err) {
     console.error("Error in findWorksByCondition:", err.message);
     throw err;
