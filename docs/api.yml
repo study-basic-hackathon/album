@@ -991,6 +991,9 @@ components:
           type: string
           description: 作品のタイトル
           nullable: true
+        exhibition_id:
+          type: integer
+          description: 花展のID
         arranger_id:
           type: integer
           description: 作者のID
