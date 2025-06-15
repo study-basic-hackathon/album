@@ -41,7 +41,7 @@ export async function getSeasonWorks(req, res) {
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Resource not found" });
     };
-    const formattedResults = formatWorksWithNavigation(resul.rows);
+    const formattedResults = formatWorksWithNavigation(result.rows);
     res.json(formattedResults);
   } catch (err) {
     console.error("DB Error:", err);
