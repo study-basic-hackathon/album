@@ -736,7 +736,7 @@ paths:
   /images/{imageId}:
     get:
       tags:
-        - work
+        - image
       summary: 作品の画像の取得
       description: 作品の画像を取得する
       operationId: getImage
@@ -756,7 +756,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
     delete:
       tags:
-        - work
+        - image
       summary: 画像の削除
       description: 画像を削除する
       operationId: deleteImage
