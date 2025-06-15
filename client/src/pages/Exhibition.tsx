@@ -42,7 +42,7 @@ function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
 export default function Exhibition() {
   const params = useParams();
   const exhibition_id = Number(params.exhibition_id); // ToDo: exhibition_id が無効な値のときのエラーハンドリング
-  
+
   return (
     <>
       <main>
