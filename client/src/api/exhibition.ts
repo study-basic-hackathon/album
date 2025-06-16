@@ -1,7 +1,6 @@
-import { type paths } from "../types/api";
+import { type paths, type components } from "../types/api";
 import { endpoint } from "./util";
 import { useState, useEffect } from "react";
-import { type components } from "../types/api";
 
 type Exhibition = components["schemas"]["Exhibition"];
 type WorkListItem = components["schemas"]["WorkListItem"];
@@ -97,4 +96,37 @@ export function useExhibitionWorks(exhibitionId: number): Record<number, WorkLis
     fetchedWorks();
   }, [exhibitionId]);
   return works;
+}
+
+export async function getExhibitionWork(
+  exhibitionId: number,
+  workId: number
+): Promise<
+  paths["/exhibitions/{exhibitionId}/works/{workId}"]["get"]["responses"]["200"]["content"]["application/json"]
+> {
+  const path = endpoint(`/exhibitions/{exhibitionId}/works/{workId}`)
+    .replace("{exhibitionId}", String(exhibitionId))
+    .replace("{workId}", String(workId));
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch work with ID ${workId} for exhibition ${exhibitionId}`);
+  }
+  return response.json();
+}
+
+export function useExhibitionWork(exhibitionId: number, workId: number): WorkListItem | null {
+  const [work, setWork] = useState<WorkListItem | null>(null);
+  useEffect(() => {
+    async function fetchedWork() {
+      try {
+        const fetchedWork = await getExhibitionWork(exhibitionId, workId);
+        setWork(fetchedWork);
+      } catch (error) {
+        console.error(`Failed to fetch work ${workId} for exhibition ${exhibitionId}:`, error);
+        setWork(null); // エラー時は null を設定
+      }
+    }
+    fetchedWork();
+  }, [exhibitionId, workId]);
+  return work;
 }
