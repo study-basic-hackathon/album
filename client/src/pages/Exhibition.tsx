@@ -26,7 +26,7 @@ function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
                 <img
                   className="works-image-list__image"
                   key={index}
-                  src={work.image_urls[0]}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/works/${work.image_ids[0]}`}
                   alt={work.title ? work.title : "無題の作品"}
                 />
               </Link>
