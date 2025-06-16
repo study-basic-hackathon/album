@@ -1,26 +1,17 @@
 import { type components } from "../types/api";
-import { works } from "../mocks/data/works";
-import { exhibitions } from "../mocks/data/exhibitions";
 import "./works.css"; // ToDo: CSS のインポートの変更
 import { Link, useParams } from "react-router";
+import { useExhibition, useExhibitionWorks } from "../api/exhibition";
 
-type Work = components["schemas"]["Work"];
 type Exhibition = components["schemas"]["Exhibition"];
+type Work = components["schemas"]["Work"];
 
-function getWorksForExhibition(exhibitionId: number): Work[] {
-  return Object.values(works).filter((work) => work.exhibition_id === exhibitionId);
-}
-
-function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
-  if (!exhibition_id) {
-    return <p>No exhibition selected.</p>;
-  }
-  const exhibitionWorks = getWorksForExhibition(exhibition_id);
+function ExhibitionImages({ exhibition_works }: { exhibition_works: Work[] }) {
   return (
     <>
       <div>
         <ul role="list" className="works-image-list">
-          {exhibitionWorks.map((work, index) => (
+          {exhibition_works.map((work, index) => (
             <li>
               <Link to={`work/${work.id}`}>
                 <img
@@ -41,13 +32,25 @@ function ExhibitionImages({ exhibition_id }: { exhibition_id: number }) {
 
 export default function Exhibition() {
   const params = useParams();
-  const exhibition_id = Number(params.exhibition_id); // ToDo: exhibition_id が無効な値のときのエラーハンドリング
+  const exhibition_id = Number(params.exhibition_id);
+  const exhibition = useExhibition(exhibition_id);
+  const exhibition_works: Work[] = Object.values(useExhibitionWorks(exhibition_id)).map(
+    (item) => item.work
+  );
+
+  if (!exhibition) {
+    return (
+      <main>
+        <h1>指定された華展は存在しません</h1>
+      </main>
+    );
+  }
 
   return (
     <>
       <main>
-        <h1>{exhibitions[exhibition_id].name}の作品一覧</h1>
-        <ExhibitionImages exhibition_id={exhibition_id} />
+        <h1>{`${exhibition.name}の作品一覧`}</h1>
+        <ExhibitionImages exhibition_works={exhibition_works} />
       </main>
     </>
   );
