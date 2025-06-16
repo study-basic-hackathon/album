@@ -57,7 +57,7 @@ export function useExhibition(exhibitionId: number): Exhibition | null {
         const fetchedExhibition = await getExhibition(exhibitionId);
         setExhibition(fetchedExhibition);
       } catch (error) {
-        console.error(`Failed to fetch exhibition ${exhibitionId}:`, error); 
+        console.error(`Failed to fetch exhibition ${exhibitionId}:`, error);
         setExhibition(null); // エラー時は null を設定
       }
     }
@@ -83,7 +83,7 @@ export async function listExhibitionWorks(
 }
 
 export function useExhibitionWorks(exhibitionId: number): Record<number, WorkListItem> {
-  const [works, setWorks] = useState<Record<number, WorkListItem>>([]);
+  const [works, setWorks] = useState<Record<number, WorkListItem>>({});
   useEffect(() => {
     async function fetchedWorks() {
       try {

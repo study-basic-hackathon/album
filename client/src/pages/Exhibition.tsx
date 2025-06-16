@@ -12,11 +12,10 @@ function ExhibitionImages({ exhibition_works }: { exhibition_works: Work[] }) {
       <div>
         <ul role="list" className="works-image-list">
           {exhibition_works.map((work, index) => (
-            <li>
+            <li key={index}>
               <Link to={`work/${work.id}`}>
                 <img
                   className="works-image-list__image"
-                  key={index}
                   src={`${import.meta.env.VITE_API_BASE_URL}/works/${work.image_ids[0]}`}
                   alt={work.title ? work.title : "無題の作品"}
                 />
