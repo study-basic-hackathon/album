@@ -6,12 +6,12 @@ import { useExhibition, useExhibitionWorks } from "../api/exhibition";
 type Exhibition = components["schemas"]["Exhibition"];
 type Work = components["schemas"]["Work"];
 
-function ExhibitionImages({ exhibition_works }: { exhibition_works: Work[] }) {
+function ExhibitionImages({ exhibitionWorks }: { exhibitionWorks: Work[] }) {
   return (
     <>
       <div>
         <ul role="list" className="works-image-list">
-          {exhibition_works.map((work, index) => (
+          {exhibitionWorks.map((work, index) => (
             <li key={index}>
               <Link to={`work/${work.id}`}>
                 <img
@@ -33,7 +33,7 @@ export default function Exhibition() {
   const params = useParams();
   const exhibition_id = Number(params.exhibition_id);
   const exhibition = useExhibition(exhibition_id);
-  const exhibition_works: Work[] = Object.values(useExhibitionWorks(exhibition_id)).map(
+  const exhibitionWorks: Work[] = Object.values(useExhibitionWorks(exhibition_id)).map(
     (item) => item.work
   );
 
@@ -49,7 +49,7 @@ export default function Exhibition() {
     <>
       <main>
         <h1>{`${exhibition.name}の作品一覧`}</h1>
-        <ExhibitionImages exhibition_works={exhibition_works} />
+        <ExhibitionImages exhibitionWorks={exhibitionWorks} />
       </main>
     </>
   );
