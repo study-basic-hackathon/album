@@ -1,78 +1,46 @@
-import { pool } from '../db.js'; 
+import { findArrangerById } from '../repositories/index.js';
 import { findWorksByCondition } from '../repositories/schemaKeys.js';
 import { formatWorksWithNavigation } from '../repositories/workListItems.js';
 
 // 作者の情報の取得
-export async function getArrangerById(req, res) {
-  const { arrangerId } = req.params;
-  try {
-    const result = await pool.query(`
-      SELECT
-        * 
-      FROM
-        arranger
-      WHERE
-        id = $1
-        `, 
-      [arrangerId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    res.json(result.rows[0]);
+export async function getArrangerById(arrangerId) {
+  try{
+    const result = await findArrangerById(arrangerId);
+    return result;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
+    throw err;
   };
 };
 
 // 作者の作品一覧の取得
-export async function getArrangerWorks(req, res) {
-  const { arrangerId } = req.params;
+export async function getArrangerWorks(arrangerId) {
   try {
-    if (!arrangerId) {
-      throw new Error("arrangerId is required");
-    }
     const result = await findWorksByCondition({
       whereClause: "wk.arranger_id = $1",
       whereParams: [arrangerId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    const formattedResults = formatWorksWithNavigation(result.rows);
-    res.json(formattedResults);
+    const formattedResults = formatWorksWithNavigation(result);
+    return formattedResults;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-}
+  };
+};
 
 // 作者の特定の作品の取得
-export async function getArrangerWorkById(req, res) {
-  const { arrangerId, workId } = req.params;
-  const targetWorkId = parseInt(workId, 10);
-  try {
-    if (!arrangerId) {
-      throw new Error("arrangerId is required");
-    }
+export async function getArrangerWorkById(arrangerId, workId) {
+  try{
+    const targetWorkId = parseInt(workId, 10);
     const result = await findWorksByCondition({
       whereClause: "wk.arranger_id = $1",
       whereParams: [arrangerId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    const formattedWorks = formatWorksWithNavigation(result.rows);
-    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
-    if (!foundWork) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    res.json(foundWork);
+    const formattedWorks = formatWorksWithNavigation(result);
+    const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
+    return foundWork;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-}
+  };
+};

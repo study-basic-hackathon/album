@@ -1,78 +1,46 @@
-import { pool } from '../db.js'; 
+import { findCategoryById } from '../repositories/index.js';
 import { findWorksByCondition } from '../repositories/schemaKeys.js';
 import { formatWorksWithNavigation } from '../repositories/workListItems.js';
 
 // カテゴリーの情報の取得
-export async function getCategoryById(req, res) {
-  const { categoryId } = req.params;
-  try {
-    const result = await pool.query(`
-      SELECT
-        * 
-      FROM
-        category
-      WHERE
-        id = $1
-        `, 
-      [categoryId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    res.json(result.rows[0]);
+export async function getCategoryById(categoryId) {
+  try{
+    const result = await findCategoryById(categoryId);
+    return result;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
+    throw err;
   };
 };
 
 // カテゴリーの作品一覧の取得
-export async function getCategoryWorks(req, res) {
-  const { categoryId } = req.params;
+export async function getCategoryWorks(categoryId) {
   try {
-    if (!categoryId) {
-      throw new Error("categoryId is required");
-    }
     const result = await findWorksByCondition({
       whereClause: "wk.category_id = $1",
       whereParams: [categoryId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    const formattedResults = formatWorksWithNavigation(result.rows);
-    res.json(formattedResults);
+    const formattedResults = formatWorksWithNavigation(result);
+    return formattedResults;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-}
+  };
+};
 
 // カテゴリーの特定の作品の取得
-export async function getCategoryWorkById(req, res) {
-  const { categoryId, workId } = req.params;
-  const targetWorkId = parseInt(workId, 10);
-  try {
-    if (!categoryId) {
-      throw new Error("categoryId is required");
-    }
+export async function getCategoryWorkById(categoryId, workId) {
+  try{
+    const targetWorkId = parseInt(workId, 10);
     const result = await findWorksByCondition({
       whereClause: "wk.category_id = $1",
       whereParams: [categoryId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    const formattedWorks = formatWorksWithNavigation(result.rows);
-    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
-    if (!foundWork) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    res.json(foundWork);
+    const formattedWorks = formatWorksWithNavigation(result);
+    const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
+    return foundWork;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-}
+  };
+};

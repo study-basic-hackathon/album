@@ -1,78 +1,46 @@
-import { pool } from '../db.js'; 
+import { findSeasonById } from '../repositories/index.js';
 import { findWorksByCondition } from '../repositories/schemaKeys.js';
 import { formatWorksWithNavigation } from '../repositories/workListItems.js';
 
 // 季節の情報の取得
-export async function getSeasonById(req, res) {
-  const { seasonId } = req.params;
-  try {
-    const result = await pool.query(`
-      SELECT
-        * 
-      FROM
-        season
-      WHERE
-        id = $1
-        `, 
-      [seasonId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    res.json(result.rows[0]);
+export async function getSeasonById(seasonId) {
+  try{
+    const result = await findSeasonById(seasonId);
+    return result;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
+    throw err;
   };
 };
 
 // 季節の作品一覧の取得
-export async function getSeasonWorks(req, res) {
-  const { seasonId } = req.params;
+export async function getSeasonWorks(seasonId) {
   try {
-    if (!seasonId) {
-      throw new Error("seasonId is required");
-    };
     const result = await findWorksByCondition({
       whereClause: "wk.season_id = $1",
       whereParams: [seasonId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    const formattedResults = formatWorksWithNavigation(result.rows);
-    res.json(formattedResults);
+    const formattedResults = formatWorksWithNavigation(result);
+    return formattedResults;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
   };
 };
 
 // 季節の特定の作品の取得
-export async function getSeasonWorkById(req, res) {
-  const { seasonId, workId } = req.params;
-  const targetWorkId = parseInt(workId, 10);
-  try {
-    if (!seasonId) {
-      throw new Error("seasonId is required");
-    };
+export async function getSeasonWorkById(seasonId, workId) {
+  try{
+    const targetWorkId = parseInt(workId, 10);
     const result = await findWorksByCondition({
       whereClause: "wk.season_id = $1",
       whereParams: [seasonId],
       orderByClause: "wk.created_at ASC"
     });
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    const formattedWorks = formatWorksWithNavigation(result.rows);
-    const foundWork = formattedWorks.find(item => item.work.id === targetWorkId);
-    if (!foundWork) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    res.json(foundWork);
+    const formattedWorks = formatWorksWithNavigation(result);
+    const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
+    return foundWork;
   } catch (err) {
     console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
   };
 };
