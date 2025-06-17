@@ -18,7 +18,7 @@ export async function listExhibitions(): Promise<
 export function useExhibitions(): Record<number, Exhibition> {
   const [exhibitions, setExhibitions] = useState<Record<number, Exhibition>>({});
   useEffect(() => {
-    async function fetchedExhibitions() {
+    async function fetchExhibitions() {
       try {
         const fetchedExhibitions = await listExhibitions();
         setExhibitions(fetchedExhibitions);
@@ -27,7 +27,7 @@ export function useExhibitions(): Record<number, Exhibition> {
         setExhibitions({}); // エラー時は空のオブジェクトを設定
       }
     }
-    fetchedExhibitions();
+    fetchExhibitions();
   }, []);
   return exhibitions;
 }
@@ -51,7 +51,7 @@ export async function getExhibition(
 export function useExhibition(exhibitionId: number): Exhibition | null {
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   useEffect(() => {
-    async function fetchedExhibition() {
+    async function fetchExhibition(exhibitionId: number) {
       try {
         const fetchedExhibition = await getExhibition(exhibitionId);
         setExhibition(fetchedExhibition);
@@ -60,7 +60,7 @@ export function useExhibition(exhibitionId: number): Exhibition | null {
         setExhibition(null); // エラー時は null を設定
       }
     }
-    fetchedExhibition();
+    fetchExhibition(exhibitionId);
   }, [exhibitionId]);
   return exhibition;
 }
@@ -84,7 +84,7 @@ export async function listExhibitionWorks(
 export function useExhibitionWorks(exhibitionId: number): Record<number, WorkListItem> {
   const [works, setWorks] = useState<Record<number, WorkListItem>>({});
   useEffect(() => {
-    async function fetchedWorks() {
+    async function fetchExhibitionWorks(exhibitionId: number) {
       try {
         const fetchedWorks = await listExhibitionWorks(exhibitionId);
         setWorks(fetchedWorks);
@@ -93,7 +93,7 @@ export function useExhibitionWorks(exhibitionId: number): Record<number, WorkLis
         setWorks([]); // エラー時は空の配列を設定
       }
     }
-    fetchedWorks();
+    fetchExhibitionWorks(exhibitionId);
   }, [exhibitionId]);
   return works;
 }
@@ -117,7 +117,7 @@ export async function getExhibitionWork(
 export function useExhibitionWork(exhibitionId: number, workId: number): WorkListItem | null {
   const [work, setWork] = useState<WorkListItem | null>(null);
   useEffect(() => {
-    async function fetchedWork() {
+    async function fetchExhibitionWork(exhibitionId: number, workId: number) {
       try {
         const fetchedWork = await getExhibitionWork(exhibitionId, workId);
         setWork(fetchedWork);
@@ -126,7 +126,7 @@ export function useExhibitionWork(exhibitionId: number, workId: number): WorkLis
         setWork(null); // エラー時は null を設定
       }
     }
-    fetchedWork();
+    fetchExhibitionWork(exhibitionId, workId);
   }, [exhibitionId, workId]);
   return work;
 }
