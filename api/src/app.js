@@ -31,7 +31,7 @@ function formatWorksWithNavigation(works) {
         material_ids: work.material_ids,
         season_id: work.season_id,
         category_id: work.category_id,
-        image_urls: work.image_urls,
+        image_ids: work.image_ids,
         created_at: work.created_at,
       },
       navigation: {
@@ -103,7 +103,7 @@ app.get("/exhibitions/:exhibitionId/works", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -143,7 +143,7 @@ app.get("/exhibitions/:exhibitionId/works/:workId", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -204,7 +204,7 @@ app.get("/arrangers/:arrangerId/works", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -245,7 +245,7 @@ app.get("/arrangers/:arrangerId/works/:workId", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -306,7 +306,7 @@ app.get("/materials/:materialId/works", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -346,7 +346,7 @@ app.get("/materials/:materialId/works/:workId", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -409,7 +409,7 @@ app.get("/categories/:categoryId/works", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -449,7 +449,7 @@ app.get("/categories/:categoryId/works/:workId", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -512,7 +512,7 @@ app.get("/seasons/:seasonId/works", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
@@ -552,7 +552,7 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
         ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
         wk.category_id,
         wk.season_id,
-        ARRAY_AGG(DISTINCT ie.id) AS image_urls,
+        ARRAY_AGG(DISTINCT ie.id) AS image_ids,
         TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
       FROM
         work AS wk
