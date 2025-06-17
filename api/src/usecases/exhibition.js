@@ -1,5 +1,4 @@
-import { findAllExhibitions, findExhibitionById } from '../repositories/index.js';
-import { findWorksByCondition } from '../repositories/schemaKeys.js';
+import { findAllExhibitions, findExhibitionById, findWorksByCondition } from '../repositories/index.js';
 import { formatWorksWithNavigation } from '../repositories/workListItems.js';
 
 // 華展の一覧
