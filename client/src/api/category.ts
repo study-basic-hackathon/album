@@ -17,10 +17,10 @@ export async function getCategory(
   return response.json();
 }
 
-export function useCategory(categoryId: number): Category | null {
+export function useCategory(categoryId?: number): Category | null {
   const [category, setCategory] = useState<Category | null>(null);
   useEffect(() => {
-    async function fetchedCategory() {
+    async function fetchCategory(categoryId: number) {
       try {
         const fetchedCategory = await getCategory(categoryId);
         setCategory(fetchedCategory);
@@ -29,7 +29,11 @@ export function useCategory(categoryId: number): Category | null {
         setCategory(null); // エラー時は null を設定
       }
     }
-    fetchedCategory();
+    if (categoryId === undefined) {
+      setCategory(null); // categoryIdが未定義の場合は null を設定
+      return;
+    }
+    fetchCategory(categoryId);
   }, [categoryId]);
   return category;
 }

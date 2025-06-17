@@ -15,10 +15,10 @@ export async function getSeason(
   return response.json();
 }
 
-export function useSeason(seasonId: number): Season | null {
+export function useSeason(seasonId?: number): Season | null {
   const [season, setSeason] = useState<Season | null>(null);
   useEffect(() => {
-    async function fetchedSeason() {
+    async function fetchSeason(seasonId: number) {
       try {
         const fetchedSeason = await getSeason(seasonId);
         setSeason(fetchedSeason);
@@ -27,7 +27,11 @@ export function useSeason(seasonId: number): Season | null {
         setSeason(null); // エラー時は null を設定
       }
     }
-    fetchedSeason();
+    if (seasonId === undefined) {
+      setSeason(null); // seasonIdが未定義の場合は null を設定
+      return;
+    }
+    fetchSeason(seasonId);
   }, [seasonId]);
   return season;
 }

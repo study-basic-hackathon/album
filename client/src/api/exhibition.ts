@@ -48,7 +48,7 @@ export async function getExhibition(
   return response.json();
 }
 
-export function useExhibition(exhibitionId: number): Exhibition | null {
+export function useExhibition(exhibitionId?: number): Exhibition | null {
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
   useEffect(() => {
     async function fetchExhibition(exhibitionId: number) {
@@ -60,12 +60,16 @@ export function useExhibition(exhibitionId: number): Exhibition | null {
         setExhibition(null); // エラー時は null を設定
       }
     }
+    if (exhibitionId === undefined) {
+      setExhibition(null); // exhibitionIdが未定義の場合は null を設定
+      return;
+    }
     fetchExhibition(exhibitionId);
   }, [exhibitionId]);
   return exhibition;
 }
 
-export async function listExhibitionWorks(
+export async function listExhibitionWorkListItems(
   exhibitionId: number
 ): Promise<
   paths["/exhibitions/{exhibitionId}/works"]["get"]["responses"]["200"]["content"]["application/json"]
@@ -81,24 +85,28 @@ export async function listExhibitionWorks(
   return response.json();
 }
 
-export function useExhibitionWorks(exhibitionId: number): Record<number, WorkListItem> {
-  const [works, setWorks] = useState<Record<number, WorkListItem>>({});
+export function useExhibitionWorkListItems(exhibitionId?: number): Record<number, WorkListItem> {
+  const [workListItems, setWorkListItems] = useState<Record<number, WorkListItem>>({});
   useEffect(() => {
-    async function fetchExhibitionWorks(exhibitionId: number) {
+    async function fetchExhibitionWorkListItems(exhibitionId: number) {
       try {
-        const fetchedWorks = await listExhibitionWorks(exhibitionId);
-        setWorks(fetchedWorks);
+        const fetchedWorkListItems = await listExhibitionWorkListItems(exhibitionId);
+        setWorkListItems(fetchedWorkListItems);
       } catch (error) {
         console.error(`Failed to fetch works for exhibition ${exhibitionId}:`, error);
-        setWorks([]); // エラー時は空の配列を設定
+        setWorkListItems([]); // エラー時は空の配列を設定
       }
     }
-    fetchExhibitionWorks(exhibitionId);
+    if (exhibitionId === undefined) {
+      setWorkListItems({}); // exhibitionIdが未定義の場合は空のオブジェクトを設定
+      return;
+    }
+    fetchExhibitionWorkListItems(exhibitionId);
   }, [exhibitionId]);
-  return works;
+  return workListItems;
 }
 
-export async function getExhibitionWork(
+export async function getExhibitionWorkListItem(
   exhibitionId: number,
   workId: number
 ): Promise<
@@ -114,19 +122,23 @@ export async function getExhibitionWork(
   return response.json();
 }
 
-export function useExhibitionWork(exhibitionId: number, workId: number): WorkListItem | null {
-  const [work, setWork] = useState<WorkListItem | null>(null);
+export function useExhibitionWorkListItem(exhibitionId?: number, workId?: number): WorkListItem | null {
+  const [workListItem, setWorkListItem] = useState<WorkListItem | null>(null);
   useEffect(() => {
-    async function fetchExhibitionWork(exhibitionId: number, workId: number) {
+    async function fetchExhibitionWorkListItem(exhibitionId: number, workId: number) {
       try {
-        const fetchedWork = await getExhibitionWork(exhibitionId, workId);
-        setWork(fetchedWork);
+        const fetchedWorkListItem = await getExhibitionWorkListItem(exhibitionId, workId);
+        setWorkListItem(fetchedWorkListItem);
       } catch (error) {
         console.error(`Failed to fetch work ${workId} for exhibition ${exhibitionId}:`, error);
-        setWork(null); // エラー時は null を設定
+        setWorkListItem(null); // エラー時は null を設定
       }
     }
-    fetchExhibitionWork(exhibitionId, workId);
+    if (exhibitionId === undefined || workId === undefined) {
+      setWorkListItem(null); // exhibitionId または workId が未定義の場合は null を設定
+      return;
+    }
+    fetchExhibitionWorkListItem(exhibitionId, workId);
   }, [exhibitionId, workId]);
-  return work;
+  return workListItem;
 }

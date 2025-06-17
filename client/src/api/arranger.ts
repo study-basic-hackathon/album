@@ -17,10 +17,10 @@ export async function getArranger(
   return response.json();
 }
 
-export function useArranger(arrangerId: number): Arranger | null {
+export function useArranger(arrangerId?: number): Arranger | null {
   const [arranger, setArranger] = useState<Arranger | null>(null);
   useEffect(() => {
-    async function fetchedArranger() {
+    async function fetchArranger(arrangerId: number) {
       try {
         const fetchedArranger = await getArranger(arrangerId);
         setArranger(fetchedArranger);
@@ -29,7 +29,11 @@ export function useArranger(arrangerId: number): Arranger | null {
         setArranger(null); // エラー時は null を設定
       }
     }
-    fetchedArranger();
+    if (arrangerId === undefined) {
+      setArranger(null); // arrangerIdが未定義の場合は null を設定
+      return;
+    }
+    fetchArranger(arrangerId);
   }, [arrangerId]);
   return arranger;
 }
