@@ -1,7 +1,7 @@
 import { type components } from "../types/api";
 import "./works.css"; // ToDo: CSS のインポートの変更
 import { Link, useParams } from "react-router";
-import { useExhibition, useExhibitionWorks } from "../api/exhibition";
+import { useExhibition, useExhibitionWorkListItems } from "../api/exhibition";
 
 type Exhibition = components["schemas"]["Exhibition"];
 type Work = components["schemas"]["Work"];
@@ -20,7 +20,7 @@ function ExhibitionImages({ exhibitionWorks }: { exhibitionWorks: Work[] }) {
                   alt={work.title ? work.title : "無題の作品"}
                 />
               </Link>
-              {/* ToDo: 遅延読み込み */}
+              {/* ToDo: 遅延読み込み、work.image_ids[0] が存在しない場合の処理 */}
             </li>
           ))}
         </ul>
@@ -33,11 +33,11 @@ export default function Exhibition() {
   const params = useParams();
   const exhibitionId = Number(params.exhibitionId);
   const exhibition = useExhibition(exhibitionId);
-  const exhibitionWorks: Work[] = Object.values(useExhibitionWorks(exhibitionId)).map(
+  const exhibitionWorks: Work[] = Object.values(useExhibitionWorkListItems(exhibitionId)).map(
     (item) => item.work
   );
 
-  if (!exhibition) {
+  if (!exhibition || !exhibitionWorks) {
     return (
       <main>
         <h1>指定された華展は存在しません</h1>
