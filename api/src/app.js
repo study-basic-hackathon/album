@@ -587,8 +587,6 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
 
 // image
 // --作品の画像の取得
-// image
-// --作品の画像の取得
 app.get("/images/:imageId", (req, res) => {
   const imageId = req.params.imageId; 
   const filePath = path.resolve("src", "upload", imageId);
