@@ -10,7 +10,7 @@ export default function WorkImages({ work }: { work: Work }) {
           {work.image_ids.map((id, index) => (
             <li key={index} className="work-image-list__image">
               <img
-                src={`${import.meta.env.VITE_API_BASE_URL}/works/${id}`}
+                src={`${import.meta.env.VITE_API_BASE_URL}/images/${id}`}
                 alt={`${work.title ? work.title : "無題の作品"}` + `${index + 1}枚目`}
                 width={"100%"}
               />

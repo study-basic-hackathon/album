@@ -16,7 +16,7 @@ function ExhibitionImages({ exhibitionWorks }: { exhibitionWorks: Work[] }) {
               <Link to={`work/${work.id}`}>
                 <img
                   className="works-image-list__image"
-                  src={`${import.meta.env.VITE_API_BASE_URL}/works/${work.image_ids[0]}`}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/images/${work.image_ids[0]}`}
                   alt={work.title ? work.title : "無題の作品"}
                 />
               </Link>
@@ -31,9 +31,9 @@ function ExhibitionImages({ exhibitionWorks }: { exhibitionWorks: Work[] }) {
 
 export default function Exhibition() {
   const params = useParams();
-  const exhibition_id = Number(params.exhibition_id);
-  const exhibition = useExhibition(exhibition_id);
-  const exhibitionWorks: Work[] = Object.values(useExhibitionWorks(exhibition_id)).map(
+  const exhibitionId = Number(params.exhibitionId);
+  const exhibition = useExhibition(exhibitionId);
+  const exhibitionWorks: Work[] = Object.values(useExhibitionWorks(exhibitionId)).map(
     (item) => item.work
   );
 
