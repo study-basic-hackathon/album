@@ -66,6 +66,7 @@ router.get("/:exhibitionId/works/:workId", async (req, res) => {
     };
     res.json(result[0]);
   } catch (err) {
+    console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
   };
 });

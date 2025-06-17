@@ -3,18 +3,12 @@ import { formatWorksWithNavigation } from '../repositories/workListItems.js';
 
 // 季節の情報の取得
 export async function getSeasonById(seasonId) {
-  try{
     const result = await findSeasonById(seasonId);
     return result;
-  } catch (err) {
-    console.error("DB Error:", err);
-    throw err;
   };
-};
 
 // 季節の作品一覧の取得
 export async function getSeasonWorks(seasonId) {
-  try {
     const result = await findWorksByCondition({
       whereClause: "wk.season_id = $1",
       whereParams: [seasonId],
@@ -22,14 +16,10 @@ export async function getSeasonWorks(seasonId) {
     });
     const formattedResults = formatWorksWithNavigation(result);
     return formattedResults;
-  } catch (err) {
-    console.error("DB Error:", err);
   };
-};
 
 // 季節の特定の作品の取得
 export async function getSeasonWorkById(seasonId, workId) {
-  try{
     const targetWorkId = parseInt(workId, 10);
     const result = await findWorksByCondition({
       whereClause: "wk.season_id = $1",
@@ -39,7 +29,4 @@ export async function getSeasonWorkById(seasonId, workId) {
     const formattedWorks = formatWorksWithNavigation(result);
     const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
     return foundWork;
-  } catch (err) {
-    console.error("DB Error:", err);
   };
-};

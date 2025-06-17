@@ -16,7 +16,8 @@ router.get("/:arrangerId", async (req, res) => {
       };
       res.json(result[0]);
   } catch (err) {
-      res.status(500).json({ error: "Database query failed" });
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database query failed" });
     };
 });
 
@@ -54,6 +55,7 @@ router.get("/:arrangerId/works/:workId", async (req, res) => {
     };
     res.json(result[0]);
   } catch (err) {
+    console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
   };
 });

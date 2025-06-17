@@ -3,18 +3,12 @@ import { formatWorksWithNavigation } from '../repositories/workListItems.js';
 
 // 花材の情報の取得
 export async function getMaterialById(materialId) {
-  try{
     const result = await findMaterialById(materialId);
     return result;
-  } catch (err) {
-    console.error("DB Error:", err);
-    throw err;
   };
-};
 
 // 花材の作品一覧の取得
 export async function getMaterialWorks(materialId) {
-  try {
     const result = await findWorksByCondition({
       whereClause: "wm.material_id = $1",
       whereParams: [materialId],
@@ -22,14 +16,10 @@ export async function getMaterialWorks(materialId) {
     });
     const formattedResults = formatWorksWithNavigation(result);
     return formattedResults;
-  } catch (err) {
-    console.error("DB Error:", err);
   };
-};
 
 // 花材の特定の作品の取得
 export async function getMaterialWorkById(materialId, workId) {
-  try{
     const targetWorkId = parseInt(workId, 10);
     const result = await findWorksByCondition({
       whereClause: "wm.material_id = $1",
@@ -39,7 +29,4 @@ export async function getMaterialWorkById(materialId, workId) {
     const formattedWorks = formatWorksWithNavigation(result);
     const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
     return foundWork;
-  } catch (err) {
-    console.error("DB Error:", err);
   };
-};
