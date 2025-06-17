@@ -57,7 +57,7 @@ export function useExhibitionWorkListItems(exhibitionId?: number): Record<number
         setWorkListItems(fetchedWorkListItems);
       } catch (error) {
         console.error(`Failed to fetch works for exhibition ${exhibitionId}:`, error);
-        setWorkListItems([]); // エラー時は空の配列を設定
+        setWorkListItems({}); // エラー時は空の配列を設定
       }
     }
     if (exhibitionId === undefined) {

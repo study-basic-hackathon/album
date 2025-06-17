@@ -37,7 +37,7 @@ export default function Exhibition() {
     (item) => item.work
   );
 
-  if (!exhibition || !exhibitionWorks) {
+  if (!exhibition || exhibitionWorks.length === 0) {
     return (
       <main>
         <h1>指定された華展は存在しません</h1>
