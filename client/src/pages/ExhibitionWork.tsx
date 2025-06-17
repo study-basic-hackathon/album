@@ -1,10 +1,10 @@
 import { type components } from "../types/api";
-import { useArranger } from "../api/arranger";
-import { useCategory } from "../api/category";
-import { useExhibition } from "../api/exhibition";
-import { useMaterials } from "../api/material";
-import { useSeason } from "../api/season";
-import { useExhibitionWorkListItem } from "../api/exhibition";
+import { useArranger } from "../hooks/arranger";
+import { useCategory } from "../hooks/category";
+import { useExhibition } from "../hooks/exhibition";
+import { useMaterials } from "../hooks/material";
+import { useSeason } from "../hooks/season";
+import { useExhibitionWorkListItem } from "../hooks/exhibition";
 import "./work.css";
 import { Link, useParams } from "react-router";
 import WorkImages from "../components/WorkImages";

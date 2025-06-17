@@ -1,7 +1,7 @@
 import { type components } from "../types/api";
 import "./works.css"; // ToDo: CSS のインポートの変更
 import { Link, useParams } from "react-router";
-import { useExhibition, useExhibitionWorkListItems } from "../api/exhibition";
+import { useExhibition, useExhibitionWorkListItems } from "../hooks/exhibition";
 
 type Exhibition = components["schemas"]["Exhibition"];
 type Work = components["schemas"]["Work"];

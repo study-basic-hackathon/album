@@ -1,7 +1,7 @@
 // import { exhibitions } from "../mocks/data/exhibitions";
 import type { components } from "../types/api";
 import { Link } from "react-router";
-import { useExhibitions } from "../api/exhibition";
+import { useExhibitions } from "../hooks/exhibition";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
