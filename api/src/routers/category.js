@@ -7,17 +7,17 @@ const router = express.Router();
 router.get("/:categoryId", async (req, res) => {
   try{
       const { categoryId } = req.params;
-      if (typeof categoryId !== 'string' || !/^\d+$/.test(categoryId)) {
-        return res.status(400).json({ message: "Bad Request: Invalid categoryId" });
+      if (!/^\d+$/.test(categoryId)) {
+        return res.status(400).json({ message: "Invalid categoryId" });
       };
       const result = await getCategoryById(categoryId);
-      if (result.length === 0) {
+      if (result === undefined) {
         return res.status(404).json({ message: "Resource not found" });
       };
       res.json(result);
   } catch (err) {
-      console.error("DB Error:", err);
-      res.status(500).json({ error: "Database query failed" });
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     };
 });
 
@@ -25,17 +25,17 @@ router.get("/:categoryId", async (req, res) => {
 router.get("/:categoryId/works", async (req, res) => {
   try{
       const { categoryId } = req.params;
-      if (typeof categoryId !== 'string' || !/^\d+$/.test(categoryId)) {
-        return res.status(400).json({ message: "Bad Request: Invalid categoryId" });
+      if (!/^\d+$/.test(categoryId)) {
+        return res.status(400).json({ message: "Invalid categoryId" });
       };
       const result = await getCategoryWorks(categoryId);
-      if (result.length === 0) {
+      if (result === undefined) {
         return res.status(404).json({ message: "Resource not found" });
       };
       res.json(result);
   } catch (err) {
-      console.error("DB Error:", err);
-      res.status(500).json({ error: "Database query failed" });
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     };
 });
 
@@ -43,20 +43,20 @@ router.get("/:categoryId/works", async (req, res) => {
 router.get("/:categoryId/works/:workId" , async (req, res) => {
   try {
     const { categoryId, workId } = req.params;
-    if (typeof categoryId !== 'string' || !/^\d+$/.test(categoryId)) {
-      return res.status(400).json({ message: "Bad Request: Invalid categoryId" });
+    if (!/^\d+$/.test(categoryId)) {
+      return res.status(400).json({ message: "Invalid categoryId" });
     };
-    if (typeof workId !== 'string' || !/^\d+$/.test(workId)) {
-      return res.status(400).json({ message: "Bad Request: Invalid workId" });
+    if (!/^\d+$/.test(workId)) {
+      return res.status(400).json({ message: "Invalid workId" });
     };
     const result = await getCategoryWorkById(categoryId, workId);
-    if (result.length === 0) {
+    if (result === undefined) {
       return res.status(404).json({ message: "Resource not found" });
     };
-    res.json(result[0]);
+    res.json(result);
   } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   };
 });
 

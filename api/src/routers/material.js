@@ -7,17 +7,17 @@ const router = express.Router();
 router.get("/:materialId", async (req, res) => {
   try{
       const { materialId } = req.params;
-      if (typeof materialId !== 'string' || !/^\d+$/.test(materialId)) {
-        return res.status(400).json({ message: "Bad Request: Invalid materialId" });
+      if (!/^\d+$/.test(materialId)) {
+        return res.status(400).json({ message: "Invalid materialId" });
       };
       const result = await getMaterialById(materialId);
-      if (result.length === 0) {
+      if (result === undefined) {
         return res.status(404).json({ message: "Resource not found" });
       };
       res.json(result);
   } catch (err) {
-      console.error("DB Error:", err);
-      res.status(500).json({ error: "Database query failed" });
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     };
 });
 
@@ -25,17 +25,17 @@ router.get("/:materialId", async (req, res) => {
 router.get("/:materialId/works", async (req, res) => {
   try{
       const { materialId } = req.params;
-      if (typeof materialId !== 'string' || !/^\d+$/.test(materialId)) {
-        return res.status(400).json({ message: "Bad Request: Invalid materialId" });
+      if (!/^\d+$/.test(materialId)) {
+        return res.status(400).json({ message: "Invalid materialId" });
       };
       const result = await getMaterialWorks(materialId);
-      if (result.length === 0) {
+      if (result === undefined) {
         return res.status(404).json({ message: "Resource not found" });
       };
       res.json(result);
   } catch (err) {
-      console.error("DB Error:", err);
-      res.status(500).json({ error: "Database query failed" });
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     };
 });
 
@@ -43,20 +43,20 @@ router.get("/:materialId/works", async (req, res) => {
 router.get("/:materialId/works/:workId", async (req, res) => {
   try {
     const { materialId, workId } = req.params;
-    if (typeof materialId !== 'string' || !/^\d+$/.test(materialId)) {
-      return res.status(400).json({ message: "Bad Request: Invalid materialId" });
+    if (!/^\d+$/.test(materialId)) {
+      return res.status(400).json({ message: "Invalid materialId" });
     };
-    if (typeof workId !== 'string' || !/^\d+$/.test(workId)) {
-      return res.status(400).json({ message: "Bad Request: Invalid workId" });
+    if (!/^\d+$/.test(workId)) {
+      return res.status(400).json({ message: "Invalid workId" });
     };
     const result = await getMaterialWorkById(materialId, workId);
-    if (result.length === 0) {
+    if (result === undefined) {
       return res.status(404).json({ message: "Resource not found" });
     };
-    res.json(result[0]);
+    res.json(result);
   } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   };
 });
 

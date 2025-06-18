@@ -9,8 +9,8 @@ router.get("/", async (req, res) => {
       const result = await getExhibitions();
       res.json(result);
   } catch (err) {
-      console.error("DB Error:", err);
-      res.status(500).json({ error: "Database query failed" });
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     };
 });
 
@@ -18,17 +18,17 @@ router.get("/", async (req, res) => {
 router.get("/:exhibitionId", async (req, res) => {
   try{
       const { exhibitionId } = req.params;
-      if (typeof exhibitionId !== 'string' || !/^\d+$/.test(exhibitionId)) {
-        return res.status(400).json({ message: "Bad Request: Invalid exhibitionId" });
+      if (!/^\d+$/.test(exhibitionId)) {
+        return res.status(400).json({ message: "Invalid exhibitionId" });
       };
       const result = await getExhibitionById(exhibitionId);
-      if (result.length === 0) {
+      if (result === undefined) {
         return res.status(404).json({ message: "Resource not found" });
       };
       res.json(result);
   } catch (err) {
-      console.error("DB Error:", err);
-      res.status(500).json({ error: "Database query failed" });
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     };
 });
 
@@ -36,17 +36,17 @@ router.get("/:exhibitionId", async (req, res) => {
 router.get("/:exhibitionId/works", async (req, res) => {
   try{
       const { exhibitionId } = req.params;
-      if (typeof exhibitionId !== 'string' || !/^\d+$/.test(exhibitionId)) {
-        return res.status(400).json({ message: "Bad Request: Invalid exhibitionId" });
+      if (!/^\d+$/.test(exhibitionId)) {
+        return res.status(400).json({ message: "Invalid exhibitionId" });
       };
       const result = await getExhibitionWorks(exhibitionId);
-      if (result.length === 0) {
+      if (result === undefined) {
         return res.status(404).json({ message: "Resource not found" });
       };
       res.json(result);
   } catch (err) {
-      console.error("DB Error:", err);
-      res.status(500).json({ error: "Database query failed" });
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     };
 });
 
@@ -54,20 +54,20 @@ router.get("/:exhibitionId/works", async (req, res) => {
 router.get("/:exhibitionId/works/:workId", async (req, res) => {
   try {
     const { exhibitionId, workId } = req.params;
-    if (typeof exhibitionId !== 'string' || !/^\d+$/.test(exhibitionId)) {
-      return res.status(400).json({ message: "Bad Request: Invalid exhibitionId" });
+    if (!/^\d+$/.test(exhibitionId)) {
+      return res.status(400).json({ message: "Invalid exhibitionId" });
     };
-    if (typeof workId !== 'string' || !/^\d+$/.test(workId)) {
-      return res.status(400).json({ message: "Bad Request: Invalid workId" });
+    if (!/^\d+$/.test(workId)) {
+      return res.status(400).json({ message: "Invalid workId" });
     };
     const result = await getExhibitionWorkById(exhibitionId, workId);
-    if (result.length === 0) {
+    if (result === undefined) {
       return res.status(404).json({ message: "Resource not found" });
     };
-    res.json(result[0]);
+    res.json(result);
   } catch (err) {
-    console.error("DB Error:", err);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   };
 });
 

@@ -1,32 +1,21 @@
-import { findArrangerById, findWorksByCondition } from '../repositories/index.js';
-import { formatWorksWithNavigation } from '../repositories/workListItems.js';
+import { findArrangerById, findWorksByArrangerId } from '../repositories/arranger.js';
 
 // 作者の情報の取得
 export async function getArrangerById(arrangerId) {
-    const result = await findArrangerById(arrangerId);
-    return result;
-  };
+  const result = await findArrangerById(arrangerId);
+  return result[0];
+};
 
 // 作者の作品一覧の取得
 export async function getArrangerWorks(arrangerId) {
-    const result = await findWorksByCondition({
-      whereClause: "wk.arranger_id = $1",
-      whereParams: [arrangerId],
-      orderByClause: "wk.created_at ASC"
-    });
-    const formattedResults = formatWorksWithNavigation(result);
-    return formattedResults;
-  };
+  const result = await findWorksByArrangerId(arrangerId);
+  return result;
+};
 
 // 作者の特定の作品の取得
 export async function getArrangerWorkById(arrangerId, workId) {
-    const targetWorkId = parseInt(workId, 10);
-    const result = await findWorksByCondition({
-      whereClause: "wk.arranger_id = $1",
-      whereParams: [arrangerId],
-      orderByClause: "wk.created_at ASC"
-    });
-    const formattedWorks = formatWorksWithNavigation(result);
-    const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
-    return foundWork;
+  const targetWorkId = parseInt(workId, 10);
+  const formattedWorks = await findWorksByArrangerId(arrangerId);
+  const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
+  return foundWork[0];
 };
