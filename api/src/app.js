@@ -590,7 +590,7 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
 // --作品の画像の取得
 app.get("/images/:imageId", (req, res) => {
   const imageId = req.params.imageId;
-  const uploadDir = path.resolve("src", "upload");
+  const uploadDir = path.resolve("upload");
   const files = fs.readdirSync(uploadDir);
   const match = files.find((file) => path.parse(file).name === imageId);
 
