@@ -1,7 +1,5 @@
-import { type paths, type components } from "../types/api";
+import { type paths } from "../types/api";
 import { endpoint } from "./util";
-
-type Category = components["schemas"]["Category"];
 
 export async function getCategory(
   categoryId: number

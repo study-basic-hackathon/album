@@ -35,7 +35,7 @@ export default function Category() {
   const categoryWorks: Work[] = Object.values(useCategoryWorkListItems(categoryId)).map(
     (item) => item.work
   );
-  
+
   if (!category || categoryWorks.length === 0) {
     return (
       <main>
@@ -43,7 +43,7 @@ export default function Category() {
       </main>
     );
   }
-  
+
   return (
     <>
       <main>

@@ -23,7 +23,7 @@ export const category = [
 
   // 登録
   http.post(endpoint("/categories"), async ({ request }) => {
-    const data = await request.json() as CreateCategoryPayload;
+    const data = (await request.json()) as CreateCategoryPayload;
     const id = nextCategoryId++;
     categories[id] = { id, ...data };
     return HttpResponse.json(null, {
@@ -55,7 +55,7 @@ export const category = [
       if (!categories[id]) {
         return HttpResponse.json({ message: "Category not found" }, { status: 404 });
       }
-      const data = await request.json() as UpdateCategoryPayload;
+      const data = (await request.json()) as UpdateCategoryPayload;
       categories[id] = { id, ...data };
       return new HttpResponse(null, { status: 204 });
     }
@@ -88,21 +88,20 @@ export const category = [
   ),
 
   // 作品詳細取得
-  http.get<MswPathParameter<paths["/categories/{categoryId}/works/{workId}"]["get"]["parameters"]["path"]>>(
-    endpoint("/categories/{categoryId}/works/{workId}"),
-    (req) => {
-      const categoryId = parseInt(req.params.categoryId as string, 10);
-      const workId = parseInt(req.params.workId as string, 10);
-      if (!categories[categoryId]) {
-        return HttpResponse.json({ message: "Category not found" }, { status: 404 });
-      }
-      const filtered = Object.values(works).filter((w) => w.category_id === categoryId);
-      const items = worksToWorkListItem(filtered);
-      const item = items.find((i) => i.work.id === workId);
-      if (!item) {
-        return HttpResponse.json({ message: "Work not found" }, { status: 404 });
-      }
-      return HttpResponse.json(item);
+  http.get<
+    MswPathParameter<paths["/categories/{categoryId}/works/{workId}"]["get"]["parameters"]["path"]>
+  >(endpoint("/categories/{categoryId}/works/{workId}"), (req) => {
+    const categoryId = parseInt(req.params.categoryId as string, 10);
+    const workId = parseInt(req.params.workId as string, 10);
+    if (!categories[categoryId]) {
+      return HttpResponse.json({ message: "Category not found" }, { status: 404 });
     }
-  ),
+    const filtered = Object.values(works).filter((w) => w.category_id === categoryId);
+    const items = worksToWorkListItem(filtered);
+    const item = items.find((i) => i.work.id === workId);
+    if (!item) {
+      return HttpResponse.json({ message: "Work not found" }, { status: 404 });
+    }
+    return HttpResponse.json(item);
+  }),
 ];
