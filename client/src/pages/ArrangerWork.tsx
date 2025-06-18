@@ -64,11 +64,6 @@ export default function ArrangerWork() {
 
   return (
     <>
-      <header>
-        <nav>
-          <NavLink to="/">ホームへ戻る</NavLink>
-        </nav>
-      </header>
       <main>
         <WorkHeading arranger={arranger} />
         <WorkImages work={work} />
