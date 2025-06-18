@@ -81,12 +81,10 @@ COMMENT ON COLUMN work_material.material_id IS '花材ID';
 -- 画像テーブル
 CREATE TABLE IF NOT EXISTS image (
   id SERIAL PRIMARY KEY,
-  url TEXT NOT NULL,
   work_id INTEGER REFERENCES work(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE image IS '画像テーブル';
 COMMENT ON COLUMN image.id IS '画像ID';
-COMMENT ON COLUMN image.url IS '画像URL';
 COMMENT ON COLUMN image.work_id IS '作品ID';
 COMMENT ON COLUMN image.created_at IS '登録日時';

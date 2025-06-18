@@ -1,4 +1,6 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
 import cors from "cors";
 import { pool } from "./db.js";
 
@@ -582,6 +584,26 @@ app.get("/seasons/:seasonId/works/:workId", async (req, res) => {
     console.error("DB Error:", err);
     res.status(500).json({ error: "Database query failed" });
   }
+});
+
+// image
+// --作品の画像の取得
+app.get("/images/:imageId", (req, res) => {
+  const imageId = req.params.imageId;
+  const uploadDir = path.resolve("upload");
+  const files = fs.readdirSync(uploadDir);
+  const match = files.find((file) => path.parse(file).name === imageId);
+
+  if (!match) {
+    return res.status(404).json({ error: "画像が見つかりませんでした" });
+  }
+
+  const filePath = path.join(uploadDir, match);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(500).json({ error: "画像の送信中にエラーが発生しました" });
+    }
+  });
 });
 
 export default app;
