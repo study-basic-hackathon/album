@@ -78,7 +78,7 @@ export const exhibition = [
     >(workListItem);
   }),
   http.post(endpoint("/exhibitions"), async ({ request }) => {
-    const data = await request.json() as components["schemas"]["CreateExhibitionPayload"];
+    const data = (await request.json()) as components["schemas"]["CreateExhibitionPayload"];
     const id = nextExhibitionId++;
     exhibitions[id] = { id, ...data };
     return HttpResponse.json(null, {
@@ -95,20 +95,19 @@ export const exhibition = [
       if (!exhibitions[id]) {
         return HttpResponse.json({ message: "Exhibition not found" }, { status: 404 });
       }
-      const data = await request.json() as components["schemas"]["UpdateExhibitionPayload"];
+      const data = (await request.json()) as components["schemas"]["UpdateExhibitionPayload"];
       exhibitions[id] = { id, ...data };
       return new HttpResponse(null, { status: 204 });
     }
   ),
-  http.delete<MswPathParameter<paths["/exhibitions/{exhibitionId}"]["delete"]["parameters"]["path"]>>(
-    endpoint("/exhibitions/{exhibitionId}"),
-    ({ params }) => {
-      const id = parseInt(params.exhibitionId, 10);
-      if (!exhibitions[id]) {
-        return HttpResponse.json({ message: "Exhibition not found" }, { status: 404 });
-      }
-      delete exhibitions[id];
-      return new HttpResponse(null, { status: 204 });
+  http.delete<
+    MswPathParameter<paths["/exhibitions/{exhibitionId}"]["delete"]["parameters"]["path"]>
+  >(endpoint("/exhibitions/{exhibitionId}"), ({ params }) => {
+    const id = parseInt(params.exhibitionId, 10);
+    if (!exhibitions[id]) {
+      return HttpResponse.json({ message: "Exhibition not found" }, { status: 404 });
     }
-  )
-]
+    delete exhibitions[id];
+    return new HttpResponse(null, { status: 204 });
+  }),
+];

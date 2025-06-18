@@ -22,7 +22,7 @@ export const arranger = [
 
   // 登録
   http.post(endpoint("/arrangers"), async ({ request }) => {
-    const data = await request.json() as CreateArrangerPayload;
+    const data = (await request.json()) as CreateArrangerPayload;
     const id = nextArrangerId++;
     arrangers[id] = { id, ...data };
     return HttpResponse.json(null, {
@@ -54,7 +54,7 @@ export const arranger = [
       if (!arrangers[id]) {
         return HttpResponse.json({ message: "Arranger not found" }, { status: 404 });
       }
-      const data = await request.json() as UpdateArrangerPayload;
+      const data = (await request.json()) as UpdateArrangerPayload;
       arrangers[id] = { id, ...data };
       return new HttpResponse(null, { status: 204 });
     }
@@ -87,21 +87,20 @@ export const arranger = [
   ),
 
   // 作者の作品詳細
-  http.get<MswPathParameter<paths["/arrangers/{arrangerId}/works/{workId}"]["get"]["parameters"]["path"]>>(
-    endpoint("/arrangers/{arrangerId}/works/{workId}"),
-    (req) => {
-      const arrangerId = parseInt(req.params.arrangerId as string, 10);
-      const workId = parseInt(req.params.workId as string, 10);
-      if (!arrangers[arrangerId]) {
-        return HttpResponse.json({ message: "Arranger not found" }, { status: 404 });
-      }
-      const filtered = Object.values(works).filter((w) => w.arranger_id === arrangerId);
-      const items = worksToWorkListItem(filtered);
-      const item = items.find((i) => i.work.id === workId);
-      if (!item) {
-        return HttpResponse.json({ message: "Work not found" }, { status: 404 });
-      }
-      return HttpResponse.json(item);
+  http.get<
+    MswPathParameter<paths["/arrangers/{arrangerId}/works/{workId}"]["get"]["parameters"]["path"]>
+  >(endpoint("/arrangers/{arrangerId}/works/{workId}"), (req) => {
+    const arrangerId = parseInt(req.params.arrangerId as string, 10);
+    const workId = parseInt(req.params.workId as string, 10);
+    if (!arrangers[arrangerId]) {
+      return HttpResponse.json({ message: "Arranger not found" }, { status: 404 });
     }
-  ),
+    const filtered = Object.values(works).filter((w) => w.arranger_id === arrangerId);
+    const items = worksToWorkListItem(filtered);
+    const item = items.find((i) => i.work.id === workId);
+    if (!item) {
+      return HttpResponse.json({ message: "Work not found" }, { status: 404 });
+    }
+    return HttpResponse.json(item);
+  }),
 ];

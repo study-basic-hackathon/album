@@ -1,10 +1,10 @@
-import { arranger } from './arranger'
-import { category } from './category'
-import { exhibition } from './exhibition'
-import { image } from './image'
-import { material } from './material'
-import { season } from './season'
-import { work } from './work'
+import { arranger } from "./arranger";
+import { category } from "./category";
+import { exhibition } from "./exhibition";
+import { image } from "./image";
+import { material } from "./material";
+import { season } from "./season";
+import { work } from "./work";
 
 export const handlers = [
   ...arranger,
@@ -13,5 +13,5 @@ export const handlers = [
   ...image,
   ...material,
   ...season,
-  ...work
+  ...work,
 ];

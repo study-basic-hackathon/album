@@ -1,28 +1,25 @@
 import { type components } from "../types/api";
 import { Link } from "react-router";
+import { useArranger } from "../hooks/arranger";
+import { useCategory } from "../hooks/category";
+import { useExhibition } from "../hooks/exhibition";
+import { useMaterials } from "../hooks/material";
+import { useSeason } from "../hooks/season";
 
-type Arranger = components["schemas"]["Arranger"];
-type Category = components["schemas"]["Category"];
-type Exhibition = components["schemas"]["Exhibition"];
-type Material = components["schemas"]["Material"];
-type Season = components["schemas"]["Season"];
 type Work = components["schemas"]["Work"];
 
-export default function WorkMetadata({
-  arranger,
-  category,
-  exhibition,
-  materialArray,
-  season,
-  work,
-}: {
-  arranger: Arranger;
-  category: Category;
-  exhibition: Exhibition;
-  materialArray: Material[];
-  season: Season;
-  work: Work;
-}) {
+export default function WorkMetadata({ work }: { work: Work }) {
+  const arranger = useArranger(work?.arranger_id);
+  const category = useCategory(work?.category_id);
+  const exhibition = useExhibition(work?.exhibition_id);
+  const materials = useMaterials(work?.material_ids);
+  const season = useSeason(work?.season_id);
+
+  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  if (!work || !arranger || !category || !exhibition || !materials || !season) {
+    return <p>作品情報の読み込み中</p>;
+  }
+
   return (
     <section className="work-metadata">
       <h2>作品情報</h2>
@@ -51,12 +48,12 @@ export default function WorkMetadata({
         </div>
         <div>
           <dt>素材</dt>
-          {materialArray.length === 0 ? (
-            <dd>不明</dd>
+          {materials.length === 0 ? (
+            <dd>登録なし</dd>
           ) : (
             <dd>
               <ul className="work-metadata__materials">
-                {materialArray.map((material) => (
+                {materials.map((material) => (
                   <li key={material.id} className="work-metadata__material">
                     <Link to={`/material/${material.id}`}>{material.name}</Link>
                   </li>

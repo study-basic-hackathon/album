@@ -1,21 +1,12 @@
 import { type components } from "../types/api";
-import { works } from "../mocks/data/works";
-import { arrangers } from "../mocks/data/arranger";
 import "./works.css"; // ToDo: CSS のインポートの変更
 import { Link, useParams } from "react-router";
+import { useArranger, useArrangerWorkListItems } from "../hooks/arranger";
 
-type Work = components["schemas"]["Work"];
 type Arranger = components["schemas"]["Arranger"];
+type Work = components["schemas"]["Work"];
 
-function getWorksForArranger(arrangerId: number): Work[] {
-  return Object.values(works).filter((work) => work.arranger_id === arrangerId);
-}
-
-function ArrangerImages({ arranger_id }: { arranger_id: number }) {
-  if (!arranger_id) {
-    return <p>No arranger selected.</p>;
-  }
-  const arrangerWorks = getWorksForArranger(arranger_id);
+function ArrangerImages({ arrangerWorks }: { arrangerWorks: Work[] }) {
   return (
     <>
       <div>
@@ -25,7 +16,7 @@ function ArrangerImages({ arranger_id }: { arranger_id: number }) {
               <Link to={`work/${work.id}`}>
                 <img
                   className="works-image-list__image"
-                  src={work.image_urls[0]}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/images/${work.image_ids[0]}`}
                   alt={work.title ? work.title : "無題の作品"}
                 />
               </Link>
@@ -39,12 +30,25 @@ function ArrangerImages({ arranger_id }: { arranger_id: number }) {
 
 export default function Arranger() {
   const params = useParams();
-  const arranger_id = Number(params.arranger_id); // ToDo: arranger_id が無効な値のときのエラーハンドリング
+  const arrangerId = Number(params.arrangerId);
+  const arranger = useArranger(arrangerId);
+  const arrangerWorks = Object.values(useArrangerWorkListItems(arrangerId)).map(
+    (item) => item.work
+  );
+
+  if (!arranger || arrangerWorks.length === 0) {
+    return (
+      <main>
+        <h1>指定された作者は存在しません</h1>
+      </main>
+    );
+  }
+
   return (
     <>
       <main>
-        <h1>{arrangers[arranger_id].name}の作品一覧</h1>
-        <ArrangerImages arranger_id={arranger_id} />
+        <h1>{arranger.name}の作品一覧</h1>
+        <ArrangerImages arrangerWorks={arrangerWorks} />
       </main>
     </>
   );

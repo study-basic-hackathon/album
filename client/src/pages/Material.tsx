@@ -1,21 +1,12 @@
 import { type components } from "../types/api";
-import { works } from "../mocks/data/works";
-import { materials } from "../mocks/data/materials";
 import "./works.css"; // ToDo: CSS のインポートの変更
 import { Link, useParams } from "react-router";
+import { useMaterial, useMaterialWorkListItems } from "../hooks/material";
 
 type Work = components["schemas"]["Work"];
 type Material = components["schemas"]["Material"];
 
-function getWorksForMaterial(materialId: number): Work[] {
-  return Object.values(works).filter((work) => work.material_ids.includes(materialId));
-}
-
-function MaterialImages({ material_id }: { material_id: number }) {
-  if (!material_id) {
-    return <p>No material selected.</p>;
-  }
-  const materialWorks = getWorksForMaterial(material_id);
+function MaterialImages({ materialWorks }: { materialWorks: Work[] }) {
   return (
     <>
       <div>
@@ -25,7 +16,7 @@ function MaterialImages({ material_id }: { material_id: number }) {
               <Link to={`work/${work.id}`}>
                 <img
                   className="works-image-list__image"
-                  src={work.image_urls[0]}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/images/${work.image_ids[0]}`}
                   alt={work.title ? work.title : "無題の作品"}
                 />
               </Link>
@@ -39,13 +30,25 @@ function MaterialImages({ material_id }: { material_id: number }) {
 
 export default function Material() {
   const params = useParams();
-  const material_id = Number(params.material_id); // ToDo: material_id が無効な値のときのエラーハンドリング
+  const materialId = Number(params.materialId);
+  const material = useMaterial(materialId);
+  const materialWorks: Work[] = Object.values(useMaterialWorkListItems(materialId)).map(
+    (item) => item.work
+  );
+
+  if (!material || materialWorks.length === 0) {
+    return (
+      <main>
+        <h1>指定された素材は存在しません</h1>
+      </main>
+    );
+  }
 
   return (
     <>
       <main>
-        <h1>{materials[material_id].name}の作品一覧</h1>
-        <MaterialImages material_id={material_id} />
+        <h1>{material.name}の作品一覧</h1>
+        <MaterialImages materialWorks={materialWorks} />
       </main>
     </>
   );

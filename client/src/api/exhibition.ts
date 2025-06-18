@@ -1,4 +1,4 @@
-import { type paths, type components } from "../types/api";
+import { type paths } from "../types/api";
 import { endpoint } from "./util";
 
 export async function getExhibitions(): Promise<

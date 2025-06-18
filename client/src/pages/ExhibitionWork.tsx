@@ -1,9 +1,5 @@
 import { type components } from "../types/api";
-import { useArranger } from "../hooks/arranger";
-import { useCategory } from "../hooks/category";
 import { useExhibition } from "../hooks/exhibition";
-import { useMaterials } from "../hooks/material";
-import { useSeason } from "../hooks/season";
 import { useExhibitionWorkListItem } from "../hooks/exhibition";
 import "./work.css";
 import { Link, useParams } from "react-router";
@@ -16,7 +12,6 @@ type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 function WorkHeading({ exhibition }: { exhibition: Exhibition }) {
   const title: string = exhibition.name;
   const worksUrl: string = `/exhibition/${exhibition.id}`;
-
   return (
     <>
       <h1>{title}の作品</h1>
@@ -53,14 +48,11 @@ export default function ExhibitionWork() {
 
   const workListItem = useExhibitionWorkListItem(exhibitionId, workId);
   const work = workListItem?.work;
-  const arranger = useArranger(work?.arranger_id);
-  const category = useCategory(work?.category_id);
+  const navigation = workListItem?.navigation;
   const exhibition = useExhibition(work?.exhibition_id);
-  const materials = useMaterials(work?.material_ids);
-  const season = useSeason(work?.season_id);
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
-  if (!workListItem || !arranger || !category || !exhibition || !materials || !season) {
+  if (!workListItem || !work || !navigation || !exhibition) {
     return (
       <main>
         <h1>指定された作品は存在しません</h1>
@@ -72,16 +64,9 @@ export default function ExhibitionWork() {
     <>
       <main>
         <WorkHeading exhibition={exhibition} />
-        <WorkImages work={workListItem.work} />
-        <AdjacentNavigation exhibitionId={exhibitionId} navigation={workListItem.navigation} />
-        <WorkMetadata
-          arranger={arranger}
-          category={category}
-          exhibition={exhibition}
-          materialArray={materials}
-          season={season}
-          work={workListItem.work}
-        />
+        <WorkImages work={work} />
+        <AdjacentNavigation exhibitionId={exhibitionId} navigation={navigation} />
+        <WorkMetadata work={work} />
       </main>
     </>
   );

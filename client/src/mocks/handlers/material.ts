@@ -24,7 +24,7 @@ export const material = [
 
   // 登録
   http.post(endpoint("/materials"), async ({ request }) => {
-    const data = await request.json() as CreateMaterialPayload;
+    const data = (await request.json()) as CreateMaterialPayload;
     const id = nextMaterialId++;
     materials[id] = { id, ...data };
     return HttpResponse.json(null, {
@@ -56,7 +56,7 @@ export const material = [
       if (!materials[id]) {
         return HttpResponse.json({ message: "Material not found" }, { status: 404 });
       }
-      const data = await request.json() as UpdateMaterialPayload;
+      const data = (await request.json()) as UpdateMaterialPayload;
       materials[id] = { id, ...data };
       return new HttpResponse(null, { status: 204 });
     }
@@ -83,31 +83,26 @@ export const material = [
       if (!materials[id]) {
         return HttpResponse.json({ message: "Material not found" }, { status: 404 });
       }
-      const filtered = Object.values(works).filter((work) =>
-        work.material_ids.includes(id)
-      );
+      const filtered = Object.values(works).filter((work) => work.material_ids.includes(id));
       return HttpResponse.json(worksToWorkListItem(filtered));
     }
   ),
 
   // 作品詳細取得
-  http.get<MswPathParameter<paths["/materials/{materialId}/works/{workId}"]["get"]["parameters"]["path"]>>(
-    endpoint("/materials/{materialId}/works/{workId}"),
-    (req) => {
-      const materialId = parseInt(req.params.materialId as string, 10);
-      const workId = parseInt(req.params.workId as string, 10);
-      if (!materials[materialId]) {
-        return HttpResponse.json({ message: "Material not found" }, { status: 404 });
-      }
-      const filtered = Object.values(works).filter((work) =>
-        work.material_ids.includes(materialId)
-      );
-      const items = worksToWorkListItem(filtered);
-      const item = items.find((i) => i.work.id === workId);
-      if (!item) {
-        return HttpResponse.json({ message: "Work not found" }, { status: 404 });
-      }
-      return HttpResponse.json(item);
+  http.get<
+    MswPathParameter<paths["/materials/{materialId}/works/{workId}"]["get"]["parameters"]["path"]>
+  >(endpoint("/materials/{materialId}/works/{workId}"), (req) => {
+    const materialId = parseInt(req.params.materialId as string, 10);
+    const workId = parseInt(req.params.workId as string, 10);
+    if (!materials[materialId]) {
+      return HttpResponse.json({ message: "Material not found" }, { status: 404 });
     }
-  ),
+    const filtered = Object.values(works).filter((work) => work.material_ids.includes(materialId));
+    const items = worksToWorkListItem(filtered);
+    const item = items.find((i) => i.work.id === workId);
+    if (!item) {
+      return HttpResponse.json({ message: "Work not found" }, { status: 404 });
+    }
+    return HttpResponse.json(item);
+  }),
 ];

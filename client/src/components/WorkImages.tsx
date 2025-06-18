@@ -2,6 +2,9 @@ import { type components } from "../types/api";
 type Work = components["schemas"]["Work"];
 
 export default function WorkImages({ work }: { work: Work }) {
+  if (!work || !work.image_ids || work.image_ids.length === 0) {
+    return <p>この作品には写真がありません。</p>;
+  }
   return (
     <>
       <h2>作品写真</h2>

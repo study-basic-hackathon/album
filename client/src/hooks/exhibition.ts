@@ -40,7 +40,7 @@ export function useExhibition(exhibitionId?: number): Exhibition | null {
       }
     }
     if (exhibitionId === undefined) {
-      setExhibition(null); // exhibitionIdが未定義の場合は null を設定
+      setExhibition(null); // exhibitionId が未定義の場合は null を設定
       return;
     }
     fetchExhibition(exhibitionId);
@@ -61,7 +61,7 @@ export function useExhibitionWorkListItems(exhibitionId?: number): Record<number
       }
     }
     if (exhibitionId === undefined) {
-      setWorkListItems({}); // exhibitionIdが未定義の場合は空のオブジェクトを設定
+      setWorkListItems({}); // exhibitionId が未定義の場合は空のオブジェクトを設定
       return;
     }
     fetchExhibitionWorkListItems(exhibitionId);

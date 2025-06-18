@@ -14,7 +14,7 @@ let nextWorkId = Math.max(...Object.keys(works).map(Number)) + 1;
 export const work = [
   // POST /works - 作品の登録
   http.post(endpoint("/works"), async ({ request }) => {
-    const data = await request.json() as CreateWorkPayload;
+    const data = (await request.json()) as CreateWorkPayload;
     const id = nextWorkId++;
     works[id] = {
       id,
@@ -40,7 +40,7 @@ export const work = [
     endpoint("/works/{workId}"),
     (req) => {
       const id = parseInt(req.params.workId as string, 10);
-      console.log({id, works});
+      console.log({ id, works });
       const work = works[id];
       if (!work) {
         return HttpResponse.json({ message: "Work not found" }, { status: 404 });
@@ -57,7 +57,7 @@ export const work = [
       if (!works[id]) {
         return HttpResponse.json({ message: "Work not found" }, { status: 404 });
       }
-      const data = await request.json() as UpdateWorkPayload;
+      const data = (await request.json()) as UpdateWorkPayload;
       works[id] = {
         ...works[id],
         title: data.title ?? null,
