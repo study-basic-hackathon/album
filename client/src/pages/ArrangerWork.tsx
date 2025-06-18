@@ -1,10 +1,6 @@
 import { type components } from "../types/api";
 import { useArranger } from "../hooks/arranger";
-import { useCategory } from "../hooks/category";
-import { useExhibition } from "../hooks/exhibition";
-import { useMaterials } from "../hooks/material";
-import { useSeason } from "../hooks/season";
-import { useArrangerWorkListItem } from "@/hooks/arranger";
+import { useArrangerWorkListItem } from "../hooks/arranger";
 import "./work.css";
 import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
@@ -54,13 +50,9 @@ export default function ArrangerWork() {
   const workListItem = useArrangerWorkListItem(arrangerId, workId);
   const work = workListItem?.work;
   const arranger = useArranger(work?.arranger_id);
-  const category = useCategory(work?.category_id);
-  const exhibition = useExhibition(work?.exhibition_id);
-  const materials = useMaterials(work?.material_ids);
-  const season = useSeason(work?.season_id);
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
-  if (!workListItem || !arranger || !category || !exhibition || !materials || !season) {
+  if (!workListItem || !work || !arranger) {
     return (
       <main>
         <h1>指定された作品は存在しません</h1>
@@ -75,11 +67,6 @@ export default function ArrangerWork() {
         <WorkImages work={workListItem.work} />
         <AdjacentNavigation arrangerId={arrangerId} navigation={workListItem?.navigation} />
         <WorkMetadata
-          arranger={arranger}
-          category={category}
-          exhibition={exhibition}
-          materials={materials}
-          season={season}
           work={workListItem.work}
         />
       </main>
