@@ -12,7 +12,6 @@ type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 function WorkHeading({ arranger }: { arranger: Arranger }) {
   const title: string = arranger.name;
   const worksUrl: string = `/arranger/${arranger.id}`;
-
   return (
     <>
       <h1>{title}の作品</h1>
@@ -49,10 +48,11 @@ export default function ArrangerWork() {
 
   const workListItem = useArrangerWorkListItem(arrangerId, workId);
   const work = workListItem?.work;
+  const navigation = workListItem?.navigation;
   const arranger = useArranger(work?.arranger_id);
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
-  if (!workListItem || !work || !arranger) {
+  if (!workListItem || !work || !navigation || !arranger) {
     return (
       <main>
         <h1>指定された作品は存在しません</h1>
@@ -65,10 +65,8 @@ export default function ArrangerWork() {
       <main>
         <WorkHeading arranger={arranger} />
         <WorkImages work={workListItem.work} />
-        <AdjacentNavigation arrangerId={arrangerId} navigation={workListItem?.navigation} />
-        <WorkMetadata
-          work={workListItem.work}
-        />
+        <AdjacentNavigation arrangerId={arrangerId} navigation={navigation} />
+        <WorkMetadata work={workListItem.work} />
       </main>
     </>
   );

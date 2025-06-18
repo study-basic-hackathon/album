@@ -1,21 +1,12 @@
 import { type components } from "../types/api";
-import { works } from "../mocks/data/works";
-import { seasons } from "../mocks/data/seasons";
 import "./works.css"; // ToDo: CSS のインポートの変更
 import { Link, useParams } from "react-router";
+import { useSeason, useSeasonWorkListItems } from "../hooks/season";
 
 type Work = components["schemas"]["Work"];
 type Season = components["schemas"]["Season"];
 
-function getWorksForSeason(seasonId: number): Work[] {
-  return Object.values(works).filter((work) => work.season_id === seasonId);
-}
-
-function SeasonImages({ season_id }: { season_id: number }) {
-  if (!season_id) {
-    return <p>No season selected.</p>;
-  }
-  const seasonWorks = getWorksForSeason(season_id);
+function SeasonImages({ seasonWorks }: { seasonWorks: Work[] }) {
   return (
     <>
       <div>
@@ -25,7 +16,7 @@ function SeasonImages({ season_id }: { season_id: number }) {
               <Link to={`work/${work.id}`}>
                 <img
                   className="works-image-list__image"
-                  src={work.image_urls[0]}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/images/${work.image_ids[0]}`}
                   alt={work.title ? work.title : "無題の作品"}
                 />
               </Link>
@@ -38,13 +29,25 @@ function SeasonImages({ season_id }: { season_id: number }) {
 }
 export default function Season() {
   const params = useParams();
-  const season_id = Number(params.season_id); // ToDo: season_id が無効な値のときのエラーハンドリング
+  const seasonId = Number(params.seasonId);
+  const season = useSeason(seasonId);
+  const seasonWorks: Work[] = Object.values(useSeasonWorkListItems(seasonId)).map(
+    (item) => item.work
+  );
+
+  if (!season || seasonWorks.length === 0) {
+    return (
+      <main>
+        <h1>指定された季節は存在しません</h1>
+      </main>
+    );
+  }
 
   return (
     <>
       <main>
-        <h1>{seasons[season_id].name}の作品一覧</h1>
-        <SeasonImages season_id={season_id} />
+        <h1>{season.name}の作品一覧</h1>
+        <SeasonImages seasonWorks={seasonWorks} />
       </main>
     </>
   );

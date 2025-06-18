@@ -23,15 +23,14 @@ export default function App() {
           <Route path="/exhibition/:exhibitionId" element={<Exhibition />} />
           <Route path="/arranger/:arrangerId/work/:workId" element={<ArrangerWork />} />
           <Route path="/arranger/:arrangerId" element={<Arranger />} />
-          <Route path="/category/:category_id/work/:work_id" element={<CategoryWork />} />
-          <Route path="/category/:category_id" element={<Category />} />
-          <Route path="/material/:material_id/work/:work_id" element={<MaterialWork />} />
-          <Route path="/material/:material_id" element={<Material />} />
-          <Route path="/season/:season_id/work/:work_id" element={<SeasonWork />} />
-          <Route path="/season/:season_id" element={<Season />} />
+          <Route path="/category/:categoryId/work/:workId" element={<CategoryWork />} />
+          <Route path="/category/:categoryId" element={<Category />} />
+          <Route path="/material/:materialId/work/:workId" element={<MaterialWork />} />
+          <Route path="/material/:materialId" element={<Material />} />
+          <Route path="/season/:seasonId/work/:workId" element={<SeasonWork />} />
+          <Route path="/season/:seasonId" element={<Season />} />
         </Routes>
       </>
     </BrowserRouter>
   );
 }
-// ToDo: snake_case で命名された変数を camelCase に直す

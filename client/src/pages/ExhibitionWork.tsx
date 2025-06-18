@@ -12,7 +12,6 @@ type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 function WorkHeading({ exhibition }: { exhibition: Exhibition }) {
   const title: string = exhibition.name;
   const worksUrl: string = `/exhibition/${exhibition.id}`;
-
   return (
     <>
       <h1>{title}の作品</h1>
@@ -49,10 +48,11 @@ export default function ExhibitionWork() {
 
   const workListItem = useExhibitionWorkListItem(exhibitionId, workId);
   const work = workListItem?.work;
+  const navigation = workListItem?.navigation;
   const exhibition = useExhibition(work?.exhibition_id);
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
-  if (!workListItem || !work  || !exhibition) {
+  if (!workListItem || !work || !navigation || !exhibition) {
     return (
       <main>
         <h1>指定された作品は存在しません</h1>
@@ -65,10 +65,8 @@ export default function ExhibitionWork() {
       <main>
         <WorkHeading exhibition={exhibition} />
         <WorkImages work={work} />
-        <AdjacentNavigation exhibitionId={exhibitionId} navigation={workListItem.navigation} />
-        <WorkMetadata
-          work={work}
-        />
+        <AdjacentNavigation exhibitionId={exhibitionId} navigation={navigation} />
+        <WorkMetadata work={work} />
       </main>
     </>
   );
