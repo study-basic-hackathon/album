@@ -1,80 +1,86 @@
 import { type components } from "../types/api";
-import { arrangers } from "../mocks/data/arranger";
-import { categories } from "../mocks/data/categories";
-import { exhibitions } from "../mocks/data/exhibitions";
-import { materials } from "../mocks/data/materials";
-import { seasons } from "../mocks/data/seasons";
-import { works } from "../mocks/data/works";
+import { useArranger } from "../hooks/arranger";
+import { useCategory } from "../hooks/category";
+import { useExhibition } from "../hooks/exhibition";
+import { useMaterials } from "../hooks/material";
+import { useSeason } from "../hooks/season";
+import { useArrangerWorkListItem } from "@/hooks/arranger";
 import "./work.css";
-import { useParams, Link, NavLink } from "react-router";
+import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 
 type Arranger = components["schemas"]["Arranger"];
-type Category = components["schemas"]["Category"];
-type Exhibition = components["schemas"]["Exhibition"];
-type Material = components["schemas"]["Material"];
-type Season = components["schemas"]["Season"];
-type Work = components["schemas"]["Work"];
 type WorkListNavigation = components["schemas"]["WorkListNavigation"];
-
-const workListNavigation: WorkListNavigation = {
-  previous: null,
-  next: 2,
-}; // workListNavigation は仮のデータ
 
 function WorkHeading({ arranger }: { arranger: Arranger }) {
   const title: string = arranger.name;
-  const works_url: string = `/arranger/${arranger.id}`;
+  const worksUrl: string = `/arranger/${arranger.id}`;
 
   return (
     <>
       <h1>{title}の作品</h1>
       <nav>
-        <Link to={works_url}>作品一覧へ戻る</Link>
+        <Link to={worksUrl}>作品一覧へ戻る</Link>
       </nav>
     </>
   );
 }
 
-// ToDo: 作品ページ共通で使えるようにコンポーネント化する
-function AdjacentNavigation({ workListNavigation }: { workListNavigation: WorkListNavigation }) {
+function AdjacentNavigation({
+  arrangerId,
+  navigation,
+}: {
+  arrangerId: number;
+  navigation: WorkListNavigation;
+}) {
+  const previousWorkUrl: string = `/arranger/${arrangerId}/work/${navigation.previous}`;
+  const nextWorkUrl: string = `/arranger/${arrangerId}/work/${navigation.next}`;
   return (
     <nav className="adjacent-nav">
       <ul>
-        <li>
-          <a href={""}>前の作品</a>
-        </li>
-        <li>
-          <a href={""}>次の作品</a>
-        </li>
+        <li>{navigation.previous ? <a href={previousWorkUrl}>前の作品</a> : <span></span>}</li>
+        <li>{navigation.next ? <a href={nextWorkUrl}>次の作品</a> : <span></span>}</li>
       </ul>
     </nav>
   );
 }
 
 export default function ArrangerWork() {
-  const { arranger_id, work_id } = useParams(); // arranger_id はまだ使わないが、API 関連の実装時におそらく必要になる
-  const work: Work = works[Number(work_id)]; // ToDo: work_id が無効な値のときのエラーハンドリング
-  const arranger: Arranger = arrangers[work.arranger_id];
-  const category: Category = categories[work.category_id];
-  const exhibition: Exhibition = exhibitions[work.exhibition_id]; // ToDo: exhibition_id が null の場合の処理
-  const materialArray: Material[] = work.material_ids.map((material_id) => materials[material_id]);
-  const season: Season = seasons[work.season_id];
+  const params = useParams();
+  const arrangerId = Number(params.arrangerId);
+  const workId = Number(params.workId);
+
+  const workListItem = useArrangerWorkListItem(arrangerId, workId);
+  const work = workListItem?.work;
+  const arranger = useArranger(work?.arranger_id);
+  const category = useCategory(work?.category_id);
+  const exhibition = useExhibition(work?.exhibition_id);
+  const materials = useMaterials(work?.material_ids);
+  const season = useSeason(work?.season_id);
+
+  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  if (!workListItem || !arranger || !category || !exhibition || !materials || !season) {
+    return (
+      <main>
+        <h1>指定された作品は存在しません</h1>
+      </main>
+    );
+  }
 
   return (
     <>
       <main>
         <WorkHeading arranger={arranger} />
-        <WorkImages work={work} />
-        <AdjacentNavigation workListNavigation={workListNavigation} />
+        <WorkImages work={workListItem.work} />
+        <AdjacentNavigation arrangerId={arrangerId} navigation={workListItem?.navigation} />
         <WorkMetadata
           arranger={arranger}
           category={category}
           exhibition={exhibition}
-          materialArray={materialArray}
+          materials={materials}
           season={season}
-          work={work}
+          work={workListItem.work}
         />
       </main>
     </>

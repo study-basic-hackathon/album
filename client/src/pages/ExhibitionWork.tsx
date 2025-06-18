@@ -78,7 +78,7 @@ export default function ExhibitionWork() {
           arranger={arranger}
           category={category}
           exhibition={exhibition}
-          materialArray={materials}
+          materials={materials}
           season={season}
           work={workListItem.work}
         />

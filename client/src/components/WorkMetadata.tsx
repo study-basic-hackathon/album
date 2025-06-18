@@ -12,14 +12,14 @@ export default function WorkMetadata({
   arranger,
   category,
   exhibition,
-  materialArray,
+  materials,
   season,
   work,
 }: {
   arranger: Arranger;
   category: Category;
   exhibition: Exhibition;
-  materialArray: Material[];
+  materials: Material[];
   season: Season;
   work: Work;
 }) {
@@ -51,12 +51,12 @@ export default function WorkMetadata({
         </div>
         <div>
           <dt>素材</dt>
-          {materialArray.length === 0 ? (
-            <dd>不明</dd>
+          {materials.length === 0 ? (
+            <dd>登録なし</dd>
           ) : (
             <dd>
               <ul className="work-metadata__materials">
-                {materialArray.map((material) => (
+                {materials.map((material) => (
                   <li key={material.id} className="work-metadata__material">
                     <Link to={`/material/${material.id}`}>{material.name}</Link>
                   </li>

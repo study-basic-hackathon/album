@@ -21,7 +21,7 @@ export default function App() {
           <Route path="/" element={<Index />} />
           <Route path="/exhibition/:exhibitionId/work/:workId" element={<ExhibitionWork />} />
           <Route path="/exhibition/:exhibitionId" element={<Exhibition />} />
-          <Route path="/arranger/:arranger_id/work/:work_id" element={<ArrangerWork />} />
+          <Route path="/arranger/:arrangerId/work/:workId" element={<ArrangerWork />} />
           <Route path="/arranger/:arrangerId" element={<Arranger />} />
           <Route path="/category/:category_id/work/:work_id" element={<CategoryWork />} />
           <Route path="/category/:category_id" element={<Category />} />
