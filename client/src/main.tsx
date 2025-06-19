@@ -10,6 +10,9 @@ async function setup() {
       onUnhandledRequest: "bypass",
     });
   }
+  await new Promise((resolve) => {
+    setTimeout(resolve, 100);
+  });
 }
 
 setup().then(() => {

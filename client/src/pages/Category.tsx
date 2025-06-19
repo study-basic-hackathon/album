@@ -1,21 +1,12 @@
 import { type components } from "../types/api";
-import { works } from "../mocks/data/works";
-import { categories } from "../mocks/data/categories";
 import "./works.css"; // ToDo: CSS のインポートの変更
 import { Link, useParams } from "react-router";
+import { useCategory, useCategoryWorkListItems } from "../hooks/category";
 
 type Work = components["schemas"]["Work"];
 type Category = components["schemas"]["Category"];
 
-function getWorksForCategory(categoryId: number): Work[] {
-  return Object.values(works).filter((work) => work.category_id === categoryId);
-}
-
-function CategoryImages({ category_id }: { category_id: number }) {
-  if (!category_id) {
-    return <p>No category selected.</p>;
-  }
-  const categoryWorks = getWorksForCategory(category_id);
+function CategoryImages({ categoryWorks }: { categoryWorks: Work[] }) {
   return (
     <>
       <div>
@@ -25,7 +16,7 @@ function CategoryImages({ category_id }: { category_id: number }) {
               <Link to={`work/${work.id}`}>
                 <img
                   className="works-image-list__image"
-                  src={work.image_urls[0]}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/images/${work.image_ids[0]}`}
                   alt={work.title ? work.title : "無題の作品"}
                 />
               </Link>
@@ -39,13 +30,25 @@ function CategoryImages({ category_id }: { category_id: number }) {
 
 export default function Category() {
   const params = useParams();
-  const category_id = Number(params.category_id); // ToDo: category_id が無効な値のときのエラーハンドリング
+  const categoryId = Number(params.categoryId);
+  const category = useCategory(categoryId);
+  const categoryWorks: Work[] = Object.values(useCategoryWorkListItems(categoryId)).map(
+    (item) => item.work
+  );
+
+  if (!category || categoryWorks.length === 0) {
+    return (
+      <main>
+        <h1>指定されたカテゴリーは存在しません</h1>
+      </main>
+    );
+  }
 
   return (
     <>
       <main>
-        <h1>{categories[category_id].name}の作品一覧</h1>
-        <CategoryImages category_id={category_id} />
+        <h1>{category.name}の作品一覧</h1>
+        <CategoryImages categoryWorks={categoryWorks} />
       </main>
     </>
   );

@@ -512,7 +512,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/works/{workId}/images": {
+  "/images": {
     parameters: {
       query?: never;
       header?: never;
@@ -522,31 +522,35 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * 作品の画像の登録
-     * @description 作品に画像を登録する
+     * 画像の登録
+     * @description 画像を登録する
      */
-    post: operations["uploadWorkImage"];
+    post: operations["uploadImage"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/works/{workId}/images/{imageId}": {
+  "/images/{imageId}": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    /**
+     * 作品の画像の取得
+     * @description 作品の画像を取得する
+     */
+    get: operations["getImage"];
     put?: never;
     post?: never;
     /**
-     * 作品の画像の削除
-     * @description 作品の画像を削除する
+     * 画像の削除
+     * @description 画像を削除する
      */
-    delete: operations["deleteWorkImage"];
+    delete: operations["deleteImage"];
     options?: never;
     head?: never;
     patch?: never;
@@ -589,9 +593,9 @@ export interface components {
      *       ],
      *       "season_id": 1,
      *       "category_id": 1,
-     *       "image_urls": [
-     *         "https://example.com/image1",
-     *         "https://example.com/image2"
+     *       "image_ids": [
+     *         1,
+     *         2
      *       ]
      *     } */
     Work: {
@@ -609,8 +613,8 @@ export interface components {
       material_ids: number[];
       /** @description カテゴリのID */
       category_id: number;
-      /** @description 作品の画像URLのリスト */
-      image_urls: string[];
+      /** @description 作品の画像のIDのリスト */
+      image_ids: number[];
       /**
        * Format: date-time
        * @description 作品の登録日時
@@ -718,11 +722,17 @@ export interface components {
      *         3
      *       ],
      *       "season_id": 1,
-     *       "category_id": 1
+     *       "category_id": 1,
+     *       "image_ids": [
+     *         1,
+     *         2
+     *       ]
      *     } */
     CreateWorkPayload: {
       /** @description 作品のタイトル */
       title: string | null;
+      /** @description 花展のID */
+      exhibition_id: number;
       /** @description 作者のID */
       arranger_id: number;
       /** @description 使用された材料のIDのリスト */
@@ -731,6 +741,8 @@ export interface components {
       season_id: number;
       /** @description カテゴリのID */
       category_id: number;
+      /** @description 作品の画像のIDのリスト */
+      image_ids: number[];
     };
     /** @example {
      *       "title": "桜のアレンジメント",
@@ -741,7 +753,11 @@ export interface components {
      *         3
      *       ],
      *       "season_id": 1,
-     *       "category_id": 1
+     *       "category_id": 1,
+     *       "image_ids": [
+     *         1,
+     *         2
+     *       ]
      *     } */
     UpdateWorkPayload: {
       /** @description 作品のタイトル */
@@ -754,6 +770,8 @@ export interface components {
       season_id: number;
       /** @description カテゴリのID */
       category_id: number;
+      /** @description 作品の画像のIDのリスト */
+      image_ids: number[];
     };
     /** @example {
      *       "name": "山田太郎"
@@ -805,6 +823,13 @@ export interface components {
       name: string;
     };
     /** @example {
+     *       "name": "春"
+     *     } */
+    UpdateSeasonPayload: {
+      /** @description 季節の名前 */
+      name: string;
+    };
+    /** @example {
      *       "id": 1,
      *       "name": "春"
      *     } */
@@ -812,7 +837,7 @@ export interface components {
       /** @description 季節の名前 */
       name: string;
     };
-    CreateWorkImagePayload: {
+    UploadImagePayload: {
       /**
        * Format: binary
        * @description 作品の画像ファイル
@@ -868,6 +893,15 @@ export interface components {
       };
       content: {
         "application/json": components["schemas"]["Exhibition"][];
+      };
+    };
+    /** @description 単一の作品の情報 */
+    WorkResponse: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": components["schemas"]["Work"];
       };
     };
     /** @description 花展の作品の一覧 */
@@ -1664,7 +1698,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Season"];
+        "application/json": components["schemas"]["UpdateSeasonPayload"];
       };
     };
     responses: {
@@ -1769,7 +1803,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      200: components["responses"]["WorkListItemResponse"];
+      200: components["responses"]["WorkResponse"];
       404: components["responses"]["NotFound"];
       default: components["responses"]["UnexpectedError"];
     };
@@ -1825,19 +1859,16 @@ export interface operations {
       default: components["responses"]["UnexpectedError"];
     };
   };
-  uploadWorkImage: {
+  uploadImage: {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        /** @description 作品のID */
-        workId: components["parameters"]["WorkIdParam"];
-      };
+      path?: never;
       cookie?: never;
     };
     requestBody: {
       content: {
-        "multipart/form-data": components["schemas"]["CreateWorkImagePayload"];
+        "multipart/form-data": components["schemas"]["UploadImagePayload"];
       };
     };
     responses: {
@@ -1854,13 +1885,36 @@ export interface operations {
       default: components["responses"]["UnexpectedError"];
     };
   };
-  deleteWorkImage: {
+  getImage: {
     parameters: {
       query?: never;
       header?: never;
       path: {
-        /** @description 作品のID */
-        workId: components["parameters"]["WorkIdParam"];
+        /** @description 画像のID */
+        imageId: components["parameters"]["ImageIdParam"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 画像が取得された */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "image/jpeg": string;
+        };
+      };
+      404: components["responses"]["NotFound"];
+      default: components["responses"]["UnexpectedError"];
+    };
+  };
+  deleteImage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
         /** @description 画像のID */
         imageId: components["parameters"]["ImageIdParam"];
       };

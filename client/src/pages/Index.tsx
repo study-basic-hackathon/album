@@ -1,6 +1,7 @@
-import { exhibitions } from "../mocks/data/exhibitions";
+// import { exhibitions } from "../mocks/data/exhibitions";
 import type { components } from "../types/api";
 import { Link } from "react-router";
+import { useExhibitions } from "../hooks/exhibition";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
@@ -40,7 +41,10 @@ function ExhibitionList({ exhibitions }: { exhibitions: Record<number, Exhibitio
     </>
   );
 }
+
 export default function Index() {
+  const exhibitions = useExhibitions();
+
   return (
     <>
       <main>

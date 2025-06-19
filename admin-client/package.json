@@ -1,0 +1,47 @@
+{
+  "name": "admin-client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "generate-schema": "npx openapi-typescript ../docs/api.yml --output src/types/api.ts",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.10",
+    "@tanstack/react-query": "^5.80.7",
+    "@tanstack/react-table": "^8.21.3",
+    "data-fns": "^1.1.0",
+    "date-fns": "^4.1.0",
+    "msw": "^2.10.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.57.0",
+    "react-icons": "^5.5.0",
+    "react-router": "^7.6.2",
+    "tailwind-variants": "^1.0.0",
+    "tailwindcss": "^4.1.10"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

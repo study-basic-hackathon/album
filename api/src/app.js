@@ -1,4 +1,6 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
 import cors from "cors";
 import exhibitionRoutes from './routers/exhibition.js';
 import arrangerRoutes from './routers/arranger.js';

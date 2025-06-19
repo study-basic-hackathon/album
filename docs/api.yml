@@ -663,7 +663,7 @@ paths:
         - $ref: '#/components/parameters/WorkIdParam'
       responses:
         '200':
-          $ref: '#/components/responses/WorkListItemResponse'
+          $ref: '#/components/responses/WorkResponse'
         '404':
           $ref: '#/components/responses/NotFound'
         default:
@@ -736,7 +736,7 @@ paths:
   /images/{imageId}:
     get:
       tags:
-        - work
+        - image
       summary: 作品の画像の取得
       description: 作品の画像を取得する
       operationId: getImage
@@ -756,7 +756,7 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
     delete:
       tags:
-        - work
+        - image
       summary: 画像の削除
       description: 画像を削除する
       operationId: deleteImage
@@ -991,6 +991,9 @@ components:
           type: string
           description: 作品のタイトル
           nullable: true
+        exhibition_id:
+          type: integer
+          description: 花展のID
         arranger_id:
           type: integer
           description: 作者のID
@@ -1012,6 +1015,7 @@ components:
           description: 作品の画像のIDのリスト
       required:
         - title
+        - exhibition_id
         - arranger_id
         - material_ids
         - season_id
@@ -1045,18 +1049,25 @@ components:
         category_id:
           type: integer
           description: カテゴリのID
+        image_ids:
+          type: array
+          items:
+            type: integer
+          description: 作品の画像のIDのリスト
       required:
         - title
         - arranger_id
         - material_ids
         - season_id
         - category_id
+        - image_ids
       example:
         title: "桜のアレンジメント"
         arranger_id: 1
         material_ids: [1, 2, 3]
         season_id: 1
         category_id: 1
+        image_ids: [1, 2]
     CreateArrangerPayload:
       type: object
       properties:
@@ -1262,6 +1273,12 @@ components:
                 name: "冬の花展"
                 started_date: "2023-12-01"
                 ended_date: "2023-12-31"
+    WorkResponse:
+      description: 単一の作品の情報
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Work'
     WorkListItemsResponse:
       description: 花展の作品の一覧
       content:
