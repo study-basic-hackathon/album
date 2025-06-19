@@ -1,7 +1,6 @@
 import { pool } from "../db.js";
 import { getFormattedWorkListByCondition } from "./formattedWorkList.js";
 
-//華展一覧の取得
 export async function findAllExhibitions() {
     const result = await pool.query(`
       SELECT
@@ -17,7 +16,6 @@ export async function findAllExhibitions() {
     return result.rows;
 };
 
-//華展の作品の取得
 export async function findExhibitionById(exhibitionId) {
     const result = await pool.query(`
       SELECT

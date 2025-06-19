@@ -9,13 +9,13 @@ export async function getFormattedWorkListByCondition({ whereClause, whereParams
       ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
       wk.category_id,
       wk.season_id,
-      ARRAY_AGG(DISTINCT ie.url) AS image_urls,
+      ARRAY_AGG(DISTINCT ie.id) AS image_ids,
       TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
     FROM
       work AS wk
     JOIN
       work_material AS wm ON wk.id = wm.work_id
-    JOIN
+    LEFT JOIN
       image AS ie ON wk.id = ie.work_id
     WHERE
       ${whereClause}
@@ -50,7 +50,7 @@ async function formatWorksWithNavigation(works) {
         material_ids: work.material_ids,
         season_id: work.season_id,
         category_id: work.category_id,
-        image_urls: work.image_urls,
+        image_ids: work.image_ids,
         created_at: work.created_at,
       },
       navigation: {
