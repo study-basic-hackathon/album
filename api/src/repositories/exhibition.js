@@ -32,7 +32,6 @@ export async function findExhibitionById(exhibitionId) {
     return result.rows;
 };
 
-//華展の作品の一覧を取得するために値をセット
 export async function findWorksByExhibitionId(exhibitionId) {
   const result = await getFormattedWorkListByCondition({
     whereClause: "wk.exhibition_id = $1",
