@@ -1,4 +1,3 @@
-
 # 開発環境構築手順（Node.js + Express + PostgreSQL）
 
 このドキュメントは、Docker を使って Node.js（Express）と PostgreSQL の開発環境を構築し、SQL を使ってデータベースを初期化するまでの手順をまとめたものです。
@@ -23,12 +22,13 @@ POSTGRES_DB=app
 
 # Express設定
 PORT=3000
-
+HOST=0.0.0.0
 ```
 
 ### Docker のインストール（macOS / Windows）
 
 - **macOS**
+
   - [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/) をインストール
   - `brew install --cask docker` でも可（Homebrew を使っている場合）
 
@@ -44,7 +44,7 @@ PORT=3000
 ```bash
 docker version
 docker info
-````
+```
 
 ---
 
@@ -52,8 +52,8 @@ docker info
 
 ### Docker Compose とは？
 
-* 複数の Docker コンテナ（例：APIサーバ + DB）をまとめて定義・起動できるツール
-* `docker-compose.yml` で構成を宣言的に記述できる
+- 複数の Docker コンテナ（例：APIサーバ + DB）をまとめて定義・起動できるツール
+- `docker-compose.yml` で構成を宣言的に記述できる
 
 ### Docker Compose のビルド
 
@@ -61,7 +61,7 @@ docker info
 docker compose build
 ```
 
-* 各サービス（Node.js API など）のイメージをビルドする
+- 各サービス（Node.js API など）のイメージをビルドする
 
 ### Docker Compose の起動
 
@@ -69,8 +69,8 @@ docker compose build
 docker compose up
 ```
 
-* サービスを起動
-* `-d` をつけるとバックグラウンド起動：
+- サービスを起動
+- `-d` をつけるとバックグラウンド起動：
 
 ```bash
 docker compose up -d
@@ -82,7 +82,7 @@ docker compose up -d
 docker compose down
 ```
 
-* `-v` をつけるとデータベースなどのボリュームも削除される：
+- `-v` をつけるとデータベースなどのボリュームも削除される：
 
 ```bash
 docker compose down -v
@@ -94,7 +94,7 @@ docker compose down -v
 
 ### 初期化用 SQL ファイルの配置
 
-* `sql/init.sql` を作成して以下のように `post` テーブルを定義：
+- `sql/init.sql` を作成して以下のように `post` テーブルを定義：
 
 ```sql
 CREATE TABLE IF NOT EXISTS post (
@@ -114,7 +114,7 @@ docker compose exec db psql -U app -d app -f /docker-entrypoint-initdb.d/init.sq
 
 .env に書いてある内容に置き換えてください。
 
-* ファイルパスの確認：
+- ファイルパスの確認：
 
 ```bash
 docker compose exec db ls /docker-entrypoint-initdb.d

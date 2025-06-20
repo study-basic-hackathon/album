@@ -14,7 +14,7 @@ services:
   api:
     build: .
     ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+      - "${80}:${PORT:-3000}"
     volumes:
       - ./src:/app/src
       - ./package.json:/app/package.json
