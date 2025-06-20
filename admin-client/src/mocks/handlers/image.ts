@@ -5,8 +5,7 @@ let nextImageId = 1000;
 
 export const image = [
   // POST /images
-  http.post(endpoint("/images"), async ({ request }) => {
-    const formData = await request.formData(); // 念のため取得（使わなくてもよい）
+  http.post(endpoint("/images"), async () => {
     const id = (nextImageId++).toString();
 
     return new Response(null, {

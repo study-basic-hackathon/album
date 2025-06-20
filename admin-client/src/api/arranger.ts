@@ -7,7 +7,7 @@ type CreateArrangerPayload = components['schemas']['CreateArrangerPayload'];
 type UpdateArrangerPayload = components['schemas']['UpdateArrangerPayload'];
 type WorkListItem = components['schemas']['WorkListItem'];
 
-export async function createArranger(payload: CreateArrangerPayload): Promise<string> {
+export async function createArranger(payload: CreateArrangerPayload): Promise<number | null> {
   const path = endpoint('/arrangers');
   const response = await fetch(path, {
     method: 'POST',

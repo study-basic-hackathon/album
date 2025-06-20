@@ -19,7 +19,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         label={label}
         htmlFor={name}
         intent={intent}
-        errorMessage={error?.message}
+        error={error}
       >
         <Input
           id={name}

@@ -7,7 +7,7 @@ type CreateSeasonPayload = components['schemas']['CreateSeasonPayload'];
 type UpdateSeasonPayload = components['schemas']['UpdateSeasonPayload'];
 type WorkListItem = components['schemas']['WorkListItem'];
 
-export async function createSeason(payload: CreateSeasonPayload): Promise<string> {
+export async function createSeason(payload: CreateSeasonPayload): Promise<number | null> {
   const path = endpoint('/seasons');
   const response = await fetch(path, {
     method: 'POST',

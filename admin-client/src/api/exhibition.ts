@@ -7,7 +7,7 @@ type CreateExhibitionPayload = components['schemas']['CreateExhibitionPayload'];
 type UpdateExhibitionPayload = components['schemas']['UpdateExhibitionPayload'];
 type WorkListItem = components['schemas']['WorkListItem'];
 
-export async function createExhibition(payload: CreateExhibitionPayload): Promise<string> {
+export async function createExhibition(payload: CreateExhibitionPayload): Promise<number | null> {
   const path = endpoint('/exhibitions');
   const response = await fetch(path, {
     method: 'POST',

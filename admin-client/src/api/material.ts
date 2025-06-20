@@ -7,7 +7,7 @@ type CreateMaterialPayload = components['schemas']['CreateMaterialPayload'];
 type UpdateMaterialPayload = components['schemas']['UpdateMaterialPayload'];
 type WorkListItem = components['schemas']['WorkListItem'];
 
-export async function createMaterial(payload: CreateMaterialPayload): Promise<string> {
+export async function createMaterial(payload: CreateMaterialPayload): Promise<number | null> {
   const path = endpoint('/materials');
   const response = await fetch(path, {
     method: 'POST',

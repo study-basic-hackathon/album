@@ -5,8 +5,6 @@ import InputField from "@/components/parts/field/InputField";
 import Button from "@/components/parts/Button";
 import ChoiceField from "@/components/parts/field/ChoiceField";
 import type { UseMutationResult } from "@tanstack/react-query";
-import { use } from "react";
-import { useUploadImageMutation } from "@/hooks/image";
 import ImageField from "@/components/parts/field/ImageField";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -103,7 +101,7 @@ export default function CreateExhibitionWorkForm({
             }))}
             value={field.value}
             onChange={field.onChange}
-            error={errors.material_ids}
+            error={errors.material_ids && errors.material_ids[0]}
           />
         )}
       />

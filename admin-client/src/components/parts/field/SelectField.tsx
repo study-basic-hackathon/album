@@ -22,6 +22,7 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
         error={error}
       >
         <Select
+          ref={ref}
           id={name}
           name={name}
           intent={intent}

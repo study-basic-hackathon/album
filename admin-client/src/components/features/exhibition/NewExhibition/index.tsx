@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import InputField from "@/components/parts/field/InputField";
 import Button from "@/components/parts/Button";
 import Card from "@/components/parts/Card";
-import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import Alert from "@/components/parts/Alert";
 import { useCreateExhibitionMutation } from "@/hooks/exhibition";
