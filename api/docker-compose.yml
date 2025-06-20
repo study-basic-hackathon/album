@@ -19,7 +19,7 @@ services:
       - ./src:/app/src
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
-      - ./upload:/app/upload
+      - "./${UPLAODS_DIRECTORY:-uploads}:/app/${UPLAODS_DIRECTORY:-uploads}"
     environment:
       - NODE_ENV=development
 
