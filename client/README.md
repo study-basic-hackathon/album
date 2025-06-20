@@ -1,4 +1,4 @@
-# Client
+# クライアント
 
 ## `.env`
 
@@ -9,14 +9,23 @@ VITE_API_BASE_URL=http://localhost:3000
 VITE_MOCK_SERVER_ENABELD=true
 ```
 
-## Installation
+## 依存関係のインストール
 
 ```
 npm install
 ```
 
-## Development
+## 開発
 
 ```
 npm run dev
+```
+
+# デプロイ
+
+`.env` に次に値を指定
+
+```
+S3_BUCKET_NAME=kado-album-client
+CLOUDFRONT_DISTRIBUTION_ID=E3K3ZIMCTFSRLW
 ```

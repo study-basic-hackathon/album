@@ -8,7 +8,6 @@ import { works } from "../data/works";
 import type { MswPathParameter } from "./types";
 import { worksToWorkListItem } from "./utils";
 
-type Material = components["schemas"]["Material"];
 type CreateMaterialPayload = components["schemas"]["CreateMaterialPayload"];
 type UpdateMaterialPayload = components["schemas"]["UpdateMaterialPayload"];
 
