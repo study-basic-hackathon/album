@@ -5,6 +5,7 @@ export async function getFormattedWorkListByCondition({ whereClause, whereParams
     SELECT
       wk.id,
       wk.title,
+      wk.exhibition_id,
       wk.arranger_id,
       ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
       wk.category_id,
@@ -46,6 +47,7 @@ async function formatWorksWithNavigation(works) {
       work: {
         id: work.id,
         title: work.title,
+        exhibition_id: work.exhibition_id,
         arranger_id: work.arranger_id,
         material_ids: work.material_ids,
         season_id: work.season_id,
