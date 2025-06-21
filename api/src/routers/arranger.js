@@ -1,5 +1,10 @@
 import express from "express";
-import { getArrangerById, getArrangerWorks, getArrangerWorkById } from "../usecases/arranger.js";
+import {
+  getArrangerById,
+  getArrangerWorks,
+  getArrangerWorkById,
+  updateArranger
+} from "../usecases/arranger.js";
 
 const router = express.Router();
 
