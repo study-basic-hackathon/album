@@ -1,4 +1,5 @@
-import { findSeasonById, findWorksBySeasonId } from '../repositories/season.js';
+import { findSeasonById, findWorksBySeasonId, updateSeason as updateSeasonRepo } from '../repositories/season.js';
+import * as arrangerRepository from '../repositories/arranger.js';
 
 // 季節の情報の取得
 export async function getSeasonById(seasonId) {
@@ -18,4 +19,10 @@ export async function getSeasonWorkById(seasonId, workId) {
   const formattedWorks = await findWorksBySeasonId(seasonId);
   const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
   return foundWork[0];
+};
+
+// 季節の更新
+export async function updateSeason(seasonId, name) {
+  const result = await arrangerRepository.updateSeason(seasonId, name);
+  return result[0];
 };
