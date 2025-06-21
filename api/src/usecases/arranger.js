@@ -1,5 +1,5 @@
 import { findArrangerById, findWorksByArrangerId } from '../repositories/arranger.js';
-import * as arrangerRepository from `../repositories/arranger.js`;
+import * as arrangerRepository from '../repositories/arranger.js';
 
 // 作者の情報の取得
 export async function getArrangerById(arrangerId) {
