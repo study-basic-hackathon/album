@@ -1,4 +1,6 @@
 import { findCategoryById, findWorksByCategoryId } from '../repositories/category.js';
+import * as categoryRepository from '../repositories/category.js';
+
 
 // カテゴリーの情報の取得
 export async function getCategoryById(categoryId) {
@@ -18,4 +20,10 @@ export async function getCategoryWorkById(categoryId, workId) {
   const formattedWorks = await findWorksByCategoryId(categoryId);
   const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
   return foundWork[0];
+};
+
+// カテゴリの更新
+export async function updateCategory(categoryId, name) {
+  const result = await categoryRepository.updateCategory(categoryId, name);
+  return result[0];
 };

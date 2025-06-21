@@ -1,5 +1,5 @@
 import express from "express";
-import { getCategoryById, getCategoryWorks, getCategoryWorkById } from '../usecases/category.js';
+import { getCategoryById, getCategoryWorks, getCategoryWorkById, updateCategory } from '../usecases/category.js';
 
 const router = express.Router();
 
@@ -60,6 +60,22 @@ router.get("/:categoryId/works/:workId" , async (req, res) => {
   };
 });
 
-
+// カテゴリの更新
+router.put("/:categoryId", async (req, res) => {
+  try{
+      const { categoryId, name } = req.params;
+      if (!/^\d+$/.test(categoryId)) {
+        return res.status(400).json({ message: "Invalid categoryId" });
+      };
+      const result = await updateCategory(categoryId, name);
+      if (result === undefined) {
+        return res.status(404).json({ message: "Resource not found" });
+      };
+      res.json(result);
+  } catch (err) {
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    };
+});
 
 export default router;
