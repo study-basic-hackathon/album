@@ -1,5 +1,5 @@
 import express from "express";
-import { getSeasonById, getSeasonWorks, getSeasonWorkById } from '../usecases/season.js';
+import { getSeasonById, getSeasonWorks, getSeasonWorkById, updateSeason } from '../usecases/season.js';
 
 const router = express.Router();
 
@@ -58,6 +58,25 @@ router.get("/:seasonId/works/:workId", async (req, res) => {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   };
+});
+
+// 季節の更新
+router.put("/:seasonId", async (req, res) => {
+  try{
+      const { seasonId } = req.params;
+      const { name } = req.body;
+      if (!/^\d+$/.test(seasonId)) {
+        return res.status(400).json({ message: "Invalid seasonId" });
+      };
+      const result = await updateSeason(seasonId, name);
+      if (result === undefined) {
+        return res.status(404).json({ message: "Resource not found" });
+      };
+      res.json(result);
+  } catch (err) {
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    };
 });
 
 export default router;

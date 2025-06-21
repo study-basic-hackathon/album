@@ -23,3 +23,20 @@ export async function findWorksBySeasonId(seasonId) {
   });
   return result;
 };
+
+// 季節の更新
+export async function updateSeason(seasonId, name) {
+  const result = await pool.query(`
+    UPDATE
+      season
+    SET
+      name = $2
+    WHERE
+      id = $1
+    RETURNING 
+      *
+      `, 
+    [seasonId, name]
+  );
+  return result.rows;
+};
