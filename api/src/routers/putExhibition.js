@@ -1,5 +1,5 @@
 import express from "express";
-import { putExhibitions } from '../usecases/exhibition.js';
+import { putExhibition } from '../usecases/putExhibition.js';
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.get("/:exhibitionId", async (req, res) => {
       if (!/^\d+$/.test(exhibitionId)) {
         return res.status(400).json({ message: "Invalid exhibitionId" });
       };
-      const result = await putExhibitions(exhibitionId, name, started_date, ended_date);
+      const result = await putExhibition(exhibitionId, name, started_date, ended_date);
       if (result === undefined) {
         return res.status(404).json({ message: "Resource not found" });
       };
