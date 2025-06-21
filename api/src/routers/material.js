@@ -1,5 +1,5 @@
 import express from "express";
-import { getMaterialById, getMaterialWorks, getMaterialWorkById } from '../usecases/material.js';
+import { getMaterialById, getMaterialWorks, getMaterialWorkById, updateMaterial } from '../usecases/material.js';
 
 const router = express.Router();
 
@@ -58,6 +58,24 @@ router.get("/:materialId/works/:workId", async (req, res) => {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   };
+});
+
+// 花材の更新
+router.put("/:materialId", async (req, res) => {
+  try{
+      const { materialId, name } = req.params;
+      if (!/^\d+$/.test(materialId)) {
+        return res.status(400).json({ message: "Invalid materialId" });
+      };
+      const result = await updateMaterial(materialId, name);
+      if (result === undefined) {
+        return res.status(404).json({ message: "Resource not found" });
+      };
+      res.json(result);
+  } catch (err) {
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    };
 });
 
 export default router;

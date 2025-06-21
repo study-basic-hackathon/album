@@ -23,3 +23,18 @@ export async function findWorksByMaterialId(materialId) {
   });
   return result;
 };
+
+// 花材の更新
+export async function updateMaterial(materialId, name) {
+  const result = await pool.query(`
+    UPDATE
+      material
+    SET
+      name = $2
+    WHERE
+      id = $1
+      `, 
+    [materialId, name]
+  );
+  return result.rows;
+};
