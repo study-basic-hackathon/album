@@ -1,7 +1,7 @@
 import { pool } from "../db.js";
 
 // 作者の更新
-export async function findPutArranger(arrangerId, name) {
+export async function putArranger(arrangerId, name) {
   const result = await pool.query(
     `
       UPDATE
