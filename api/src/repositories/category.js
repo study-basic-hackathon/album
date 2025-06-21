@@ -24,3 +24,19 @@ export async function findWorksByCategoryId(categoryId) {
   });
   return result;
 }
+
+// カテゴリの更新
+export async function updateCategory(categoryId, name) {
+  const result = await pool.query(
+    `
+      UPDATE
+        category
+      SET
+        name = $2
+      WHERE
+        id = $1
+        `,
+    [categoryId, name]
+  );
+  return result.rows;
+}
