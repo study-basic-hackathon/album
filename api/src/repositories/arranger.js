@@ -24,3 +24,20 @@ export async function findWorksByArrangerId(arrangerId) {
   });
   return result;
 }
+
+// 作者の更新
+export async function updateArranger(arrangerId, name) {
+  const result = await pool.query(
+    `
+      UPDATE
+        arranger
+      SET
+        name = $2
+      WHERE
+        id = $1
+        `,
+    [arrangerId, name]
+  );
+  return result.rows;
+}
+

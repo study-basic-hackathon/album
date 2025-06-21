@@ -1,4 +1,5 @@
 import { findArrangerById, findWorksByArrangerId } from '../repositories/arranger.js';
+import * as arrangerRepository from `../repositories/arranger.js`;
 
 // 作者の情報の取得
 export async function getArrangerById(arrangerId) {
@@ -18,4 +19,10 @@ export async function getArrangerWorkById(arrangerId, workId) {
   const formattedWorks = await findWorksByArrangerId(arrangerId);
   const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
   return foundWork[0];
+};
+
+// 作者の更新
+export async function updateArranger(arrangerId, name) {
+  const result = await arrangerRepository.updateArranger(arrangerId, name);
+  return result[0];
 };
