@@ -68,15 +68,13 @@ router.get("/:arrangerId/works/:workId", async (req, res) => {
 // 作者の更新
 router.put("/:arrangerId", async (req, res) => {
   try {
-    const { arrangerId, name } = req.params;
+    const { arrangerId } = req.params;
+    const { name } = req.body;
     if (!/^\d+$/.test(arrangerId)) {
       return res.status(400).json({ message: "Invalid arrangerId" });
     }
     const result = await updateArranger(arrangerId, name);
-    if (result === undefined) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    res.json(result);
+    res.status(204).send();
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

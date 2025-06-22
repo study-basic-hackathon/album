@@ -1,5 +1,4 @@
-import { findCategoryById, findWorksByCategoryId } from '../repositories/category.js';
-import * as categoryRepository from '../repositories/category.js';
+import { findCategoryById, findWorksByCategoryId, updateCategory as updateCategoryRepo } from '../repositories/category.js';
 
 
 // カテゴリーの情報の取得
@@ -24,6 +23,6 @@ export async function getCategoryWorkById(categoryId, workId) {
 
 // カテゴリの更新
 export async function updateCategory(categoryId, name) {
-  const result = await categoryRepository.updateCategory(categoryId, name);
+  const result = await updateCategoryRepo(categoryId, name);
   return result[0];
 };
