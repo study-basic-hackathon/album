@@ -1,6 +1,7 @@
 import { pool } from "../db.js";
 
-export async function updateWork(workId, title, arranger_id, season_id, category_id ) {
+// 作品の更新
+export async function updateWorkBase(workId, title, arranger_id, season_id, category_id) {
     const result = await pool.query(`
         UPDATE 
             work
@@ -11,33 +12,40 @@ export async function updateWork(workId, title, arranger_id, season_id, category
             category_id = $5
         WHERE
             id = $1
-        RETURNING 
-            *
         `,  
-        [workId, title, arranger_id, season_id, category_id ]
+        [workId, title, arranger_id, season_id, category_id]
     );
     return result.rows;
 };
 
-// export async function findWorksByMaterialId(materialId) {
-//     const result = await pool.query(`
-//         SELECT
-//             wk.id,
-//             wk.title,
-//             wk.arranger_id,
-//             wk.material_id,
-//             wk.season_id,
-//             wk.category_id,
-//             TO_CHAR(wk.created_at, 'YYYY-MM-DD') AS created_at
-//         FROM
-//             work AS wk
-//         JOIN
-//             work_material AS wm ON wk.id = wm.work_id
-//         WHERE
-//             wm.material_id = $1
-//         ORDER BY
-//             wk.created_at ASC`, 
-//         [materialId]
-//     );
-//     return result.rows;
-// }{
+export async function updateWorkMaterials(workId, material_ids) {
+    await pool.query(`DELETE FROM work_material WHERE work_id = $1`, [workId]);
+    for (const materialId of material_ids) {
+        await pool.query(
+            `INSERT INTO work_material (work_id, material_id) VALUES ($1, $2)`,
+            [workId, materialId]
+        );
+    }
+}
+
+export async function updateWorkImages(workId, image_ids) {
+    await pool.query(`UPDATE image SET work_id = NULL WHERE work_id = $1`, [workId]);
+    if (image_ids.length > 0) {
+        await pool.query(`UPDATE image SET work_id = $1 WHERE id = ANY($2)`, [workId, image_ids]);
+    }
+}
+
+export async function updateWork(
+    workId,
+    title,
+    arranger_id,
+    material_ids,
+    season_id,
+    category_id,
+    image_ids
+) {
+    const result = await updateWorkBase(workId, title, arranger_id, season_id, category_id);
+    await updateWorkMaterials(workId, material_ids);
+    await updateWorkImages(workId, image_ids); 
+    return result;
+}

@@ -1,7 +1,7 @@
-import * as workRepository from '../repositories/work.js';
+import { updateWork as updateWorkRepo } from '../repositories/work.js';
 
 // 作品の更新
-export async function updateWork(workId, title, arrangerId, materialId, season, categoryId, imageIds) {
-    const result = await workRepository.updateWork(workId, title, arrangerId, materialId, season, categoryId, imageIds);
+export async function updateWork(workId, title, arranger_id, material_ids, season_id, category_id, image_ids) {
+    const result = await updateWorkRepo(workId, title, arranger_id, material_ids, season_id, category_id, image_ids);
     return result;
 }

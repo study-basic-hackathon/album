@@ -6,6 +6,7 @@ import materialRoutes from './routers/material.js';
 import categoryRoutes from './routers/category.js';
 import seasonRoutes from './routers/season.js';
 import imageRoutes from './routers/image.js'
+import workRoutes from './routers/work.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/materials", materialRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/seasons", seasonRoutes);
 app.use("/images", imageRoutes);
+app.use("/works", workRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
