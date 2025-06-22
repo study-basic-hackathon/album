@@ -9,6 +9,8 @@ import imageRoutes from './routers/image.js'
 
 const app = express();
 
+app.use(express.json());
+
 // REFERENCE: https://developer.mozilla.org/ja/docs/Glossary/CORS
 app.use(cors());
 

@@ -78,17 +78,17 @@ router.get("/:exhibitionId/works/:workId", async (req, res) => {
 });
 
 // 華展の更新
-router.get("/:exhibitionId", async (req, res) => {
+router.put("/:exhibitionId", async (req, res) => {
   try {
-    const { exhibitionId, name, started_date, ended_date } = req.params;
+    const { exhibitionId } = req.params;
+    const { name, started_date, ended_date } = req.body;
     if (!/^\d+$/.test(exhibitionId)) {
       return res.status(400).json({ message: "Invalid exhibitionId" });
     };
+    console.log(req.body);
     const result = await updateExhibition(exhibitionId, name, started_date, ended_date);
-    if (result === undefined) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    res.json(result);
+    console.log(req.body);
+    res.status(204).send();
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

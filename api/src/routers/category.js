@@ -63,15 +63,13 @@ router.get("/:categoryId/works/:workId" , async (req, res) => {
 // カテゴリの更新
 router.put("/:categoryId", async (req, res) => {
   try{
-      const { categoryId, name } = req.params;
+      const { categoryId } = req.params;
+      const { name } = req.body;
       if (!/^\d+$/.test(categoryId)) {
         return res.status(400).json({ message: "Invalid categoryId" });
       };
       const result = await updateCategory(categoryId, name);
-      if (result === undefined) {
-        return res.status(404).json({ message: "Resource not found" });
-      };
-      res.json(result);
+      res.status(204).send();
   } catch (err) {
       console.error("Error:", err);
       res.status(500).json({ error: "Internal Server Error" });

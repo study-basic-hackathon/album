@@ -1,5 +1,4 @@
-import { findMaterialById, findWorksByMaterialId } from '../repositories/material.js';
-import * as materialRepository from '../repositories/material.js';
+import { findMaterialById, findWorksByMaterialId, updateMaterial as updateMaterialRepo } from '../repositories/material.js';
 
 // 花材の情報の取得
 export async function getMaterialById(materialId) {
@@ -23,6 +22,6 @@ export async function getMaterialWorkById(materialId, workId) {
 
 // 花材の更新
 export async function updateMaterial(materialId, name) {
-  const result = await materialRepository.updateMaterial(materialId, name);
+  const result = await updateMaterialRepo(materialId, name);
   return result[0];
 };
