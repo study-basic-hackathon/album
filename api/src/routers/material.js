@@ -63,15 +63,13 @@ router.get("/:materialId/works/:workId", async (req, res) => {
 // 花材の更新
 router.put("/:materialId", async (req, res) => {
   try{
-      const { materialId, name } = req.params;
+      const { materialId } = req.params;
+      const { name } = req.body;
       if (!/^\d+$/.test(materialId)) {
         return res.status(400).json({ message: "Invalid materialId" });
       };
       const result = await updateMaterial(materialId, name);
-      if (result === undefined) {
-        return res.status(404).json({ message: "Resource not found" });
-      };
-      res.json(result);
+      res.status(204).send();
   } catch (err) {
       console.error("Error:", err);
       res.status(500).json({ error: "Internal Server Error" });
