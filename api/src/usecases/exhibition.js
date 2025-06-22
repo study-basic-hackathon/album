@@ -1,4 +1,5 @@
-import { findAllExhibitions, findExhibitionById, findWorksByExhibitionId, updateExhibition as updateExhibitionRepo } from '../repositories/exhibition.js';
+import { findAllExhibitions, findExhibitionById, findWorksByExhibitionId } from '../repositories/exhibition.js';
+import * as exhibitionRepository from '../repositories/exhibition.js';
 
 // 華展の一覧
 export async function getExhibitions() {
@@ -28,6 +29,6 @@ export async function getExhibitionWorkById(exhibitionId, workId) {
 
 // 華展の更新
 export async function updateExhibition(exhibitionId, name, started_date, ended_date) {
-  const result = await updateExhibitionRepo(exhibitionId, name, started_date, ended_date);
+  const result = await exhibitionRepository.updateExhibition(exhibitionId, name, started_date, ended_date);
   return result[0];
 };
