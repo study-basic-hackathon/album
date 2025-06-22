@@ -26,3 +26,9 @@ export async function updateCategory(categoryId, name) {
   const result = await categoryRepository.updateCategory(categoryId, name);
   return result[0];
 };
+
+// カテゴリの削除
+export async function deleteCategory(categoryId) {
+  const result = await categoryRepository.deleteCategory(categoryId);
+  return result;
+}

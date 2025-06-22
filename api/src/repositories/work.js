@@ -49,3 +49,16 @@ export async function updateWork(
     await updateWorkImages(workId, image_ids); 
     return result;
 }
+
+// 作品の削除
+export async function deleteWork(workId) {
+    const result = await pool.query(`
+        DELETE FROM
+            work
+        WHERE
+            id = $1
+        `, 
+        [workId]
+    );
+    return result.rowCount > 0;
+}

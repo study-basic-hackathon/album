@@ -3,7 +3,8 @@ import {
   getArrangerById,
   getArrangerWorks,
   getArrangerWorkById,
-  updateArranger
+  updateArranger,
+  deleteArranger
 } from "../usecases/arranger.js";
 
 const router = express.Router();
@@ -74,6 +75,24 @@ router.put("/:arrangerId", async (req, res) => {
       return res.status(400).json({ message: "Invalid arrangerId" });
     }
     const result = await updateArranger(arrangerId, name);
+    res.status(204).send();
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// 作者の削除
+router.delete("/:arrangerId", async (req, res) => {
+  try {
+    const { arrangerId } = req.params;
+    if (!/^\d+$/.test(arrangerId)) {
+      return res.status(400).json({ message: "Invalid arrangerId" });
+    }
+    const result = await deleteArranger(arrangerId);
+    if (!result) {
+      return res.status(404).json({ message: "Resource not found" });
+    }
     res.status(204).send();
   } catch (err) {
     console.error("Error:", err);

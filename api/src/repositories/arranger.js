@@ -41,3 +41,17 @@ export async function updateArranger(arrangerId, name) {
   return result.rows;
 }
 
+// 作者の削除
+export async function deleteArranger(arrangerId) {
+  const result = await pool.query(
+    `
+      DELETE FROM
+        arranger
+      WHERE
+        id = $1
+        `,
+    [arrangerId]
+  );
+  return result.rowCount > 0;
+}
+

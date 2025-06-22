@@ -26,3 +26,9 @@ export async function updateSeason(seasonId, name) {
   const result = await seasonRepository.updateSeason(seasonId, name);
   return result[0];
 };
+
+// 季節の削除
+export async function deleteSeason(seasonId) {
+  const result = await seasonRepository.deleteSeason(seasonId);
+  return result;
+}

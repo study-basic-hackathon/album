@@ -57,3 +57,15 @@ export async function updateExhibition(exhibitionId, name, started_date, ended_d
   );
   return result.rows;
 };
+
+// 華展の削除
+export async function deleteExhibition(exhibitionId) {
+  const result = await pool.query(`
+    DELETE FROM
+      exhibition
+    WHERE
+      id = $1`,
+    [exhibitionId]
+  );
+  return result.rowCount > 0;
+};

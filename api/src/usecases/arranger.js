@@ -26,3 +26,9 @@ export async function updateArranger(arrangerId, name) {
   const result = await arrangerRepository.updateArranger(arrangerId, name);
   return result[0];
 };
+
+// 作者の削除
+export async function deleteArranger(arrangerId) {  
+  const result = await arrangerRepository.deleteArranger(arrangerId);
+  return result;
+}

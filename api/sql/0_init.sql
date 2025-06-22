@@ -51,10 +51,10 @@ COMMENT ON COLUMN season.name IS '季節名';
 CREATE TABLE IF NOT EXISTS work (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100),
-  exhibition_id INTEGER REFERENCES exhibition(id),
-  arranger_id INTEGER REFERENCES arranger(id),
-  category_id INTEGER REFERENCES category(id),
-  season_id INTEGER REFERENCES season(id),
+  exhibition_id INTEGER REFERENCES exhibition(id) ON DELETE CASCADE,
+  arranger_id INTEGER REFERENCES arranger(id) ON DELETE CASCADE,
+  category_id INTEGER REFERENCES category(id) ON DELETE CASCADE,
+  season_id INTEGER REFERENCES season(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE work IS '作品テーブル';
@@ -71,8 +71,8 @@ CREATE TABLE IF NOT EXISTS work_material (
   work_id INTEGER NOT NULL,
   material_id INTEGER NOT NULL,
   PRIMARY KEY (work_id, material_id),
-  FOREIGN KEY (work_id) REFERENCES work(id),
-  FOREIGN KEY (material_id) REFERENCES material(id)
+  FOREIGN KEY (work_id) REFERENCES work(id) ON DELETE CASCADE,
+  FOREIGN KEY (material_id) REFERENCES material(id) ON DELETE CASCADE
 );
 COMMENT ON TABLE work_material IS '作品_花材テーブル';
 COMMENT ON COLUMN work_material.work_id IS '作品ID';
@@ -81,7 +81,7 @@ COMMENT ON COLUMN work_material.material_id IS '花材ID';
 -- 画像テーブル
 CREATE TABLE IF NOT EXISTS image (
   id SERIAL PRIMARY KEY,
-  work_id INTEGER REFERENCES work(id),
+  work_id INTEGER REFERENCES work(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE image IS '画像テーブル';

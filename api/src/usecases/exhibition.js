@@ -32,3 +32,9 @@ export async function updateExhibition(exhibitionId, name, started_date, ended_d
   const result = await exhibitionRepository.updateExhibition(exhibitionId, name, started_date, ended_date);
   return result[0];
 };
+
+// 華展の削除
+export async function deleteExhibition(exhibitionId) {
+  const result = await exhibitionRepository.deleteExhibition(exhibitionId);
+  return result;
+}

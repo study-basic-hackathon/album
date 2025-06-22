@@ -1,5 +1,5 @@
 import express from "express";
-import { getCategoryById, getCategoryWorks, getCategoryWorkById, updateCategory } from '../usecases/category.js';
+import { getCategoryById, getCategoryWorks, getCategoryWorkById, updateCategory, deleteCategory } from '../usecases/category.js';
 
 const router = express.Router();
 
@@ -74,6 +74,24 @@ router.put("/:categoryId", async (req, res) => {
       console.error("Error:", err);
       res.status(500).json({ error: "Internal Server Error" });
     };
+});
+
+// カテゴリの削除
+router.delete("/:categoryId", async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    if (!/^\d+$/.test(categoryId)) {
+      return res.status(400).json({ message: "Invalid categoryId" });
+    };
+    const result = await deleteCategory(categoryId);
+    if (!result) {
+      return res.status(404).json({ message: "Resource not found" });
+    }
+    res.status(204).send();
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 export default router;

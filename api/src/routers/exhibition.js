@@ -4,7 +4,8 @@ import {
   getExhibitionById,
   getExhibitionWorks,
   getExhibitionWorkById,
-  updateExhibition
+  updateExhibition,
+  deleteExhibition
 } from '../usecases/exhibition.js';
 
 const router = express.Router();
@@ -91,6 +92,24 @@ router.put("/:exhibitionId", async (req, res) => {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   };
+});
+
+// 華展の削除
+router.delete("/:exhibitionId", async (req, res) => {
+  try {
+    const { exhibitionId } = req.params;
+    if (!/^\d+$/.test(exhibitionId)) {
+      return res.status(400).json({ message: "Invalid exhibitionId" });
+    };
+    const result = await deleteExhibition(exhibitionId);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Resource not found" });
+    };
+    res.status(204).send();
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 export default router;
