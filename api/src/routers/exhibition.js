@@ -85,9 +85,7 @@ router.put("/:exhibitionId", async (req, res) => {
     if (!/^\d+$/.test(exhibitionId)) {
       return res.status(400).json({ message: "Invalid exhibitionId" });
     };
-    console.log(req.body);
     const result = await updateExhibition(exhibitionId, name, started_date, ended_date);
-    console.log(req.body);
     res.status(204).send();
   } catch (err) {
     console.error("Error:", err);

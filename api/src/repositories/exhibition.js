@@ -52,8 +52,6 @@ export async function updateExhibition(exhibitionId, name, started_date, ended_d
       ended_date = $4
     WHERE
       id = $1
-    RETURNING
-      *
       `,
     [exhibitionId, name, started_date, ended_date]
   );

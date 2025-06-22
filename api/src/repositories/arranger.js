@@ -35,8 +35,6 @@ export async function updateArranger(arrangerId, name) {
         name = $2
       WHERE
         id = $1
-      RETURNING
-        *
         `,
     [arrangerId, name]
   );
