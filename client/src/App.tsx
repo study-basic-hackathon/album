@@ -14,7 +14,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.VITE_CLIENT_BASE_PATH}>
       <>
         <HeaderNavigation />
         <Routes>
