@@ -1,5 +1,5 @@
 import express from "express";
-import { updateWork } from "../repositories/work.js";
+import { updateWork, deleteWork } from "../repositories/work.js";
 
 const router = express.Router();
 
@@ -11,13 +11,30 @@ router.put("/:workId", async (req, res) => {
         if (!/^\d+$/.test(workId)) {
             return res.status(400).json({ message: "Invalid workId" });
         }
-        console.log(req.body);
         const result = await updateWork(workId, title, arranger_id, material_ids, season_id, category_id, image_ids);
         res.status(204).send();
     } catch (err) {
         console.error("Error:", err);
         res.status(500).json({ error: "Internal Server Error" });
     } 
+});
+
+// 作品の削除
+router.delete("/:workId", async (req, res) => {
+    try {
+        const { workId } = req.params;
+        if (!/^\d+$/.test(workId)) {
+            return res.status(400).json({ message: "Invalid workId" });
+        }
+        const result = await deleteWork(workId);
+        if (!result) {
+            return res.status(404).json({ message: "Resource not found" });
+        }
+        res.status(204).send();
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 export default router;

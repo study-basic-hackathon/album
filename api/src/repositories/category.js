@@ -40,3 +40,17 @@ export async function updateCategory(categoryId, name) {
   );
   return result.rows;
 }
+
+// カテゴリの削除
+export async function deleteCategory(categoryId) {
+  const result = await pool.query(
+    `
+      DELETE FROM
+        category
+      WHERE
+        id = $1
+        `,
+    [categoryId]
+  );
+  return result.rowCount > 0;
+}

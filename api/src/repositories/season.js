@@ -40,3 +40,18 @@ export async function updateSeason(seasonId, name) {
   );
   return result.rows;
 };
+
+// 季節の削除
+export async function deleteSeason(seasonId) {
+  const result = await pool.query(`
+    DELETE FROM
+      season
+    WHERE
+      id = $1
+    RETURNING 
+      *
+    `, 
+    [seasonId]
+  );
+  return result.rows.length > 0;
+}

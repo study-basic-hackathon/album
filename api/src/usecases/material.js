@@ -26,3 +26,9 @@ export async function updateMaterial(materialId, name) {
   const result = await materialRepository.updateMaterial(materialId, name);
   return result[0];
 };
+
+// 花材の削除
+export async function deleteMaterial(materialId) {      
+  const result = await materialRepository.deleteMaterial(materialId);
+  return result;
+}

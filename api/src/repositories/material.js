@@ -38,3 +38,16 @@ export async function updateMaterial(materialId, name) {
   );
   return result.rows;
 };
+
+// 花材の削除
+export async function deleteMaterial(materialId) {        
+  const result = await pool.query(`
+    DELETE FROM
+      material
+    WHERE
+      id = $1
+      `, 
+    [materialId]
+  );
+  return result.rowCount > 0;
+}

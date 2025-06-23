@@ -1,5 +1,5 @@
 import express from "express";
-import { getMaterialById, getMaterialWorks, getMaterialWorkById, updateMaterial } from '../usecases/material.js';
+import { getMaterialById, getMaterialWorks, getMaterialWorkById, updateMaterial, deleteMaterial } from '../usecases/material.js';
 
 const router = express.Router();
 
@@ -74,6 +74,24 @@ router.put("/:materialId", async (req, res) => {
       console.error("Error:", err);
       res.status(500).json({ error: "Internal Server Error" });
     };
+});
+
+// 花材の削除
+router.delete("/:materialId", async (req, res) => {
+  try {
+    const { materialId } = req.params;
+    if (!/^\d+$/.test(materialId)) {
+      return res.status(400).json({ message: "Invalid materialId" });
+    };
+    const result = await deleteMaterial(materialId);
+    if (!result) {
+      return res.status(404).json({ message: "Resource not found" });
+    };
+    res.status(204).send();
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  };
 });
 
 export default router;
