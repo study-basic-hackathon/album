@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    base: env.VITE_CLIENT_BASE_PATH,
+    base: env.VITE_CLIENT_BASE_PATH ?? "/",
     plugins: [react()],
     resolve: {
       alias: [{ find: "@", replacement: "/src" }],
