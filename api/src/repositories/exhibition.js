@@ -17,7 +17,7 @@ export async function findAllExhibitions() {
 };
 
 //華展の登録
-export async function postExhibitionByName(name, started_date, ended_date) {
+export async function insertExhibition(name, started_name, ended_date) {
   const result = await pool.query(
     `
     INSERT INTO
@@ -27,7 +27,7 @@ export async function postExhibitionByName(name, started_date, ended_date) {
      RETURNING
        id
     `,
-    [name, started_date, ended_date]
+    [name, started_name, ended_date]
   );
   return result.rows;
 };

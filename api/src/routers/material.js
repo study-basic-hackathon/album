@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getMaterialPath,
+  createMaterial,
   getMaterialById, 
   getMaterialWorks, 
   getMaterialWorkById, 
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
     if (forbiddenChars.test(name)) {
       return res.status(400).json({ message: "Invalid Name" });
     }
-    const result = await getMaterialPath(name);
+    const result = await createMaterial(name);
     res.status(201)
       .header('Location', result)
       .send({ message: 'material created', path: result });

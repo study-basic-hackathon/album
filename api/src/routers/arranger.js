@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getArrangerPath,
+  createArranger,
   getArrangerById,
   getArrangerWorks,
   getArrangerWorkById,
@@ -21,10 +21,11 @@ router.post("/", async (req, res) => {
     if (forbiddenChars.test(name)) {
       return res.status(400).json({ message: "Invalid Name" });
     }
-    const result = await getArrangerPath(name);
+    const arrangerId = await createArranger(name);
+    const path = `/works/${arrangerId}`;
     res.status(201)
-      .header('Location', result)
-      .send({ message: 'Arranger created', path: result });
+      .header('Location', path)
+      .send({ message: 'Arranger created', path: path });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

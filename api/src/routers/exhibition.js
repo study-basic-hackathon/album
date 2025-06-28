@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getExhibitions,
-  getExhibitionPath,
+  createExhibition,
   getExhibitionById,
   getExhibitionWorks,
   getExhibitionWorkById,
@@ -42,10 +42,11 @@ router.post("/", async (req, res) => {
     if (new Date(started_date) > new Date(ended_date)) {
       return res.status(400).json({ message: 'started_date cannot be after ended_date.' });
     }
-    const result = await getExhibitionPath( name, started_date, ended_date );
+    const exhibitionId = await createExhibition( name, started_date, ended_date );
+    const path = `/exhibitions/${exhibitionId}`;
     res.status(201)
-      .header('Location', result)
-      .send({ message: 'Exhibition created', path: result });
+      .header('Location', path)
+      .send({ message: 'Exhibition created', path: path });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

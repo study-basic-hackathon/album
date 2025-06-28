@@ -1,6 +1,6 @@
 import { 
   findAllExhibitions, 
-  postExhibition, 
+  insertExhibition, 
   findExhibitionById, 
   findWorksByExhibitionId 
 } from '../repositories/exhibition.js';
@@ -12,12 +12,11 @@ export async function getExhibitions() {
   return result;
 };
 
-//作者の登録
-export async function getExhibitionPath(name, started_date, ended_date) {
-  const resultRows = await postExhibition(name, started_date, ended_date);
+// 華展の登録
+export async function createExhibition(name, started_date, ended_date) {
+  const resultRows = await insertExhibition(name, started_date, ended_date);
   const exhibitionId = resultRows[0].id;
-  const path = `/exhibitions/${exhibitionId}`;
-  return path;
+  return exhibitionId;
 };
 
 // 華展の取得

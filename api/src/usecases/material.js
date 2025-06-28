@@ -1,12 +1,11 @@
-import { findMaterialById, findWorksByMaterialId, postMaterial } from '../repositories/material.js';
+import { findMaterialById, findWorksByMaterialId, insertMaterial } from '../repositories/material.js';
 import * as materialRepository from '../repositories/material.js';
 
-//作者の登録
-export async function getMaterialPath(name) {
-  const resultRows = await postMaterial(name);
+// 花材の登録
+export async function createMaterialPath(name) {
+  const resultRows = await insertMaterial(name);
   const materialId = resultRows[0].id;
-  const path = `/materials/${materialId}`;
-  return path;
+  return materialId;
 };
 
 // 花材の情報の取得

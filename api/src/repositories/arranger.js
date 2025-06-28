@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 import { getFormattedWorkListByCondition } from "./formattedWorkList.js";
 
 //作者の登録
-export async function postArrangerByName(name) {
+export async function insertArranger(name) {
   const result = await pool.query(
     `
     INSERT INTO

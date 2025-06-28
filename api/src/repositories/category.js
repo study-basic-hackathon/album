@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 import { getFormattedWorkListByCondition } from "./formattedWorkList.js";
 
 //カテゴリの登録
-export async function postCategoryByName(name) {
+export async function insertCategory(name) {
   const result = await pool.query(
     `
     INSERT INTO

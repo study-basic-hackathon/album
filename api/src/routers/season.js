@@ -1,6 +1,6 @@
 import express from "express";
 import { 
-  getSeasonPath,
+  createSeason,
   getSeasonById, 
   getSeasonWorks, 
   getSeasonWorkById, 
@@ -20,10 +20,11 @@ router.post("/", async (req, res) => {
     if (forbiddenChars.test(name)) {
       return res.status(400).json({ message: "Invalid Name" });
     }
-    const result = await getSeasonPath(name);
+    const seasonId = await createSeason(name);
+    const path = `/seasons/${seasonId}`;
     res.status(201)
-      .header('Location', result)
-      .send({ message: 'season created', path: result });
+      .header('Location', path)
+      .send({ message: 'Season created', path: path });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

@@ -1,12 +1,10 @@
-import { postWork } from '../repositories/work.js';
+import { insertWork } from '../repositories/work.js';
 import * as workRepository from '../repositories/work.js';
 
 // 作品の登録
-export async function getWorkPath(title, arranger_id, material_ids, season_id, category_id, image_ids) {
-    const resultRows = await postWork(title, arranger_id, material_ids, season_id, category_id, image_ids);
-    const workId = resultRows[0].id;
-    const path = `/works/${workId}`;
-    return path;
+export async function createWork(title, arranger_id, material_ids, season_id, category_id, image_ids) {
+    const workId = await insertWork(title, arranger_id, material_ids, season_id, category_id, image_ids);
+    return workId;
 }
 
 // 作品の更新

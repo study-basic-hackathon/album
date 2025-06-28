@@ -1,7 +1,7 @@
 import { pool } from "../db.js";
 
 // 作品の登録
-export async function postWork(title, arranger_id, material_ids, season_id, category_id, image_ids) {
+export async function insertWork(title, arranger_id, material_ids, season_id, category_id, image_ids) {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -21,7 +21,7 @@ export async function postWork(title, arranger_id, material_ids, season_id, cate
 
     const workId = workResult.rows[0].id;
 
-    // work_material 中間テーブルにデータを登録
+    // work_material テーブルにデータを登録
     if (material_ids && material_ids.length > 0) {
       const materialInserts = material_ids.map(materialId => `(${workId}, ${materialId})`).join(',');
       await client.query(`
@@ -32,7 +32,7 @@ export async function postWork(title, arranger_id, material_ids, season_id, cate
       `);
     }
 
-    // imageテーブルにデータを登録
+    // image テーブルにデータを登録
     if (image_ids && image_ids.length > 0) {
       const imageInserts = image_ids.map(imageId => `(${imageId}, ${workId})`).join(',');
       await client.query(`

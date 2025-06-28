@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 import { getFormattedWorkListByCondition } from "./formattedWorkList.js";
 
 //花材の登録
-export async function postMaterialByName(name) {
+export async function insertMaterial(name) {
   const result = await pool.query(
     `
     INSERT INTO
