@@ -1,5 +1,14 @@
-import { findCategoryById, findWorksByCategoryId } from '../repositories/category.js';
+import { findCategoryById, findWorksByCategoryId, postCategoryByName } from '../repositories/category.js';
 import * as categoryRepository from '../repositories/category.js';
+
+//カテゴリの登録
+export async function getCategoryPath(name) {
+  const resultRows = await postCategoryByName(name);
+  const categoryId = resultRows[0].id;
+  const path = `/categories/${categoryId}`;
+  return path;
+};
+
 
 // カテゴリーの情報の取得
 export async function getCategoryById(categoryId) {

@@ -1,7 +1,34 @@
 import express from "express";
-import { getSeasonById, getSeasonWorks, getSeasonWorkById, updateSeason, deleteSeason } from '../usecases/season.js';
+import { 
+  getSeasonPath,
+  getSeasonById, 
+  getSeasonWorks, 
+  getSeasonWorkById, 
+  updateSeason, 
+  deleteSeason } from '../usecases/season.js';
 
 const router = express.Router();
+
+//季節の登録
+router.post("/", async (req, res) => {
+  try {
+    const { name } = req.body;
+    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
+    if (!name) {
+      return res.status(400).send({ message: 'Name is required' });
+    }
+    if (forbiddenChars.test(name)) {
+      return res.status(400).json({ message: "Invalid Name" });
+    }
+    const result = await getSeasonPath(name);
+    res.status(201)
+      .header('Location', result)
+      .send({ message: 'season created', path: result });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // 季節の情報の取得
 router.get("/:seasonId", async (req, res) => {

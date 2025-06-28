@@ -1,7 +1,29 @@
 import express from "express";
-import { updateWork, deleteWork } from "../repositories/work.js";
+import { updateWork, deleteWork, getWorkPath } from "../repositories/work.js";
 
 const router = express.Router();
+
+//作品の登録
+router.post("/", async (req, res) => {
+  try {
+    const { arranger_id, material_ids, season_id, category_id, image_ids } = req.params;
+    const { title } = req.body;
+    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
+    if (!title) {
+      return res.status(400).send({ message: 'title is required' });
+    }
+    if (forbiddenChars.test(title)) {
+      return res.status(400).json({ message: "Invalid title" });
+    }
+    const result = await getWorkPath(title, arranger_id, material_ids, season_id, category_id, image_ids);
+    res.status(201)
+      .header('Location', result)
+      .send({ message: 'season created', path: result });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // 作品の更新
 router.put("/:workId", async (req, res) => {

@@ -1,5 +1,13 @@
-import { findSeasonById, findWorksBySeasonId } from '../repositories/season.js';
+import { findSeasonById, findWorksBySeasonId, postSeasonByName } from '../repositories/season.js';
 import * as seasonRepository from '../repositories/season.js';
+
+//作者の登録
+export async function getSeasonPath(name) {
+  const resultRows = await postSeasonByName(name);
+  const seasonId = resultRows[0].id;
+  const path = `/seasons/${seasonId}`;
+  return path;
+};
 
 // 季節の情報の取得
 export async function getSeasonById(seasonId) {
