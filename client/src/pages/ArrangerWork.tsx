@@ -61,13 +61,11 @@ export default function ArrangerWork() {
   }
 
   return (
-    <>
       <main>
         <WorkHeading arranger={arranger} />
         <WorkImages work={workListItem.work} />
         <AdjacentNavigation arrangerId={arrangerId} navigation={navigation} />
         <WorkMetadata work={workListItem.work} />
       </main>
-    </>
   );
 }

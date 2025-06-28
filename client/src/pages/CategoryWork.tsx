@@ -11,13 +11,13 @@ type WorkListNavigation = components["schemas"]["WorkListNavigation"];
 
 function WorkHeading({ category }: { category: Category }) {
   const title: string = category.name;
-  const works_url: string = `/category/${category.id}`;
+  const worksUrl: string = `/category/${category.id}`;
 
   return (
     <>
       <h1>{title}の作品</h1>
       <nav>
-        <Link to={works_url}>作品一覧へ戻る</Link>
+        <Link to={worksUrl}>作品一覧へ戻る</Link>
       </nav>
     </>
   );
@@ -62,13 +62,11 @@ export default function CategoryWork() {
   }
 
   return (
-    <>
       <main>
         <WorkHeading category={category} />
         <WorkImages work={work} />
         <AdjacentNavigation categoryId={categoryId} navigation={navigation} />
         <WorkMetadata work={work} />
       </main>
-    </>
   );
 }

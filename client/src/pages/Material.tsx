@@ -1,32 +1,11 @@
 import { type components } from "../types/api";
 import "./works.css"; // ToDo: CSS のインポートの変更
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useMaterial, useMaterialWorkListItems } from "../hooks/material";
+import WorksImages from "../components/WorksImages";
 
 type Work = components["schemas"]["Work"];
 type Material = components["schemas"]["Material"];
-
-function MaterialImages({ materialWorks }: { materialWorks: Work[] }) {
-  return (
-    <>
-      <div>
-        <ul role="list" className="works-image-list">
-          {materialWorks.map((work, index) => (
-            <li key={index}>
-              <Link to={`work/${work.id}`}>
-                <img
-                  className="works-image-list__image"
-                  src={`${import.meta.env.VITE_API_BASE_URL}/images/${work.image_ids[0]}`}
-                  alt={work.title ? work.title : "無題の作品"}
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
-}
 
 export default function Material() {
   const params = useParams();
@@ -45,11 +24,9 @@ export default function Material() {
   }
 
   return (
-    <>
       <main>
         <h1>{material.name}の作品一覧</h1>
-        <MaterialImages materialWorks={materialWorks} />
+        <WorksImages works={materialWorks} />
       </main>
-    </>
   );
 }

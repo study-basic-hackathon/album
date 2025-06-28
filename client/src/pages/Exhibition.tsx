@@ -1,33 +1,11 @@
 import { type components } from "../types/api";
 import "./works.css"; // ToDo: CSS のインポートの変更
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useExhibition, useExhibitionWorkListItems } from "../hooks/exhibition";
+import WorksImages from "../components/WorksImages";
 
 type Exhibition = components["schemas"]["Exhibition"];
 type Work = components["schemas"]["Work"];
-
-function ExhibitionImages({ exhibitionWorks }: { exhibitionWorks: Work[] }) {
-  return (
-    <>
-      <div>
-        <ul role="list" className="works-image-list">
-          {exhibitionWorks.map((work, index) => (
-            <li key={index}>
-              <Link to={`work/${work.id}`}>
-                <img
-                  className="works-image-list__image"
-                  src={`${import.meta.env.VITE_API_BASE_URL}/images/${work.image_ids[0]}`}
-                  alt={work.title ? work.title : "無題の作品"}
-                />
-              </Link>
-              {/* ToDo: 遅延読み込み、work.image_ids[0] が存在しない場合の処理 */}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
-}
 
 export default function Exhibition() {
   const params = useParams();
@@ -46,11 +24,9 @@ export default function Exhibition() {
   }
 
   return (
-    <>
       <main>
         <h1>{`${exhibition.name}の作品一覧`}</h1>
-        <ExhibitionImages exhibitionWorks={exhibitionWorks} />
+        <WorksImages works={exhibitionWorks} />
       </main>
-    </>
   );
 }
