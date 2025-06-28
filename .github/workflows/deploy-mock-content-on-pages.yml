@@ -16,7 +16,7 @@ defaults:
     working-directory: client
 
 env:
-  VITE_API_BASE_URL: https://study-basic-hackathon.github.io/album/
+  VITE_API_BASE_URL: https://study-basic-hackathon.github.io/album
   VITE_MOCK_SERVER_ENABELD: true
   VITE_CLIENT_BASE_PATH: /album/
 
