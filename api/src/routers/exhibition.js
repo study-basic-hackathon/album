@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getExhibitions,
+  createExhibition,
   getExhibitionById,
   getExhibitionWorks,
   getExhibitionWorkById,
@@ -19,6 +20,35 @@ router.get("/", async (req, res) => {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   };
+});
+
+//華展の登録
+router.post("/", async (req, res) => {
+  try {
+    const { name, started_date, ended_date } = req.body;
+    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
+    if (!name) {
+      return res.status(400).send({ message: 'Name is required' });
+    }
+    if (forbiddenChars.test(name)) {
+      return res.status(400).json({ message: "Invalid Name" });
+    }
+    if (!started_date || new Date(started_date).toString() === 'Invalid Date') {
+      return res.status(400).json({ message: 'Invalid started_date' })
+    }
+    if (!ended_date || new Date(ended_date).toString() === 'Invalid Date') {
+      return res.status(400).json({ message: 'Invalid ended_date' });
+    }
+    if (new Date(started_date) > new Date(ended_date)) {
+      return res.status(400).json({ message: 'started_date cannot be after ended_date.' });
+    }
+    const exhibitionId = await createExhibition( name, started_date, ended_date );
+    const path = `/exhibitions/${exhibitionId}`;
+    res.status(201).header('Location', path)
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // 華展の情報の取得

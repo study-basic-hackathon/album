@@ -1,7 +1,34 @@
 import express from "express";
-import { getMaterialById, getMaterialWorks, getMaterialWorkById, updateMaterial, deleteMaterial } from '../usecases/material.js';
+import {
+  createMaterial,
+  getMaterialById, 
+  getMaterialWorks, 
+  getMaterialWorkById, 
+  updateMaterial, 
+  deleteMaterial,  
+} from '../usecases/material.js';
 
 const router = express.Router();
+
+//花材の登録
+router.post("/", async (req, res) => {
+  try {
+    const { name } = req.body;
+    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
+    if (!name) {
+      return res.status(400).send({ message: 'Name is required' });
+    }
+    if (forbiddenChars.test(name)) {
+      return res.status(400).json({ message: "Invalid Name" });
+    }
+    const materialId = await createMaterial(name);
+    const path = `/materials/${materialId}`;
+    res.status(201).header('Location', path)
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // 花材の情報の取得
 router.get("/:materialId", async (req, res) => {

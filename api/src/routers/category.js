@@ -1,7 +1,34 @@
 import express from "express";
-import { getCategoryById, getCategoryWorks, getCategoryWorkById, updateCategory, deleteCategory } from '../usecases/category.js';
+import { 
+  createCategory,
+  getCategoryById, 
+  getCategoryWorks, 
+  getCategoryWorkById, 
+  updateCategory, 
+  deleteCategory 
+} from '../usecases/category.js';
 
 const router = express.Router();
+
+//カテゴリの登録
+router.post("/", async (req, res) => {
+  try {
+    const { name } = req.body;
+    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
+    if (!name) {
+      return res.status(400).send({ message: 'Name is required' });
+    }
+    if (forbiddenChars.test(name)) {
+      return res.status(400).json({ message: "Invalid Name" });
+    }
+    const categoryId = await createCategory(name);
+    const path = `/categories/${categoryId}`;
+    res.status(201).header('Location', path)
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // カテゴリーの情報の取得
 router.get("/:categoryId", async (req, res) => {

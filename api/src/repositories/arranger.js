@@ -1,6 +1,22 @@
 import { pool } from "../db.js";
 import { getFormattedWorkListByCondition } from "./formattedWorkList.js";
 
+//作者の登録
+export async function insertArranger(name) {
+  const result = await pool.query(
+    `
+    INSERT INTO
+       arranger (name)
+     VALUES
+       ($1)
+     RETURNING
+       id
+    `,
+    [name]
+  );
+  return result.rows;
+}
+
 export async function findArrangerById(arrangerId) {
   const result = await pool.query(
     `

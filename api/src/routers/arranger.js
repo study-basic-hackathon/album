@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  createArranger,
   getArrangerById,
   getArrangerWorks,
   getArrangerWorkById,
@@ -8,6 +9,26 @@ import {
 } from "../usecases/arranger.js";
 
 const router = express.Router();
+
+//作者の登録
+router.post("/", async (req, res) => {
+  try {
+    const { name } = req.body;
+    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
+    if (!name) {
+      return res.status(400).send({ message: 'Name is required' });
+    }
+    if (forbiddenChars.test(name)) {
+      return res.status(400).json({ message: "Invalid Name" });
+    }
+    const arrangerId = await createArranger(name);
+    const path = `/arrangers/${arrangerId}`;
+    res.status(201).header('Location', path);
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // 作者の情報の取得
 router.get("/:arrangerId", async (req, res) => {

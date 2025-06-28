@@ -1,5 +1,59 @@
 import { pool } from "../db.js";
 
+// 作品の登録
+export async function insertWork(title, arranger_id, material_ids, season_id, category_id, image_ids) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // work テーブルに作品情報を登録
+    const workResult = await client.query(
+      `
+      INSERT INTO
+          work(title, arranger_id, season_id, category_id)
+      VALUES
+          ($1, $2, $3, $4)
+      RETURNING
+          id
+      `,
+      [title, arranger_id, season_id, category_id]
+    );
+
+    const workId = workResult.rows[0].id;
+
+    // work_material テーブルにデータを登録
+    if (material_ids && material_ids.length > 0) {
+      const materialInserts = material_ids.map(materialId => `(${workId}, ${materialId})`).join(',');
+      await client.query(`
+        INSERT INTO
+            work_material(work_id, material_id)
+        VALUES
+            ${materialInserts}
+      `);
+    }
+
+    // image テーブルにデータを登録
+    if (image_ids && image_ids.length > 0) {
+      const imageInserts = image_ids.map(imageId => `(${imageId}, ${workId})`).join(',');
+      await client.query(`
+        INSERT INTO
+            image(id, work_id)
+        VALUES
+            ${imageInserts}
+      `);
+    }
+
+    await client.query('COMMIT');
+    return workId;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Error registering data:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 // 作品の更新
 export async function updateWorkBase(workId, title, arranger_id, season_id, category_id) {
     const result = await pool.query(`

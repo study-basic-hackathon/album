@@ -1,10 +1,22 @@
-import { findAllExhibitions, findExhibitionById, findWorksByExhibitionId } from '../repositories/exhibition.js';
+import { 
+  findAllExhibitions, 
+  insertExhibition, 
+  findExhibitionById, 
+  findWorksByExhibitionId 
+} from '../repositories/exhibition.js';
 import * as exhibitionRepository from '../repositories/exhibition.js';
 
 // 華展の一覧
 export async function getExhibitions() {
   const result = await findAllExhibitions();
   return result;
+};
+
+// 華展の登録
+export async function createExhibition(name, started_date, ended_date) {
+  const resultRows = await insertExhibition(name, started_date, ended_date);
+  const exhibitionId = resultRows[0].id;
+  return exhibitionId;
 };
 
 // 華展の取得

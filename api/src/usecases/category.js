@@ -1,5 +1,12 @@
-import { findCategoryById, findWorksByCategoryId } from '../repositories/category.js';
+import { findCategoryById, findWorksByCategoryId, insertCategory } from '../repositories/category.js';
 import * as categoryRepository from '../repositories/category.js';
+
+//カテゴリの登録
+export async function createCategory(name) {
+  const resultRows = await insertCategory(name);
+  const categoryId = resultRows[0].id;
+  return categoryId;
+};
 
 // カテゴリーの情報の取得
 export async function getCategoryById(categoryId) {

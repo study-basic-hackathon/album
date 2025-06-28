@@ -1,6 +1,22 @@
 import { pool } from "../db.js";
 import { getFormattedWorkListByCondition } from "./formattedWorkList.js";
 
+//花材の登録
+export async function insertMaterial(name) {
+  const result = await pool.query(
+    `
+    INSERT INTO
+       material (name)
+     VALUES
+       ($1)
+     RETURNING
+       id
+    `,
+    [name]
+  );
+  return result.rows;
+}
+
 export async function findMaterialById(materialId) {
     const result = await pool.query(`
       SELECT

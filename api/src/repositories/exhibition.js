@@ -16,6 +16,22 @@ export async function findAllExhibitions() {
     return result.rows;
 };
 
+//華展の登録
+export async function insertExhibition(name, started_date, ended_date) {
+  const result = await pool.query(
+    `
+    INSERT INTO
+       exhibition ( name, started_date, ended_date )
+     VALUES
+       ($1,$2,$3)
+     RETURNING
+       id
+    `,
+    [name, started_date, ended_date]
+  );
+  return result.rows;
+};
+
 export async function findExhibitionById(exhibitionId) {
     const result = await pool.query(`
       SELECT

@@ -1,6 +1,22 @@
 import { pool } from "../db.js";
 import { getFormattedWorkListByCondition } from "./formattedWorkList.js";
 
+//季節の登録
+export async function insertSeason(name) {
+  const result = await pool.query(
+    `
+    INSERT INTO
+       seasonS (name)
+     VALUES
+       ($1)
+     RETURNING
+       id
+    `,
+    [name]
+  );
+  return result.rows;
+}
+
 export async function findSeasonById(seasonId) {
     const result = await pool.query(`
       SELECT
