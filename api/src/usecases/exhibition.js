@@ -1,6 +1,6 @@
 import { 
   findAllExhibitions, 
-  postExhibitionByName, 
+  postExhibition, 
   findExhibitionById, 
   findWorksByExhibitionId 
 } from '../repositories/exhibition.js';
@@ -14,7 +14,7 @@ export async function getExhibitions() {
 
 //作者の登録
 export async function getExhibitionPath(name, started_date, ended_date) {
-  const resultRows = await postExhibitionByName(name, started_date, ended_date);
+  const resultRows = await postExhibition(name, started_date, ended_date);
   const exhibitionId = resultRows[0].id;
   const path = `/exhibitions/${exhibitionId}`;
   return path;

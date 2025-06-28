@@ -1,9 +1,9 @@
-import { findMaterialById, findWorksByMaterialId, postMaterialByName } from '../repositories/material.js';
+import { findMaterialById, findWorksByMaterialId, postMaterial } from '../repositories/material.js';
 import * as materialRepository from '../repositories/material.js';
 
 //作者の登録
 export async function getMaterialPath(name) {
-  const resultRows = await postMaterialByName(name);
+  const resultRows = await postMaterial(name);
   const materialId = resultRows[0].id;
   const path = `/materials/${materialId}`;
   return path;

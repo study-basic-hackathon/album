@@ -1,9 +1,9 @@
-import { findArrangerById, findWorksByArrangerId, postArrangerByName } from '../repositories/arranger.js';
+import { findArrangerById, findWorksByArrangerId, postArranger } from '../repositories/arranger.js';
 import * as arrangerRepository from '../repositories/arranger.js';
 
 //作者の登録
 export async function getArrangerPath(name) {
-  const resultRows = await postArrangerByName(name);
+  const resultRows = await postArranger(name);
   const arrangerId = resultRows[0].id;
   const path = `/arrangers/${arrangerId}`;
   return path;
