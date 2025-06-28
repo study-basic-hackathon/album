@@ -7,6 +7,11 @@ async function setup() {
   if (import.meta.env.VITE_MOCK_SERVER_ENABELD) {
     const { worker } = await import("./mocks/browser");
     worker.start({
+      serviceWorker: {
+        url: import.meta.env.VITE_CLIENT_BASE_PATH
+          ? `${import.meta.env.VITE_CLIENT_BASE_PATH}mockServiceWorker.js`
+          : "mockServiceWorker.js",
+      },
       onUnhandledRequest: "bypass",
     });
   }
