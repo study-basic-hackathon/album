@@ -61,13 +61,11 @@ export default function ExhibitionWork() {
   }
 
   return (
-    <>
       <main>
         <WorkHeading exhibition={exhibition} />
         <WorkImages work={work} />
         <AdjacentNavigation exhibitionId={exhibitionId} navigation={navigation} />
         <WorkMetadata work={work} />
       </main>
-    </>
   );
 }

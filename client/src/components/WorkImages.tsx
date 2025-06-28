@@ -6,7 +6,7 @@ export default function WorkImages({ work }: { work: Work }) {
     return <p>この作品には写真がありません。</p>;
   }
   return (
-    <>
+    <section>
       <h2>作品写真</h2>
       <div>
         <ul role="list" className="work-image-list">
@@ -21,6 +21,6 @@ export default function WorkImages({ work }: { work: Work }) {
           ))}
         </ul>
       </div>
-    </>
+    </section>
   );
 }

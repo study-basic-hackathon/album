@@ -61,13 +61,11 @@ export default function SeasonWork() {
   }
 
   return (
-    <>
       <main>
         <WorkHeading season={season} />
         <WorkImages work={work} />
         <AdjacentNavigation seasonId={seasonId} navigation={navigation} />
         <WorkMetadata work={work} />
       </main>
-    </>
   );
 }

@@ -61,13 +61,11 @@ export default function MaterialWork() {
   }
 
   return (
-    <>
       <main>
         <WorkHeading material={material} />
         <WorkImages work={work} />
         <AdjacentNavigation materialId={materialId} navigation={navigation} />
         <WorkMetadata work={work} />
       </main>
-    </>
   );
 }
