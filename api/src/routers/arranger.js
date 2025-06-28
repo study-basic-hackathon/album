@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "Invalid Name" });
     }
     const arrangerId = await createArranger(name);
-    const path = `/works/${arrangerId}`;
+    const path = `/arrangers/${arrangerId}`;
     res.status(201)
       .header('Location', path)
       .send({ message: 'Arranger created', path: path });

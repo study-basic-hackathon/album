@@ -17,17 +17,17 @@ export async function findAllExhibitions() {
 };
 
 //華展の登録
-export async function insertExhibition(name, started_name, ended_date) {
+export async function insertExhibition(name, started_date, ended_date) {
   const result = await pool.query(
     `
     INSERT INTO
-       exhibition ( name, started_name, ended_date )
+       exhibition ( name, started_date, ended_date )
      VALUES
        ($1,$2,$3)
      RETURNING
        id
     `,
-    [name, started_name, ended_date]
+    [name, started_date, ended_date]
   );
   return result.rows;
 };

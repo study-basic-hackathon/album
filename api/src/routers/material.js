@@ -21,10 +21,11 @@ router.post("/", async (req, res) => {
     if (forbiddenChars.test(name)) {
       return res.status(400).json({ message: "Invalid Name" });
     }
-    const result = await createMaterial(name);
+    const materialId = await createMaterial(name);
+    const path = `/materials/${materialId}`;
     res.status(201)
-      .header('Location', result)
-      .send({ message: 'material created', path: result });
+      .header('Location', path)
+      .send({ message: 'Material created', path: path });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
