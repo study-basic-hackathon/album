@@ -24,7 +24,7 @@ function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
 
 // ToDo: より良いソートのアルゴリズムがないか検討
 function ExhibitionList({ exhibitions }: { exhibitions: Exhibition[] }) {
-  const sortedExhibitions = exhibitions.sort(
+  const sortedExhibitions = [...exhibitions].sort(
     (a, b) => new Date(b.started_date).getTime() - new Date(a.started_date).getTime()
   );
   return (
