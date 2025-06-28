@@ -21,23 +21,23 @@ export async function postWork(title, arranger_id, material_ids, season_id, cate
 
     const workId = workResult.rows[0].id;
 
-    // material_work 中間テーブルにデータを登録
+    // work_material 中間テーブルにデータを登録
     if (material_ids && material_ids.length > 0) {
       const materialInserts = material_ids.map(materialId => `(${workId}, ${materialId})`).join(',');
       await client.query(`
         INSERT INTO
-            material_work(work_id, material_id)
+            work_material(work_id, material_id)
         VALUES
             ${materialInserts}
       `);
     }
 
-    // image_work 中間テーブルにデータを登録
+    // imageテーブルにデータを登録
     if (image_ids && image_ids.length > 0) {
-      const imageInserts = image_ids.map(imageId => `(${workId}, ${imageId})`).join(',');
+      const imageInserts = image_ids.map(imageId => `(${imageId}, ${workId})`).join(',');
       await client.query(`
         INSERT INTO
-            image_work(work_id, image_id)
+            image(id, work_id)
         VALUES
             ${imageInserts}
       `);
