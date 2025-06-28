@@ -23,9 +23,7 @@ router.post("/", async (req, res) => {
     }
     const categoryId = await createCategory(name);
     const path = `/categories/${categoryId}`;
-    res.status(201)
-      .header('Location', path)
-      .send({ message: 'Category created', path: path });
+    res.status(201).header('Location', path)
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

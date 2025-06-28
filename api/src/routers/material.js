@@ -23,9 +23,7 @@ router.post("/", async (req, res) => {
     }
     const materialId = await createMaterial(name);
     const path = `/materials/${materialId}`;
-    res.status(201)
-      .header('Location', path)
-      .send({ message: 'Material created', path: path });
+    res.status(201).header('Location', path)
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });

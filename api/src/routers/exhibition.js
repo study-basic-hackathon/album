@@ -44,9 +44,7 @@ router.post("/", async (req, res) => {
     }
     const exhibitionId = await createExhibition( name, started_date, ended_date );
     const path = `/exhibitions/${exhibitionId}`;
-    res.status(201)
-      .header('Location', path)
-      .send({ message: 'Exhibition created', path: path });
+    res.status(201).header('Location', path)
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
