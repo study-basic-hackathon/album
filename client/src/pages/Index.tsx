@@ -7,8 +7,8 @@ type Exhibition = components["schemas"]["Exhibition"];
 
 // ToDo: 日付フォーマットの方法について検討
 function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
-  const started_date = new Date(exhibition.started_date);
-  const ended_date = new Date(exhibition.ended_date);
+  const startedDate = new Date(exhibition.started_date);
+  const endedDate = new Date(exhibition.ended_date);
 
   return (
     <article>
@@ -16,8 +16,8 @@ function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
         <Link to={`/exhibition/${exhibition.id}`}>{exhibition.name}</Link>
       </h3>
       <p>
-        開催期間: {started_date.toLocaleDateString("ja-JP")}-
-        {ended_date.toLocaleDateString("ja-JP")}
+        開催期間: {startedDate.toLocaleDateString("ja-JP")}-
+        {endedDate.toLocaleDateString("ja-JP")}
       </p>
     </article>
   );
@@ -45,13 +45,19 @@ function ExhibitionList({ exhibitions }: { exhibitions: Record<number, Exhibitio
 export default function Index() {
   const exhibitions = useExhibitions();
 
-  return (
-    <>
+  if (!exhibitions) {
+    return (
       <main>
-        <h1>華道用写真共有Webアプリ</h1>
-        <p>このアプリは、華道の写真を共有するための Web アプリケーションです。</p>
-        <ExhibitionList exhibitions={exhibitions} />
+        <h1>読み込み中</h1>
       </main>
-    </>
+    );
+  }
+
+  return (
+    <main>
+      <h1>華道用写真共有Webアプリ</h1>
+      <p>このアプリは、華道の写真を共有するための Web アプリケーションです。</p>
+      <ExhibitionList exhibitions={exhibitions} />
+    </main>
   );
 }
