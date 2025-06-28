@@ -16,16 +16,15 @@ function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
         <Link to={`/exhibition/${exhibition.id}`}>{exhibition.name}</Link>
       </h3>
       <p>
-        開催期間: {startedDate.toLocaleDateString("ja-JP")}-
-        {endedDate.toLocaleDateString("ja-JP")}
+        開催期間: {startedDate.toLocaleDateString("ja-JP")}-{endedDate.toLocaleDateString("ja-JP")}
       </p>
     </article>
   );
 }
 
 // ToDo: より良いソートのアルゴリズムがないか検討
-function ExhibitionList({ exhibitions }: { exhibitions: Record<number, Exhibition> }) {
-  const sortedExhibitions: Exhibition[] = Object.values(exhibitions).sort(
+function ExhibitionList({ exhibitions }: { exhibitions: Exhibition[] }) {
+  const sortedExhibitions = exhibitions.sort(
     (a, b) => new Date(b.started_date).getTime() - new Date(a.started_date).getTime()
   );
   return (
@@ -43,9 +42,10 @@ function ExhibitionList({ exhibitions }: { exhibitions: Record<number, Exhibitio
 }
 
 export default function Index() {
-  const exhibitions = useExhibitions();
+  const exhibitions: Exhibition[] = Object.values(useExhibitions());
 
-  if (!exhibitions) {
+  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  if (!exhibitions || exhibitions.length === 0) {
     return (
       <main>
         <h1>読み込み中</h1>
