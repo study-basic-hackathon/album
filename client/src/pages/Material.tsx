@@ -16,17 +16,13 @@ export default function Material() {
   );
 
   if (!material || materialWorks.length === 0) {
-    return (
-      <main>
-        <h1>指定された素材は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された素材は存在しません</h1>;
   }
 
   return (
-      <main>
-        <h1>{material.name}の作品一覧</h1>
-        <WorksImages works={materialWorks} />
-      </main>
+    <>
+      <h1>{material.name}の作品一覧</h1>
+      <WorksImages works={materialWorks} />
+    </>
   );
 }

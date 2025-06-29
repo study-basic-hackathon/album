@@ -46,18 +46,14 @@ export default function Index() {
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!exhibitions || exhibitions.length === 0) {
-    return (
-      <main>
-        <h1>読み込み中</h1>
-      </main>
-    );
+    return <h1>読み込み中</h1>;
   }
 
   return (
-    <main>
+    <>
       <h1>華道用写真共有Webアプリ</h1>
       <p>このアプリは、華道の写真を共有するための Web アプリケーションです。</p>
       <ExhibitionList exhibitions={exhibitions} />
-    </main>
+    </>
   );
 }

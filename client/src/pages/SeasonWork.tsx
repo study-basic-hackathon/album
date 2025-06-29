@@ -53,19 +53,15 @@ export default function SeasonWork() {
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !season) {
-    return (
-      <main>
-        <h1>指定された作品は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された作品は存在しません</h1>;
   }
 
   return (
-      <main>
-        <WorkHeading season={season} />
-        <WorkImages work={work} />
-        <AdjacentNavigation seasonId={seasonId} navigation={navigation} />
-        <WorkMetadata work={work} />
-      </main>
+    <>
+      <WorkHeading season={season} />
+      <WorkImages work={work} />
+      <AdjacentNavigation seasonId={seasonId} navigation={navigation} />
+      <WorkMetadata work={work} />
+    </>
   );
 }

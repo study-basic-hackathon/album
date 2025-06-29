@@ -53,19 +53,15 @@ export default function MaterialWork() {
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !material) {
-    return (
-      <main>
-        <h1>指定された作品は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された作品は存在しません</h1>;
   }
 
   return (
-      <main>
-        <WorkHeading material={material} />
-        <WorkImages work={work} />
-        <AdjacentNavigation materialId={materialId} navigation={navigation} />
-        <WorkMetadata work={work} />
-      </main>
+    <>
+      <WorkHeading material={material} />
+      <WorkImages work={work} />
+      <AdjacentNavigation materialId={materialId} navigation={navigation} />
+      <WorkMetadata work={work} />
+    </>
   );
 }

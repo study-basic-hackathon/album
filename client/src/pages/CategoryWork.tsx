@@ -54,19 +54,15 @@ export default function CategoryWork() {
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !category) {
-    return (
-      <main>
-        <h1>指定された作品は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された作品は存在しません</h1>;
   }
 
   return (
-      <main>
-        <WorkHeading category={category} />
-        <WorkImages work={work} />
-        <AdjacentNavigation categoryId={categoryId} navigation={navigation} />
-        <WorkMetadata work={work} />
-      </main>
+    <>
+      <WorkHeading category={category} />
+      <WorkImages work={work} />
+      <AdjacentNavigation categoryId={categoryId} navigation={navigation} />
+      <WorkMetadata work={work} />
+    </>
   );
 }
