@@ -9,13 +9,14 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-schema": "npx openapi-typescript ../docs/api.yml --output src/types/api.ts",
-    "format": "prettier --write **/*.{css,ts,tsx}",
+    "format": "prettier --write **/*.{css,scss,ts,tsx}",
     "fix": "npm run format && npm run lint"
   },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router": "^7.6.1"
+    "react-router": "^7.6.1",
+    "sass": "^1.89.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

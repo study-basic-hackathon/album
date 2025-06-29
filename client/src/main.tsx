@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./reset.css";
+import "./App.scss";
 import App from "./App";
 
 async function setup() {
