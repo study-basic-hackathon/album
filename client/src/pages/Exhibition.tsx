@@ -16,17 +16,13 @@ export default function Exhibition() {
   );
 
   if (!exhibition || exhibitionWorks.length === 0) {
-    return (
-      <main>
-        <h1>指定された華展は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された華展は存在しません</h1>;
   }
 
   return (
-      <main>
-        <h1>{`${exhibition.name}の作品一覧`}</h1>
-        <WorksImages works={exhibitionWorks} />
-      </main>
+    <>
+      <h1>{`${exhibition.name}の作品一覧`}</h1>
+      <WorksImages works={exhibitionWorks} />
+    </>
   );
 }

@@ -16,17 +16,13 @@ export default function Category() {
   );
 
   if (!category || categoryWorks.length === 0) {
-    return (
-      <main>
-        <h1>指定されたカテゴリーは存在しません</h1>
-      </main>
-    );
+    return <h1>指定されたカテゴリーは存在しません</h1>;
   }
 
   return (
-      <main>
-        <h1>{category.name}の作品一覧</h1>
-        <WorksImages works={categoryWorks} />
-      </main>
+    <>
+      <h1>{category.name}の作品一覧</h1>
+      <WorksImages works={categoryWorks} />
+    </>
   );
 }

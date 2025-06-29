@@ -53,19 +53,15 @@ export default function ArrangerWork() {
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !arranger) {
-    return (
-      <main>
-        <h1>指定された作品は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された作品は存在しません</h1>;
   }
 
   return (
-      <main>
-        <WorkHeading arranger={arranger} />
-        <WorkImages work={workListItem.work} />
-        <AdjacentNavigation arrangerId={arrangerId} navigation={navigation} />
-        <WorkMetadata work={workListItem.work} />
-      </main>
+    <>
+      <WorkHeading arranger={arranger} />
+      <WorkImages work={workListItem.work} />
+      <AdjacentNavigation arrangerId={arrangerId} navigation={navigation} />
+      <WorkMetadata work={workListItem.work} />
+    </>
   );
 }

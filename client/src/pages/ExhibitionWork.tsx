@@ -53,19 +53,15 @@ export default function ExhibitionWork() {
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !exhibition) {
-    return (
-      <main>
-        <h1>指定された作品は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された作品は存在しません</h1>;
   }
 
   return (
-      <main>
-        <WorkHeading exhibition={exhibition} />
-        <WorkImages work={work} />
-        <AdjacentNavigation exhibitionId={exhibitionId} navigation={navigation} />
-        <WorkMetadata work={work} />
-      </main>
+    <>
+      <WorkHeading exhibition={exhibition} />
+      <WorkImages work={work} />
+      <AdjacentNavigation exhibitionId={exhibitionId} navigation={navigation} />
+      <WorkMetadata work={work} />
+    </>
   );
 }

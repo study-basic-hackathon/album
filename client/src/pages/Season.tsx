@@ -16,17 +16,13 @@ export default function Season() {
   );
 
   if (!season || seasonWorks.length === 0) {
-    return (
-      <main>
-        <h1>指定された季節は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された季節は存在しません</h1>;
   }
 
   return (
-      <main>
-        <h1>{season.name}の作品一覧</h1>
-        <WorksImages works={seasonWorks} />
-      </main>
+    <>
+      <h1>{season.name}の作品一覧</h1>
+      <WorksImages works={seasonWorks} />
+    </>
   );
 }

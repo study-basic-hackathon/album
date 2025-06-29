@@ -16,17 +16,13 @@ export default function Arranger() {
   );
 
   if (!arranger || arrangerWorks.length === 0) {
-    return (
-      <main>
-        <h1>指定された作者は存在しません</h1>
-      </main>
-    );
+    return <h1>指定された作者は存在しません</h1>;
   }
 
   return (
-      <main>
-        <h1>{arranger.name}の作品一覧</h1>
-        <WorksImages works={arrangerWorks} />
-      </main>
+    <>
+      <h1>{arranger.name}の作品一覧</h1>
+      <WorksImages works={arrangerWorks} />
+    </>
   );
 }
