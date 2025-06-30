@@ -1,0 +1,28 @@
+html {
+  font-family:
+    "Helvetica Neue", Arial, "BIZ UDGothic", "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+    "Noto Sans JP", sans-serif;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  letter-spacing: 0.005em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+  letter-spacing: 0;
+}
+
+a {
+  color: var(--color-accent-primary);
+  text-decoration: none;
+
+  @media (hover) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
