@@ -3,6 +3,7 @@ import "./works.css"; // ToDo: CSS のインポートの変更
 import { useParams } from "react-router";
 import { useMaterial, useMaterialWorkListItems } from "../hooks/material";
 import WorksImages from "../components/WorksImages";
+import Heading from "../components/Heading";
 
 type Work = components["schemas"]["Work"];
 type Material = components["schemas"]["Material"];
@@ -21,7 +22,7 @@ export default function Material() {
 
   return (
     <>
-      <h1>{material.name}の作品一覧</h1>
+      <Heading title={`${material.name}の作品一覧`} />
       <WorksImages works={materialWorks} />
     </>
   );

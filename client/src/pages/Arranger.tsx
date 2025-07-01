@@ -3,6 +3,7 @@ import "./works.css"; // ToDo: CSS のインポートの変更
 import { useParams } from "react-router";
 import { useArranger, useArrangerWorkListItems } from "../hooks/arranger";
 import WorksImages from "../components/WorksImages";
+import Heading from "../components/Heading";
 
 type Arranger = components["schemas"]["Arranger"];
 type Work = components["schemas"]["Work"];
@@ -21,7 +22,7 @@ export default function Arranger() {
 
   return (
     <>
-      <h1>{arranger.name}の作品一覧</h1>
+      <Heading title={`${arranger.name}の作品一覧`} />
       <WorksImages works={arrangerWorks} />
     </>
   );

@@ -3,6 +3,7 @@ import "./works.css"; // ToDo: CSS のインポートの変更
 import { useParams } from "react-router";
 import { useSeason, useSeasonWorkListItems } from "../hooks/season";
 import WorksImages from "../components/WorksImages";
+import Heading from "../components/Heading";
 
 type Work = components["schemas"]["Work"];
 type Season = components["schemas"]["Season"];
@@ -21,7 +22,7 @@ export default function Season() {
 
   return (
     <>
-      <h1>{season.name}の作品一覧</h1>
+      <Heading title={`${season.name}の作品一覧`} />
       <WorksImages works={seasonWorks} />
     </>
   );
