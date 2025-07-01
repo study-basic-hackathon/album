@@ -11,13 +11,13 @@ import Season from "./pages/Season";
 import SeasonWork from "./pages/SeasonWork";
 import HeaderNavigation from "./components/HeaderNavigation";
 import { BrowserRouter, Route, Routes } from "react-router";
-import "./scss/layout/index.scss";
+import styles from "./scss/layout/index.module.scss";
 
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.VITE_CLIENT_BASE_PATH ?? "/"}>
-      <div className="wrapper">
-        <div className="container">
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
           <HeaderNavigation />
           <main>
             <Routes>

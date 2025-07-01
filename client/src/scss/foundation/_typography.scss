@@ -5,21 +5,19 @@ html {
   font-size: var(--font-size-base);
   color: var(--color-text);
   background-color: var(--color-background);
-  letter-spacing: 0.005em;
+  letter-spacing: 0.008em;
+  text-underline-offset: calc(var(--half-leading) / 1.5);
 }
 
 h1,
 h2,
 h3,
 h4 {
-  text-wrap: balance;
   letter-spacing: 0;
 }
 
 a {
-  color: var(--color-accent-primary);
   text-decoration: none;
-
   @media (hover) {
     &:hover {
       text-decoration: underline;
