@@ -8,12 +8,11 @@
     border-radius: 4px;
   }
 
+  /* 標準の CSS ではメディアクエリのブレイクポイントに変数は使えないので、妥協して直接定義した */
   @media screen and (max-width: 639.8px) {
     grid-template-columns: repeat(auto-fill, minmax(152px, 1fr));
   }
   @media screen and (min-width: 640px) {
     grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
   }
-  /* ToDo: 画面幅ブレイクポイントの定数の定義 */
-
 }
