@@ -1,0 +1,17 @@
+.heading {
+  padding-block: var(--spacing-s);
+  padding-inline: var(--spacing-m);
+  background-color: var(--color-dark-green-1);
+  color: var(--color-white-1);
+  border-radius: 8px;
+
+  h1 {
+    font-size: var(--font-size-xxxl);
+    margin-block: calc(var(--spacing-s) - var(--half-leading));
+  }
+
+  p {
+    font-size: var(--font-size-s);
+    margin-block: calc(var(--spacing-xs) - var(--half-leading));
+  }
+}

@@ -2,6 +2,8 @@
 import type { components } from "../types/api";
 import { Link } from "react-router";
 import { useExhibitions } from "../hooks/exhibition";
+import Heading from "../components/Heading";
+import styles from "./scss/index.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
 
@@ -11,14 +13,14 @@ function ExhibitionInfo({ exhibition }: { exhibition: Exhibition }) {
   const endedDate = new Date(exhibition.ended_date);
 
   return (
-    <article>
-      <h3>
-        <Link to={`/exhibition/${exhibition.id}`}>{exhibition.name}</Link>
-      </h3>
-      <p>
-        開催期間: {startedDate.toLocaleDateString("ja-JP")}-{endedDate.toLocaleDateString("ja-JP")}
-      </p>
-    </article>
+    <Link to={`/exhibition/${exhibition.id}`}>
+      <article>
+        <h3>{exhibition.name}</h3>
+        <p>
+          {startedDate.toLocaleDateString("ja-JP")}-{endedDate.toLocaleDateString("ja-JP")}
+        </p>
+      </article>
+    </Link>
   );
 }
 
@@ -28,8 +30,7 @@ function ExhibitionList({ exhibitions }: { exhibitions: Exhibition[] }) {
     (a, b) => new Date(b.started_date).getTime() - new Date(a.started_date).getTime()
   );
   return (
-    <>
-      <h2>華展一覧</h2>
+    <section className={styles.exhibitionList}>
       <ul role="list">
         {sortedExhibitions.map((exhibition) => (
           <li key={exhibition.id}>
@@ -37,7 +38,7 @@ function ExhibitionList({ exhibitions }: { exhibitions: Exhibition[] }) {
           </li>
         ))}
       </ul>
-    </>
+    </section>
   );
 }
 
@@ -51,8 +52,10 @@ export default function Index() {
 
   return (
     <>
-      <h1>華道用写真共有Webアプリ</h1>
-      <p>このアプリは、華道の写真を共有するための Web アプリケーションです。</p>
+      <Heading
+        title="華道用写真共有Webアプリ"
+        description="華展の写真を共有するための Web アプリケーションです。"
+      />
       <ExhibitionList exhibitions={exhibitions} />
     </>
   );
