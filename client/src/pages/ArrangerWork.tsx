@@ -1,10 +1,10 @@
 import { type components } from "../types/api";
 import { useArranger } from "../hooks/arranger";
 import { useArrangerWorkListItem } from "../hooks/arranger";
-import "./work.css";
 import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
+import styles from "./scss/work.module.scss";
 
 type Arranger = components["schemas"]["Arranger"];
 type WorkListNavigation = components["schemas"]["WorkListNavigation"];
@@ -13,12 +13,12 @@ function WorkHeading({ arranger }: { arranger: Arranger }) {
   const title: string = arranger.name;
   const worksUrl: string = `/arranger/${arranger.id}`;
   return (
-    <>
+    <section className={styles.heading}>
       <h1>{title}の作品</h1>
       <nav>
         <Link to={worksUrl}>作品一覧へ戻る</Link>
       </nav>
-    </>
+    </section>
   );
 }
 
@@ -32,10 +32,26 @@ function AdjacentNavigation({
   const previousWorkUrl: string = `/arranger/${arrangerId}/work/${navigation.previous}`;
   const nextWorkUrl: string = `/arranger/${arrangerId}/work/${navigation.next}`;
   return (
-    <nav className="adjacent-nav">
+    <nav className={styles.adjacentNav}>
       <ul>
-        <li>{navigation.previous ? <a href={previousWorkUrl}>前の作品</a> : <span></span>}</li>
-        <li>{navigation.next ? <a href={nextWorkUrl}>次の作品</a> : <span></span>}</li>
+        <li>
+          {navigation.previous ? (
+            <a href={previousWorkUrl} aria-label="前の作品">
+              ←
+            </a>
+          ) : (
+            <span></span>
+          )}
+        </li>
+        <li>
+          {navigation.next ? (
+            <a href={nextWorkUrl} aria-label="次の作品">
+              →
+            </a>
+          ) : (
+            <span></span>
+          )}
+        </li>
       </ul>
     </nav>
   );

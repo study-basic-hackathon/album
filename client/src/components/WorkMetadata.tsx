@@ -5,6 +5,7 @@ import { useCategory } from "../hooks/category";
 import { useExhibition } from "../hooks/exhibition";
 import { useMaterials } from "../hooks/material";
 import { useSeason } from "../hooks/season";
+import styles from "./scss/work-metadata.module.scss";
 
 type Work = components["schemas"]["Work"];
 
@@ -21,9 +22,9 @@ export default function WorkMetadata({ work }: { work: Work }) {
   }
 
   return (
-    <section className="work-metadata">
-      <h2>作品情報</h2>
-      <dl>
+    <section>
+      <h2 className={styles.heading}>作品情報</h2>
+      <dl className={styles.metadata}>
         <div>
           <dt>タイトル</dt>
           <dd>{work.title ? work.title : "無題の作品"}</dd>
@@ -52,7 +53,7 @@ export default function WorkMetadata({ work }: { work: Work }) {
             <dd>登録なし</dd>
           ) : (
             <dd>
-              <ul className="work-metadata__materials">
+              <ul className={styles.materials}>
                 {materials.map((material) => (
                   <li key={material.id} className="work-metadata__material">
                     <Link to={`/material/${material.id}`}>{material.name}</Link>

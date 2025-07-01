@@ -1,0 +1,47 @@
+.heading {
+  padding-block: var(--spacing-s);
+  padding-inline: var(--spacing-m);
+  background-color: var(--color-accent-1);
+  color: var(--color-white-1);
+  border-radius: 8px;
+
+  h1 {
+    font-size: var(--font-size-xxxl);
+    margin-block: calc(var(--spacing-s) - var(--half-leading));
+  }
+
+  a {
+    color: var(--color-white-1);
+    font-size: var(--font-size-s);
+    margin-block: calc(var(--spacing-xs) - var(--half-leading));
+
+    @media (hover: hover) {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.adjacentNav {
+  ul {
+    font-size: var(--font-size-l);
+    display: flex;
+    justify-content: space-between;
+    padding-inline-start: 0;
+
+    a {
+      color: var(--color-white-1);
+      background-color: var(--color-accent-2);
+      padding-block: var(--spacing-xxs);
+      padding-inline: var(--spacing-xs);
+      border-radius: 4px;
+
+      @media (hover) {
+        &:hover {
+          background-color: var(--color-complementary-2);
+        }
+      }
+    }
+  }
+}

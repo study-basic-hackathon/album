@@ -6,20 +6,21 @@
   --color-white-1: oklch(0.97 0.005 150);
   --color-white-2: oklch(0.91 0.005 150);
 
-  --color-green-1: oklch(0.35 0.08 150);
-  --color-green-2: oklch(0.5 0.08 150);
-  --color-green-3: oklch(0.6 0.08 150);
-  --color-green-4: oklch(0.8 0.08 150);
+  --color-light-green-1: oklch(0.95 0.08 150);
+  --color-dark-green-1: oklch(0.35 0.08 150);
+  --color-dark-green-2: oklch(0.45 0.08 150);
 
   --color-light-pink-1: oklch(0.95 0.08 320);
   --color-dark-pink-1: oklch(0.35 0.08 320);
-  --color-dark-pink-2: oklch(0.4 0.07 320);
+  --color-dark-pink-2: oklch(0.45 0.07 320);
 
   /* Color definitions */
   --color-text: var(--color-black-1);
   --color-background: var(--color-white-1);
-  --color-accent-1: var(--color-green-1);
-  --color-accent-2: var(--color-green-2);
+  --color-accent-1: var(--color-dark-green-1);
+  --color-accent-2: var(--color-dark-green-2);
+  --color-complementary-1: var(--color-dark-pink-1);
+  --color-complementary-2: var(--color-dark-pink-2);
 
   /* Font sizes */
   --font-size-base: 18px;
