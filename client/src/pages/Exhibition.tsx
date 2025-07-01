@@ -1,5 +1,4 @@
 import { type components } from "../types/api";
-import "./works.css"; // ToDo: CSS のインポートの変更
 import { useParams } from "react-router";
 import { useExhibition, useExhibitionWorkListItems } from "../hooks/exhibition";
 import WorksImages from "../components/WorksImages";

@@ -1,7 +1,6 @@
 import { type components } from "../types/api";
 import { useExhibition } from "../hooks/exhibition";
 import { useExhibitionWorkListItem } from "../hooks/exhibition";
-import "./work.css";
 import { Link, useParams } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
@@ -36,8 +35,24 @@ function AdjacentNavigation({
   return (
     <nav className={styles.adjacentNav}>
       <ul>
-        <li>{navigation.previous ? <a href={previousWorkUrl}>←</a> : <span></span>}</li>
-        <li>{navigation.next ? <a href={nextWorkUrl}>→</a> : <span></span>}</li>
+        <li>
+          {navigation.previous ? (
+            <a href={previousWorkUrl} aria-label="前の作品">
+              ←
+            </a>
+          ) : (
+            <span></span>
+          )}
+        </li>
+        <li>
+          {navigation.next ? (
+            <a href={nextWorkUrl} aria-label="次の作品">
+              →
+            </a>
+          ) : (
+            <span></span>
+          )}
+        </li>
       </ul>
     </nav>
   );
