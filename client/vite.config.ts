@@ -10,5 +10,12 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: [{ find: "@", replacement: "/src" }],
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler",
+        },
+      },
+    },
   };
 });
