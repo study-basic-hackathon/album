@@ -1,4 +1,5 @@
 import { type components } from "../types/api";
+import styles from "./scss/work-images.module.scss";
 type Work = components["schemas"]["Work"];
 
 export default function WorkImages({ work }: { work: Work }) {
@@ -7,11 +8,11 @@ export default function WorkImages({ work }: { work: Work }) {
   }
   return (
     <section>
-      <h2>作品写真</h2>
+      <h2 className={styles.heading}>作品写真</h2>
       <div>
-        <ul role="list" className="work-image-list">
+        <ul role="list" className={styles.images}>
           {work.image_ids.map((id, index) => (
-            <li key={index} className="work-image-list__image">
+            <li key={index}>
               <img
                 src={`${import.meta.env.VITE_API_BASE_URL}/images/${id}`}
                 alt={`${work.title ? work.title : "無題の作品"}` + `${index + 1}枚目`}

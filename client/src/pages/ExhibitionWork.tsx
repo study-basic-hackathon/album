@@ -5,6 +5,7 @@ import "./work.css";
 import { Link, useParams } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
+import styles from "./scss/work.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
 type WorkListNavigation = components["schemas"]["WorkListNavigation"];
@@ -13,15 +14,16 @@ function WorkHeading({ exhibition }: { exhibition: Exhibition }) {
   const title: string = exhibition.name;
   const worksUrl: string = `/exhibition/${exhibition.id}`;
   return (
-    <>
+    <section className={styles.heading}>
       <h1>{title}の作品</h1>
       <nav>
         <Link to={worksUrl}>作品一覧へ戻る</Link>
       </nav>
-    </>
+    </section>
   );
 }
 
+// ToDo: 矢印をいい感じのアイコンにする
 function AdjacentNavigation({
   exhibitionId,
   navigation,
@@ -32,10 +34,10 @@ function AdjacentNavigation({
   const previousWorkUrl: string = `/exhibition/${exhibitionId}/work/${navigation.previous}`;
   const nextWorkUrl: string = `/exhibition/${exhibitionId}/work/${navigation.next}`;
   return (
-    <nav className="adjacent-nav">
+    <nav className={styles.adjacentNav}>
       <ul>
-        <li>{navigation.previous ? <a href={previousWorkUrl}>前の作品</a> : <span></span>}</li>
-        <li>{navigation.next ? <a href={nextWorkUrl}>次の作品</a> : <span></span>}</li>
+        <li>{navigation.previous ? <a href={previousWorkUrl}>←</a> : <span></span>}</li>
+        <li>{navigation.next ? <a href={nextWorkUrl}>→</a> : <span></span>}</li>
       </ul>
     </nav>
   );
