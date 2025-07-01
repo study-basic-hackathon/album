@@ -1,4 +1,7 @@
-/* Gutter for scrollbar */
-body {
-  padding-inline-start: calc(100vw - 100%);
+/* スクロールバー表示時に body 要素にパディングを設定することにより、レイアウトのズレを防ぐ。
+画面幅が小さいときは、左右に余白がないため不要 */
+@media screen and (min-width: 1024px) {
+  body {
+    padding-right: calc(100vw - 100%);
+  }
 }

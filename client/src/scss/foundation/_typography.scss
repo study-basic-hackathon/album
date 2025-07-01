@@ -6,7 +6,7 @@ html {
   color: var(--color-text);
   background-color: var(--color-background);
   letter-spacing: 0.008em;
-  text-underline-offset: calc(var(--half-leading) / 1.5);
+  text-underline-offset: calc(var(--half-leading) / 2);
 }
 
 h1,
@@ -17,10 +17,6 @@ h4 {
 }
 
 a {
+  color: var(--color-accent-1);
   text-decoration: none;
-  @media (hover) {
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
