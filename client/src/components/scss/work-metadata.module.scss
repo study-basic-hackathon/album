@@ -1,12 +1,3 @@
-.heading {
-  padding-block: var(--spacing-s);
-  padding-inline: var(--spacing-m);
-  background-color: var(--color-accent-1);
-  color: var(--color-white-1);
-  border-radius: 8px;
-  text-align: center;
-}
-
 .metadata {
   padding-inline: var(--spacing-s);
   color: var(--color-accent-1);
@@ -24,7 +15,6 @@
     }
     dd {
       margin-inline-start: 0;
-
       a {
         color: var(--color-white-1);
         background-color: var(--color-accent-2);
@@ -40,7 +30,6 @@
       }
     }
   }
-
   .materials {
     display: flex;
     flex-direction: row;

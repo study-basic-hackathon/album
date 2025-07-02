@@ -1,14 +1,16 @@
 import { type components } from "../types/api";
+import HeadingSub from "./HeadingSub";
+import Fallback from "./Fallback";
 import styles from "./scss/work-images.module.scss";
 type Work = components["schemas"]["Work"];
 
 export default function WorkImages({ work }: { work: Work }) {
   if (!work || !work.image_ids || work.image_ids.length === 0) {
-    return <p>この作品には写真がありません。</p>;
+    return <Fallback message="この作品の写真は登録されていません" />;
   }
   return (
     <section>
-      <h2 className={styles.heading}>作品写真</h2>
+      <HeadingSub title="作品写真" />
       <div>
         <ul role="list" className={styles.images}>
           {work.image_ids.map((id, index) => (
