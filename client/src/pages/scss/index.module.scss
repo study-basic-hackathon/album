@@ -9,15 +9,21 @@
       padding-inline: var(--spacing-m);
       border: 1px solid var(--color-accent-2);
       border-radius: 8px;
-
       h3 {
         font-size: var(--font-size-xl);
         margin-block: calc(var(--spacing-s) - var(--half-leading));
       }
-
       p {
         font-size: var(--font-size-s);
         margin-block: calc(var(--spacing-xxs) - var(--half-leading));
+      }
+      @media (hover) {
+        &:hover {
+          border-color: var(--color-complementary-2);
+          a {
+            color: var(--color-complementary-2);
+          }
+        }
       }
     }
   }
