@@ -5,14 +5,17 @@ import styles from "./scss/footer.module.scss";
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <aside>
+      <div className={styles.container}>
         <Link to="/" aria-label="ホーム画面へ戻る">
           <LuHouse size={28} />
         </Link>
-        <a href="#" aria-label="ページの先頭へ戻る">
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="ページの先頭へ戻る"
+        >
           <LuArrowUp size={28} />
-        </a>
-      </aside>
+        </button>
+      </div>
     </footer>
   );
 }
