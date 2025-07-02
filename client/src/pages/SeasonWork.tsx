@@ -4,6 +4,7 @@ import { useSeasonWorkListItem } from "../hooks/season";
 import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
+import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import styles from "./scss/work.module.scss";
 
 type Season = components["schemas"]["Season"];
@@ -29,32 +30,11 @@ function AdjacentNavigation({
   seasonId: number;
   navigation: WorkListNavigation;
 }) {
-  const previousWorkUrl: string = `/season/${seasonId}/work/${navigation.previous}`;
-  const nextWorkUrl: string = `/season/${seasonId}/work/${navigation.next}`;
-  return (
-    <nav className={styles.adjacentNav}>
-      <ul>
-        <li>
-          {navigation.previous ? (
-            <a href={previousWorkUrl} aria-label="前の作品">
-              ←
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-        <li>
-          {navigation.next ? (
-            <a href={nextWorkUrl} aria-label="次の作品">
-              →
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-      </ul>
-    </nav>
-  );
+  const previousWorkUrl = navigation.previous
+    ? `/season/${seasonId}/work/${navigation.previous}`
+    : undefined;
+  const nextWorkUrl = navigation.next ? `/season/${seasonId}/work/${navigation.next}` : undefined;
+  return <AdjacentNavigationArrows previousWorkUrl={previousWorkUrl} nextWorkUrl={nextWorkUrl} />;
 }
 
 export default function SeasonWork() {
