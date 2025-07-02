@@ -9,7 +9,7 @@
     a {
       @media (hover) {
         &:hover {
-          color: var(--color-complementary-1);
+          color: var(--color-complementary-2);
         }
       }
     }
@@ -19,7 +19,7 @@
       color: var(--color-accent-1);
       @media (hover) {
         &:hover {
-          color: var(--color-complementary-1);
+          color: var(--color-complementary-2);
         }
       }
     }

@@ -3,6 +3,7 @@ import type { components } from "../types/api";
 import { Link } from "react-router";
 import { useExhibitions } from "../hooks/exhibition";
 import Heading from "../components/Heading";
+import HeadingSub from "../components/HeadingSub";
 import styles from "./scss/index.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -56,6 +57,7 @@ export default function Index() {
         title="華道用写真共有Webアプリ"
         description="華展の写真を共有するための Web アプリケーションです。"
       />
+      <HeadingSub title="華展一覧" />
       <ExhibitionList exhibitions={exhibitions} />
     </>
   );

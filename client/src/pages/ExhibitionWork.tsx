@@ -4,6 +4,7 @@ import { useExhibitionWorkListItem } from "../hooks/exhibition";
 import { Link, useParams } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
+import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import styles from "./scss/work.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -30,32 +31,13 @@ function AdjacentNavigation({
   exhibitionId: number;
   navigation: WorkListNavigation;
 }) {
-  const previousWorkUrl: string = `/exhibition/${exhibitionId}/work/${navigation.previous}`;
-  const nextWorkUrl: string = `/exhibition/${exhibitionId}/work/${navigation.next}`;
-  return (
-    <nav className={styles.adjacentNav}>
-      <ul>
-        <li>
-          {navigation.previous ? (
-            <a href={previousWorkUrl} aria-label="前の作品">
-              ←
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-        <li>
-          {navigation.next ? (
-            <a href={nextWorkUrl} aria-label="次の作品">
-              →
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-      </ul>
-    </nav>
-  );
+  const previousWorkUrl = navigation.previous
+    ? `/exhibition/${exhibitionId}/work/${navigation.previous}`
+    : undefined;
+  const nextWorkUrl = navigation.next
+    ? `/exhibition/${exhibitionId}/work/${navigation.next}`
+    : undefined;
+  return <AdjacentNavigationArrows previousWorkUrl={previousWorkUrl} nextWorkUrl={nextWorkUrl} />;
 }
 
 export default function ExhibitionWork() {

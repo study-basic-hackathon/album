@@ -1,0 +1,13 @@
+.fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  p {
+    background-color: var(--color-black-2);
+    color: var(--color-white-2);
+    padding-inline: var(--spacing-xxs);
+    padding-block: var(--spacing-xxs);
+    border-radius: 4px;
+  }
+}

@@ -5,6 +5,7 @@ import { useCategory } from "../hooks/category";
 import { useExhibition } from "../hooks/exhibition";
 import { useMaterials } from "../hooks/material";
 import { useSeason } from "../hooks/season";
+import HeadingSub from "./HeadingSub";
 import styles from "./scss/work-metadata.module.scss";
 
 type Work = components["schemas"]["Work"];
@@ -23,7 +24,7 @@ export default function WorkMetadata({ work }: { work: Work }) {
 
   return (
     <section>
-      <h2 className={styles.heading}>作品情報</h2>
+      <HeadingSub title="作品情報" />
       <dl className={styles.metadata}>
         <div>
           <dt>タイトル</dt>

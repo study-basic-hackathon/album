@@ -4,6 +4,7 @@ import { useMaterialWorkListItem } from "../hooks/material";
 import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
+import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import styles from "./scss/work.module.scss";
 
 type Material = components["schemas"]["Material"];
@@ -29,32 +30,13 @@ function AdjacentNavigation({
   materialId: number;
   navigation: WorkListNavigation;
 }) {
-  const previousWorkUrl: string = `/material/${materialId}/work/${navigation.previous}`;
-  const nextWorkUrl: string = `/material/${materialId}/work/${navigation.next}`;
-  return (
-    <nav className={styles.adjacentNav}>
-      <ul>
-        <li>
-          {navigation.previous ? (
-            <a href={previousWorkUrl} aria-label="前の作品">
-              ←
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-        <li>
-          {navigation.next ? (
-            <a href={nextWorkUrl} aria-label="次の作品">
-              →
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-      </ul>
-    </nav>
-  );
+  const previousWorkUrl = navigation.previous
+    ? `/material/${materialId}/work/${navigation.previous}`
+    : undefined;
+  const nextWorkUrl = navigation.next
+    ? `/material/${materialId}/work/${navigation.next}`
+    : undefined;
+  return <AdjacentNavigationArrows previousWorkUrl={previousWorkUrl} nextWorkUrl={nextWorkUrl} />;
 }
 
 export default function MaterialWork() {

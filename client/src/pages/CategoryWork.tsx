@@ -4,6 +4,7 @@ import { useCategoryWorkListItem } from "../hooks/category";
 import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
+import AdjacentNavigationArrows from "@/components/AdjacentNavigationArrows";
 import styles from "./scss/work.module.scss";
 
 type Category = components["schemas"]["Category"];
@@ -30,32 +31,13 @@ function AdjacentNavigation({
   categoryId: number;
   navigation: WorkListNavigation;
 }) {
-  const previousWorkUrl: string = `/category/${categoryId}/work/${navigation.previous}`;
-  const nextWorkUrl: string = `/category/${categoryId}/work/${navigation.next}`;
-  return (
-    <nav className={styles.adjacentNav}>
-      <ul>
-        <li>
-          {navigation.previous ? (
-            <a href={previousWorkUrl} aria-label="前の作品">
-              ←
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-        <li>
-          {navigation.next ? (
-            <a href={nextWorkUrl} aria-label="次の作品">
-              →
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </li>
-      </ul>
-    </nav>
-  );
+  const previousWorkUrl = navigation.previous
+    ? `/category/${categoryId}/work/${navigation.previous}`
+    : undefined;
+  const nextWorkUrl = navigation.next
+    ? `/category/${categoryId}/work/${navigation.next}`
+    : undefined;
+  return <AdjacentNavigationArrows previousWorkUrl={previousWorkUrl} nextWorkUrl={nextWorkUrl} />;
 }
 
 export default function CategoryWork() {

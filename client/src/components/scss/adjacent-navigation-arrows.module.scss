@@ -1,0 +1,16 @@
+.arrows {
+  ul {
+    font-size: var(--font-size-l);
+    display: flex;
+    justify-content: space-between;
+    padding-inline-start: 0;
+
+    a {
+      @media (hover) {
+        &:hover {
+          color: var(--color-complementary-2);
+        }
+      }
+    }
+  }
+}
