@@ -22,26 +22,3 @@
     }
   }
 }
-
-.adjacentNav {
-  ul {
-    font-size: var(--font-size-l);
-    display: flex;
-    justify-content: space-between;
-    padding-inline-start: 0;
-
-    a {
-      color: var(--color-white-1);
-      background-color: var(--color-accent-2);
-      padding-block: var(--spacing-xxs);
-      padding-inline: var(--spacing-xs);
-      border-radius: 4px;
-
-      @media (hover) {
-        &:hover {
-          background-color: var(--color-complementary-2);
-        }
-      }
-    }
-  }
-}
