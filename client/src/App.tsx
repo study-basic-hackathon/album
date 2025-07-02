@@ -9,7 +9,8 @@ import Material from "./pages/Material";
 import MaterialWork from "./pages/MaterialWork";
 import Season from "./pages/Season";
 import SeasonWork from "./pages/SeasonWork";
-import HeaderNavigation from "./components/HeaderNavigation";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { BrowserRouter, Route, Routes } from "react-router";
 import styles from "./scss/layout/index.module.scss";
 
@@ -18,7 +19,7 @@ export default function App() {
     <BrowserRouter basename={import.meta.env.VITE_CLIENT_BASE_PATH ?? "/"}>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <HeaderNavigation />
+          <Header />
           <main>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -34,6 +35,7 @@ export default function App() {
               <Route path="/season/:seasonId" element={<Season />} />
             </Routes>
           </main>
+          <Footer />
         </div>
       </div>
     </BrowserRouter>
