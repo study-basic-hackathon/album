@@ -1,0 +1,27 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  .container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-xs);
+    a {
+      @media (hover) {
+        &:hover {
+          color: var(--color-complementary-1);
+        }
+      }
+    }
+    button {
+      background: none;
+      border: none;
+      color: var(--color-accent-1);
+      @media (hover) {
+        &:hover {
+          color: var(--color-complementary-1);
+        }
+      }
+    }
+  }
+}

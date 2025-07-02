@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  a {
+    &[aria-current="page"] {
+      display: none;
+    }
+    @media (hover) {
+      &:hover {
+        color: var(--color-complementary-1);
+      }
+    }
+  }
+}
