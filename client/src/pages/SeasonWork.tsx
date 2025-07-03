@@ -45,7 +45,7 @@ export default function SeasonWork() {
   const workListItem = useSeasonWorkListItem(seasonId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const season = useSeason(seasonId);
+  const { season, isLoading: seasonIsLoading, errorMessage: seasonErrorMessage } = useSeason(seasonId);
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !season) {

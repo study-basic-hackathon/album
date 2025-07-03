@@ -48,7 +48,7 @@ export default function CategoryWork() {
   const workListItem = useCategoryWorkListItem(categoryId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const category = useCategory(categoryId);
+  const { category, isLoading: categoryIsLoading, errorMessage: categoryErrorMessage } = useCategory(categoryId);
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !category) {

@@ -5,16 +5,30 @@ import { getArranger, getArrangerWorkListItems, getArrangerWorkListItem } from "
 type Arranger = components["schemas"]["Arranger"];
 type WorkListItem = components["schemas"]["WorkListItem"];
 
-export function useArranger(arrangerId?: number): Arranger | null {
+interface UseArrangerReturn {
+  arranger: Arranger | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useArranger(arrangerId?: number): UseArrangerReturn {
   const [arranger, setArranger] = useState<Arranger | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchArranger(arrangerId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedArranger = await getArranger(arrangerId);
         setArranger(fetchedArranger);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch arranger ${arrangerId}:`, error);
+        setErrorMessage(message);
         setArranger(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (arrangerId === undefined) {
@@ -23,19 +37,33 @@ export function useArranger(arrangerId?: number): Arranger | null {
     }
     fetchArranger(arrangerId);
   }, [arrangerId]);
-  return arranger;
+  return { arranger, isLoading, errorMessage };
 }
 
-export function useArrangerWorkListItems(arrangerId?: number): Record<number, WorkListItem> {
+interface UseArrangerWorkListItemsReturn {
+  workListItems: Record<number, WorkListItem>;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useArrangerWorkListItems(arrangerId?: number): UseArrangerWorkListItemsReturn {
   const [workListItems, setWorkListItems] = useState<Record<number, WorkListItem>>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchArrangerWorkListItems(arrangerId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedWorkListItems = await getArrangerWorkListItems(arrangerId);
         setWorkListItems(fetchedWorkListItems);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch works for arranger ${arrangerId}:`, error);
+        setErrorMessage(message);
         setWorkListItems({}); // エラー時は空のオブジェクトを設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (arrangerId === undefined) {
@@ -44,7 +72,11 @@ export function useArrangerWorkListItems(arrangerId?: number): Record<number, Wo
     }
     fetchArrangerWorkListItems(arrangerId);
   }, [arrangerId]);
-  return workListItems;
+  return {
+    workListItems,
+    isLoading,
+    errorMessage,
+  };
 }
 
 export function useArrangerWorkListItem(arrangerId?: number, workId?: number): WorkListItem | null {

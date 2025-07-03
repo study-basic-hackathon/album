@@ -47,8 +47,8 @@ export default function MaterialWork() {
   const workListItem = useMaterialWorkListItem(materialId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const material = useMaterial(materialId);
-
+  const { material, isLoading: materialIsLoading, errorMessage: materialErrorMessage } = useMaterial(materialId);
+  
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !material) {
     return <h1>指定された作品は存在しません</h1>;

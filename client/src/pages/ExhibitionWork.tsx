@@ -48,8 +48,8 @@ export default function ExhibitionWork() {
   const workListItem = useExhibitionWorkListItem(exhibitionId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const exhibition = useExhibition(work?.exhibition_id);
-
+  const { exhibition, isLoading: exhibitionIsLoading, errorMessage: exhibitionErrorMessage } = useExhibition(exhibitionId);
+  
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !exhibition) {
     return <h1>指定された作品は存在しません</h1>;

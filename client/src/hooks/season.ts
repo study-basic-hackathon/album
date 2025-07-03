@@ -4,16 +4,30 @@ import { getSeason, getSeasonWorkListItems, getSeasonWorkListItem } from "../api
 
 type Season = components["schemas"]["Season"];
 
-export function useSeason(seasonId?: number): Season | null {
+interface UseSeasonReturn {
+  season: Season | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useSeason(seasonId?: number): UseSeasonReturn {
   const [season, setSeason] = useState<Season | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchSeason(seasonId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedSeason = await getSeason(seasonId);
         setSeason(fetchedSeason);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch season ${seasonId}:`, error);
+        setErrorMessage(message);
         setSeason(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (seasonId === undefined) {
@@ -22,19 +36,33 @@ export function useSeason(seasonId?: number): Season | null {
     }
     fetchSeason(seasonId);
   }, [seasonId]);
-  return season;
+  return { season, isLoading, errorMessage };
 }
 
-export function useSeasonWorkListItems(seasonId?: number) {
+interface UseSeasonWorkListItemsReturn {
+  workListItems: components["schemas"]["WorkListItem"][];
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useSeasonWorkListItems(seasonId?: number): UseSeasonWorkListItemsReturn {
   const [workListItems, setWorkListItems] = useState<components["schemas"]["WorkListItem"][]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchSeasonWorkListItems(seasonId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const items = await getSeasonWorkListItems(seasonId);
         setWorkListItems(items);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch works for season ${seasonId}:`, error);
+        setErrorMessage(message);
         setWorkListItems([]); // エラー時は空の配列を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (seasonId === undefined) {
@@ -43,7 +71,11 @@ export function useSeasonWorkListItems(seasonId?: number) {
     }
     fetchSeasonWorkListItems(seasonId);
   }, [seasonId]);
-  return workListItems;
+  return {
+    workListItems,
+    isLoading,
+    errorMessage,
+  };
 }
 
 export function useSeasonWorkListItem(seasonId?: number, workId?: number) {

@@ -47,7 +47,11 @@ export default function ArrangerWork() {
   const workListItem = useArrangerWorkListItem(arrangerId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const arranger = useArranger(work?.arranger_id);
+  const {
+    arranger,
+    isLoading: arrangerIsLoading,
+    errorMessage: arrangerErrorMessage,
+  } = useArranger(arrangerId);
 
   // TODO: ローディングと不正なアクセスを切り分けて表示する
   if (!workListItem || !work || !navigation || !arranger) {
