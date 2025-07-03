@@ -11,6 +11,7 @@
   padding-inline: var(--spacing-xxs);
   padding-block: var(--spacing-xxs);
   border-radius: 4px;
+  margin-block: var(--spacing-xs);
 }
 .error {
   background-color: var(--color-complementary-1);
@@ -18,4 +19,5 @@
   padding-inline: var(--spacing-xxs);
   padding-block: var(--spacing-xxs);
   border-radius: 4px;
+  margin-block: var(--spacing-xs);
 }
