@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { useExhibitions } from "../hooks/exhibition";
 import Heading from "../components/Heading";
 import HeadingSub from "../components/HeadingSub";
+import Fallback from "../components/Fallback";
 import styles from "./scss/index.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -44,11 +45,14 @@ function ExhibitionList({ exhibitions }: { exhibitions: Exhibition[] }) {
 }
 
 export default function Index() {
-  const exhibitions: Exhibition[] = Object.values(useExhibitions());
+  const { exhibitions, isLoading, errorMessage } = useExhibitions();
+  const exhibitionList: Exhibition[] = Object.values(exhibitions);
 
-  // TODO: ローディングと不正なアクセスを切り分けて表示する
-  if (!exhibitions || exhibitions.length === 0) {
-    return <h1>読み込み中</h1>;
+  if (isLoading) {
+    return <Fallback message="華展一覧を読み込み中..." />;
+  }
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
   }
 
   return (
@@ -58,7 +62,7 @@ export default function Index() {
         description="華展の写真を共有するための Web アプリケーションです。"
       />
       <HeadingSub title="華展一覧" />
-      <ExhibitionList exhibitions={exhibitions} />
+      <ExhibitionList exhibitions={exhibitionList} />
     </>
   );
 }
