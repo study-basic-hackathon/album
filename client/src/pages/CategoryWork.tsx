@@ -4,7 +4,7 @@ import { useCategoryWorkListItem } from "../hooks/category";
 import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
-import AdjacentNavigationArrows from "@/components/AdjacentNavigationArrows";
+import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import Fallback from "../components/Fallback";
 import styles from "./scss/work.module.scss";
 
