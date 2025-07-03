@@ -4,16 +4,30 @@ import { getCategory, getCategoryWorkListItems, getCategoryWorkListItem } from "
 
 type Category = components["schemas"]["Category"];
 
-export function useCategory(categoryId?: number): Category | null {
+interface UseCategoryReturn {
+  category: Category | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useCategory(categoryId?: number): UseCategoryReturn {
   const [category, setCategory] = useState<Category | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchCategory(categoryId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedCategory = await getCategory(categoryId);
         setCategory(fetchedCategory);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch category ${categoryId}:`, error);
+        setErrorMessage(message);
         setCategory(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (categoryId === undefined) {
@@ -22,19 +36,33 @@ export function useCategory(categoryId?: number): Category | null {
     }
     fetchCategory(categoryId);
   }, [categoryId]);
-  return category;
+  return { category, isLoading, errorMessage };
 }
 
-export function useCategoryWorkListItems(categoryId?: number) {
+interface UseCategoryWorkListItemsReturn {
+  workListItems: components["schemas"]["WorkListItem"][];
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useCategoryWorkListItems(categoryId?: number): UseCategoryWorkListItemsReturn {
   const [workListItems, setWorkListItems] = useState<components["schemas"]["WorkListItem"][]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchCategoryWorkListItems(categoryId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const items = await getCategoryWorkListItems(categoryId);
         setWorkListItems(items);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch works for category ${categoryId}:`, error);
+        setErrorMessage(message);
         setWorkListItems([]); // エラー時は空の配列を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (categoryId === undefined) {
@@ -43,21 +71,42 @@ export function useCategoryWorkListItems(categoryId?: number) {
     }
     fetchCategoryWorkListItems(categoryId);
   }, [categoryId]);
-  return workListItems;
+  return {
+    workListItems,
+    isLoading,
+    errorMessage,
+  };
 }
 
-export function useCategoryWorkListItem(categoryId?: number, workId?: number) {
+interface UseCategoryWorkListItemReturn {
+  workListItem: components["schemas"]["WorkListItem"] | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useCategoryWorkListItem(
+  categoryId?: number,
+  workId?: number
+): UseCategoryWorkListItemReturn {
   const [workListItem, setWorkListItem] = useState<components["schemas"]["WorkListItem"] | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchCategoryWorkListItem(categoryId: number, workId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const item = await getCategoryWorkListItem(categoryId, workId);
         setWorkListItem(item);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch work ${workId} for category ${categoryId}:`, error);
+        setErrorMessage(message);
         setWorkListItem(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (categoryId === undefined || workId === undefined) {
@@ -66,5 +115,9 @@ export function useCategoryWorkListItem(categoryId?: number, workId?: number) {
     }
     fetchCategoryWorkListItem(categoryId, workId);
   }, [categoryId, workId]);
-  return workListItem;
+  return {
+    workListItem,
+    isLoading,
+    errorMessage,
+  };
 }

@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { useCategory, useCategoryWorkListItems } from "../hooks/category";
 import WorksImages from "../components/WorksImages";
 import Heading from "../components/Heading";
+import Fallback from "../components/Fallback";
 
 type Work = components["schemas"]["Work"];
 type Category = components["schemas"]["Category"];
@@ -10,15 +11,32 @@ type Category = components["schemas"]["Category"];
 export default function Category() {
   const params = useParams();
   const categoryId = Number(params.categoryId);
-  const category = useCategory(categoryId);
-  const categoryWorks: Work[] = Object.values(useCategoryWorkListItems(categoryId)).map(
-    (item) => item.work
-  );
+  const {
+    category,
+    isLoading: categoryIsLoading,
+    errorMessage: categoryErrorMessage,
+  } = useCategory(categoryId);
+  const {
+    workListItems,
+    isLoading: worksIsLoading,
+    errorMessage: worksErrorMessage,
+  } = useCategoryWorkListItems(categoryId);
+  const categoryWorks: Work[] = workListItems
+    ? Object.values(workListItems).map((item) => item.work)
+    : [];
+  const isLoading = categoryIsLoading || worksIsLoading;
+  const errorMessage = categoryErrorMessage || worksErrorMessage;
 
-  if (!category || categoryWorks.length === 0) {
-    return <h1>指定されたカテゴリーは存在しません</h1>;
+  if (isLoading) {
+    return <Fallback message="カテゴリーの作品一覧を読み込み中..." />;
   }
-
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
+  }
+  if (!category || categoryWorks.length === 0) {
+    return <Fallback message="指定されたカテゴリーは存在しません" isError />;
+  }
+  
   return (
     <>
       <Heading title={`${category.name}の作品一覧`} />

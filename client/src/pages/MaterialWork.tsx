@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
+import Fallback from "../components/Fallback";
 import styles from "./scss/work.module.scss";
 
 type Material = components["schemas"]["Material"];
@@ -44,14 +45,29 @@ export default function MaterialWork() {
   const materialId = Number(params.materialId);
   const workId = Number(params.workId);
 
-  const workListItem = useMaterialWorkListItem(materialId, workId);
+  const {
+    workListItem,
+    isLoading: workListItemIsLoading,
+    errorMessage: workListItemErrorMessage,
+  } = useMaterialWorkListItem(materialId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const material = useMaterial(materialId);
+  const {
+    material,
+    isLoading: materialIsLoading,
+    errorMessage: materialErrorMessage,
+  } = useMaterial(materialId);
+  const isLoading = workListItemIsLoading || materialIsLoading;
+  const errorMessage = workListItemErrorMessage || materialErrorMessage;
 
-  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  if (isLoading) {
+    return <Fallback message="作品情報を読み込み中..." />;
+  }
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
+  }
   if (!workListItem || !work || !navigation || !material) {
-    return <h1>指定された作品は存在しません</h1>;
+    return <Fallback message="指定された作品は存在しません" isError />;
   }
 
   return (

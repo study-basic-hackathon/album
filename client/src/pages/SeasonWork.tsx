@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
+import Fallback from "../components/Fallback";
 import styles from "./scss/work.module.scss";
 
 type Season = components["schemas"]["Season"];
@@ -42,14 +43,29 @@ export default function SeasonWork() {
   const seasonId = Number(params.seasonId);
   const workId = Number(params.workId);
 
-  const workListItem = useSeasonWorkListItem(seasonId, workId);
+  const {
+    workListItem,
+    isLoading: workListItemIsLoading,
+    errorMessage: workListItemErrorMessage,
+  } = useSeasonWorkListItem(seasonId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const season = useSeason(seasonId);
+  const {
+    season,
+    isLoading: seasonIsLoading,
+    errorMessage: seasonErrorMessage,
+  } = useSeason(seasonId);
+  const isLoading = workListItemIsLoading || seasonIsLoading;
+  const errorMessage = workListItemErrorMessage || seasonErrorMessage;
 
-  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  if (isLoading) {
+    return <Fallback message="作品を読み込み中..." />;
+  }
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
+  }
   if (!workListItem || !work || !navigation || !season) {
-    return <h1>指定された作品は存在しません</h1>;
+    return <Fallback message="指定された作品は存在しません" isError />;
   }
 
   return (

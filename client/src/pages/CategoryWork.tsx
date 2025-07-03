@@ -4,7 +4,8 @@ import { useCategoryWorkListItem } from "../hooks/category";
 import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
-import AdjacentNavigationArrows from "@/components/AdjacentNavigationArrows";
+import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
+import Fallback from "../components/Fallback";
 import styles from "./scss/work.module.scss";
 
 type Category = components["schemas"]["Category"];
@@ -45,14 +46,29 @@ export default function CategoryWork() {
   const categoryId = Number(params.categoryId);
   const workId = Number(params.workId);
 
-  const workListItem = useCategoryWorkListItem(categoryId, workId);
+  const {
+    workListItem,
+    isLoading: workListItemIsLoading,
+    errorMessage: workListItemErrorMessage,
+  } = useCategoryWorkListItem(categoryId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const category = useCategory(categoryId);
+  const {
+    category,
+    isLoading: categoryIsLoading,
+    errorMessage: categoryErrorMessage,
+  } = useCategory(categoryId);
+  const isLoading = workListItemIsLoading || categoryIsLoading;
+  const errorMessage = workListItemErrorMessage || categoryErrorMessage;
 
-  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  if (isLoading) {
+    return <Fallback message="作品を読み込み中..." />;
+  }
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
+  }
   if (!workListItem || !work || !navigation || !category) {
-    return <h1>指定された作品は存在しません</h1>;
+    return <Fallback message="指定された作品は存在しません" isError />;
   }
 
   return (

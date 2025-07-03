@@ -6,20 +6,59 @@ import { useExhibition } from "../hooks/exhibition";
 import { useMaterials } from "../hooks/material";
 import { useSeason } from "../hooks/season";
 import HeadingSub from "./HeadingSub";
+import Fallback from "./Fallback";
 import styles from "./scss/work-metadata.module.scss";
 
 type Work = components["schemas"]["Work"];
 
 export default function WorkMetadata({ work }: { work: Work }) {
-  const arranger = useArranger(work?.arranger_id);
-  const category = useCategory(work?.category_id);
-  const exhibition = useExhibition(work?.exhibition_id);
-  const materials = useMaterials(work?.material_ids);
-  const season = useSeason(work?.season_id);
+  const {
+    arranger,
+    isLoading: arrangerIsLoading,
+    errorMessage: arrangerErrorMessage,
+  } = useArranger(work?.arranger_id);
+  const {
+    category,
+    isLoading: categoryIsLoading,
+    errorMessage: categoryErrorMessage,
+  } = useCategory(work?.category_id);
+  const {
+    exhibition,
+    isLoading: exhibitionIsLoading,
+    errorMessage: exhibitionErrorMessage,
+  } = useExhibition(work?.exhibition_id);
+  const {
+    materials,
+    isLoading: materialsIsLoading,
+    errorMessage: materialsErrorMessage,
+  } = useMaterials(work?.material_ids);
+  const {
+    season,
+    isLoading: seasonIsLoading,
+    errorMessage: seasonErrorMessage,
+  } = useSeason(work?.season_id);
 
-  // TODO: ローディングと不正なアクセスを切り分けて表示する
-  if (!work || !arranger || !category || !exhibition || !materials || !season) {
-    return <p>作品情報の読み込み中</p>;
+  const isLoading =
+    arrangerIsLoading ||
+    categoryIsLoading ||
+    exhibitionIsLoading ||
+    materialsIsLoading ||
+    seasonIsLoading;
+  const errorMessage =
+    arrangerErrorMessage ||
+    categoryErrorMessage ||
+    exhibitionErrorMessage ||
+    materialsErrorMessage ||
+    seasonErrorMessage;
+
+  if (isLoading) {
+    return <Fallback message="作品情報を読み込み中..." />;
+  }
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
+  }
+  if (!arranger || !category || !exhibition || !materials || !season) {
+    return <Fallback message="作品情報が見つかりません" isError />;
   }
 
   return (

@@ -4,16 +4,30 @@ import { getMaterial, getMaterialWorkListItems, getMaterialWorkListItem } from "
 
 type Material = components["schemas"]["Material"];
 
-export function useMaterial(materialId?: number): Material | null {
+interface UseMaterialReturn {
+  material: Material | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useMaterial(materialId?: number): UseMaterialReturn {
   const [material, setMaterial] = useState<Material | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchMaterial(materialId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedMaterial = await getMaterial(materialId);
         setMaterial(fetchedMaterial);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch material ${materialId}:`, error);
+        setErrorMessage(message);
         setMaterial(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (materialId === undefined) {
@@ -22,19 +36,33 @@ export function useMaterial(materialId?: number): Material | null {
     }
     fetchMaterial(materialId);
   }, [materialId]);
-  return material;
+  return { material, isLoading, errorMessage };
 }
 
-export function useMaterials(materialIds?: number[]): Material[] | null {
+interface UseMaterialsReturn {
+  materials: Material[] | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useMaterials(materialIds?: number[]): UseMaterialsReturn {
   const [materials, setMaterials] = useState<Material[] | null>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchMaterials(materialIds: number[]) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedMaterials = await Promise.all(materialIds.map((id) => getMaterial(id)));
         setMaterials(fetchedMaterials);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch materials ${materialIds}:`, error);
+        setErrorMessage(message);
         setMaterials(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (!materialIds) {
@@ -43,19 +71,37 @@ export function useMaterials(materialIds?: number[]): Material[] | null {
     }
     fetchMaterials(materialIds);
   }, [materialIds]);
-  return materials;
+  return {
+    materials,
+    isLoading,
+    errorMessage,
+  };
 }
 
-export function useMaterialWorkListItems(materialId?: number) {
+interface UseMaterialWorkListItemsReturn {
+  workListItems: components["schemas"]["WorkListItem"][];
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useMaterialWorkListItems(materialId?: number): UseMaterialWorkListItemsReturn {
   const [workListItems, setWorkListItems] = useState<components["schemas"]["WorkListItem"][]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchMaterialWorkListItems(materialId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const items = await getMaterialWorkListItems(materialId);
         setWorkListItems(items);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch works for material ${materialId}:`, error);
+        setErrorMessage(message);
         setWorkListItems([]); // エラー時は空の配列を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (materialId === undefined) {
@@ -64,21 +110,42 @@ export function useMaterialWorkListItems(materialId?: number) {
     }
     fetchMaterialWorkListItems(materialId);
   }, [materialId]);
-  return workListItems;
+  return {
+    workListItems,
+    isLoading,
+    errorMessage,
+  };
 }
 
-export function useMaterialWorkListItem(materialId?: number, workId?: number) {
+interface UseMaterialWorkListItemReturn {
+  workListItem: components["schemas"]["WorkListItem"] | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useMaterialWorkListItem(
+  materialId?: number,
+  workId?: number
+): UseMaterialWorkListItemReturn {
   const [workListItem, setWorkListItem] = useState<components["schemas"]["WorkListItem"] | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchMaterialWorkListItem(materialId: number, workId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const item = await getMaterialWorkListItem(materialId, workId);
         setWorkListItem(item);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch work ${workId} for material ${materialId}:`, error);
+        setErrorMessage(message);
         setWorkListItem(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (materialId === undefined || workId === undefined) {
@@ -87,5 +154,9 @@ export function useMaterialWorkListItem(materialId?: number, workId?: number) {
     }
     fetchMaterialWorkListItem(materialId, workId);
   }, [materialId, workId]);
-  return workListItem;
+  return {
+    workListItem,
+    isLoading,
+    errorMessage,
+  };
 }
