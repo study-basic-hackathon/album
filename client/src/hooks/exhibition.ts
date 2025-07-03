@@ -10,21 +10,35 @@ import {
 type Exhibition = components["schemas"]["Exhibition"];
 type WorkListItem = components["schemas"]["WorkListItem"];
 
-export function useExhibitions(): Record<number, Exhibition> {
+interface UseExhibitionsReturn {
+  exhibitions: Record<number, Exhibition>;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useExhibitions(): UseExhibitionsReturn {
   const [exhibitions, setExhibitions] = useState<Record<number, Exhibition>>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchExhibitions() {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedExhibitions = await getExhibitions();
         setExhibitions(fetchedExhibitions);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error("Failed to fetch exhibitions:", error);
+        setErrorMessage(message);
         setExhibitions({}); // エラー時は空のオブジェクトを設定
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchExhibitions();
   }, []);
-  return exhibitions;
+  return { exhibitions, isLoading, errorMessage };
 }
 
 export function useExhibition(exhibitionId?: number): Exhibition | null {
