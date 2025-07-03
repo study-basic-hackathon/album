@@ -67,7 +67,7 @@ export default function MaterialWork() {
     return <Fallback message={errorMessage} isError />;
   }
   if (!workListItem || !work || !navigation || !material) {
-    return <Fallback message="作品情報が見つかりません" isError />;
+    return <Fallback message="指定された作品は存在しません" isError />;
   }
 
   return (
