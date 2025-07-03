@@ -28,13 +28,13 @@ export default function Arranger() {
   const errorMessage = arrangerErrorMessage || worksErrorMessage;
 
   if (isLoading) {
-    return <Fallback message="華展の作品一覧を読み込み中..." />;
+    return <Fallback message="作者の作品一覧を読み込み中..." />;
   }
   if (errorMessage) {
     return <Fallback message={errorMessage} isError />;
   }
   if (!arranger || arrangerWorks.length === 0) {
-    return <Fallback message="指定された華展は存在しません" isError />;
+    return <Fallback message="指定された作者は存在しません" isError />;
   }
 
   return (
