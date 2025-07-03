@@ -119,19 +119,33 @@ export function useExhibitionWorkListItems(exhibitionId?: number): ExhibitionWor
   };
 }
 
+interface UseExhibitionWorkListItemReturn {
+  workListItem: WorkListItem | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
 export function useExhibitionWorkListItem(
   exhibitionId?: number,
   workId?: number
-): WorkListItem | null {
+): UseExhibitionWorkListItemReturn {
   const [workListItem, setWorkListItem] = useState<WorkListItem | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchExhibitionWorkListItem(exhibitionId: number, workId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedWorkListItem = await getExhibitionWorkListItem(exhibitionId, workId);
         setWorkListItem(fetchedWorkListItem);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch work ${workId} for exhibition ${exhibitionId}:`, error);
+        setErrorMessage(message);
         setWorkListItem(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (exhibitionId === undefined || workId === undefined) {
@@ -140,5 +154,9 @@ export function useExhibitionWorkListItem(
     }
     fetchExhibitionWorkListItem(exhibitionId, workId);
   }, [exhibitionId, workId]);
-  return workListItem;
+  return {
+    workListItem,
+    isLoading,
+    errorMessage,
+  };
 }

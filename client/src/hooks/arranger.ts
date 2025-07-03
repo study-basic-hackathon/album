@@ -79,16 +79,33 @@ export function useArrangerWorkListItems(arrangerId?: number): UseArrangerWorkLi
   };
 }
 
-export function useArrangerWorkListItem(arrangerId?: number, workId?: number): WorkListItem | null {
+interface UseArrangerWorkListItemReturn {
+  workListItem: WorkListItem | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useArrangerWorkListItem(
+  arrangerId?: number,
+  workId?: number
+): UseArrangerWorkListItemReturn {
   const [workListItem, setWorkListItem] = useState<WorkListItem | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchArrangerWorkListItem(arrangerId: number, workId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const fetchedWorkListItem = await getArrangerWorkListItem(arrangerId, workId);
         setWorkListItem(fetchedWorkListItem);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch work ${workId} for arranger ${arrangerId}:`, error);
+        setErrorMessage(message);
         setWorkListItem(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (arrangerId === undefined || workId === undefined) {
@@ -97,5 +114,9 @@ export function useArrangerWorkListItem(arrangerId?: number, workId?: number): W
     }
     fetchArrangerWorkListItem(arrangerId, workId);
   }, [arrangerId, workId]);
-  return workListItem;
+  return {
+    workListItem,
+    isLoading,
+    errorMessage,
+  };
 }

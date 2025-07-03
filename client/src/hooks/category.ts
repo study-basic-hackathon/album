@@ -78,18 +78,35 @@ export function useCategoryWorkListItems(categoryId?: number): UseCategoryWorkLi
   };
 }
 
-export function useCategoryWorkListItem(categoryId?: number, workId?: number) {
+interface UseCategoryWorkListItemReturn {
+  workListItem: components["schemas"]["WorkListItem"] | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useCategoryWorkListItem(
+  categoryId?: number,
+  workId?: number
+): UseCategoryWorkListItemReturn {
   const [workListItem, setWorkListItem] = useState<components["schemas"]["WorkListItem"] | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchCategoryWorkListItem(categoryId: number, workId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const item = await getCategoryWorkListItem(categoryId, workId);
         setWorkListItem(item);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch work ${workId} for category ${categoryId}:`, error);
+        setErrorMessage(message);
         setWorkListItem(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (categoryId === undefined || workId === undefined) {
@@ -98,5 +115,9 @@ export function useCategoryWorkListItem(categoryId?: number, workId?: number) {
     }
     fetchCategoryWorkListItem(categoryId, workId);
   }, [categoryId, workId]);
-  return workListItem;
+  return {
+    workListItem,
+    isLoading,
+    errorMessage,
+  };
 }

@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
+import Fallback from "../components/Fallback";
 import styles from "./scss/work.module.scss";
 
 type Arranger = components["schemas"]["Arranger"];
@@ -44,7 +45,11 @@ export default function ArrangerWork() {
   const arrangerId = Number(params.arrangerId);
   const workId = Number(params.workId);
 
-  const workListItem = useArrangerWorkListItem(arrangerId, workId);
+  const {
+    workListItem,
+    isLoading: workListItemIsLoading,
+    errorMessage: workListItemErrorMessage,
+  } = useArrangerWorkListItem(arrangerId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
   const {
@@ -52,10 +57,17 @@ export default function ArrangerWork() {
     isLoading: arrangerIsLoading,
     errorMessage: arrangerErrorMessage,
   } = useArranger(arrangerId);
+  const isLoading = workListItemIsLoading || arrangerIsLoading;
+  const errorMessage = workListItemErrorMessage || arrangerErrorMessage;
 
-  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  if (isLoading) {
+    return <Fallback message="作品を読み込み中..." />;
+  }
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
+  }
   if (!workListItem || !work || !navigation || !arranger) {
-    return <h1>指定された作品は存在しません</h1>;
+    return <Fallback message="指定された作品は存在しません" isError />;
   }
 
   return (

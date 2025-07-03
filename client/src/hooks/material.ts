@@ -117,18 +117,35 @@ export function useMaterialWorkListItems(materialId?: number): UseMaterialWorkLi
   };
 }
 
-export function useMaterialWorkListItem(materialId?: number, workId?: number) {
+interface UseMaterialWorkListItemReturn {
+  workListItem: components["schemas"]["WorkListItem"] | null;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export function useMaterialWorkListItem(
+  materialId?: number,
+  workId?: number
+): UseMaterialWorkListItemReturn {
   const [workListItem, setWorkListItem] = useState<components["schemas"]["WorkListItem"] | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
     async function fetchMaterialWorkListItem(materialId: number, workId: number) {
       try {
+        setIsLoading(true);
+        setErrorMessage(null);
         const item = await getMaterialWorkListItem(materialId, workId);
         setWorkListItem(item);
       } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error occurred";
         console.error(`Failed to fetch work ${workId} for material ${materialId}:`, error);
+        setErrorMessage(message);
         setWorkListItem(null); // エラー時は null を設定
+      } finally {
+        setIsLoading(false);
       }
     }
     if (materialId === undefined || workId === undefined) {
@@ -137,5 +154,9 @@ export function useMaterialWorkListItem(materialId?: number, workId?: number) {
     }
     fetchMaterialWorkListItem(materialId, workId);
   }, [materialId, workId]);
-  return workListItem;
+  return {
+    workListItem,
+    isLoading,
+    errorMessage,
+  };
 }

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router";
 import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
+import Fallback from "../components/Fallback";
 import styles from "./scss/work.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -45,14 +46,29 @@ export default function ExhibitionWork() {
   const exhibitionId = Number(params.exhibitionId);
   const workId = Number(params.workId);
 
-  const workListItem = useExhibitionWorkListItem(exhibitionId, workId);
+  const {
+    workListItem,
+    isLoading: workListItemIsLoading,
+    errorMessage: workListItemErrorMessage,
+  } = useExhibitionWorkListItem(exhibitionId, workId);
   const work = workListItem?.work;
   const navigation = workListItem?.navigation;
-  const { exhibition, isLoading: exhibitionIsLoading, errorMessage: exhibitionErrorMessage } = useExhibition(exhibitionId);
-  
-  // TODO: ローディングと不正なアクセスを切り分けて表示する
+  const {
+    exhibition,
+    isLoading: exhibitionIsLoading,
+    errorMessage: exhibitionErrorMessage,
+  } = useExhibition(exhibitionId);
+  const isLoading = workListItemIsLoading || exhibitionIsLoading;
+  const errorMessage = workListItemErrorMessage || exhibitionErrorMessage;
+
+  if (isLoading) {
+    return <Fallback message="作品情報を読み込み中..." />;
+  }
+  if (errorMessage) {
+    return <Fallback message={errorMessage} isError />;
+  }
   if (!workListItem || !work || !navigation || !exhibition) {
-    return <h1>指定された作品は存在しません</h1>;
+    return <Fallback message="指定された作品は存在しません" isError />;
   }
 
   return (
