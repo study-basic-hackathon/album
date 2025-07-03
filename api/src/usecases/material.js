@@ -2,7 +2,7 @@ import { findMaterialById, findWorksByMaterialId, insertMaterial } from '../repo
 import * as materialRepository from '../repositories/material.js';
 
 // 花材の登録
-export async function createMaterialPath(name) {
+export async function createMaterial(name) {
   const resultRows = await insertMaterial(name);
   const materialId = resultRows[0].id;
   return materialId;

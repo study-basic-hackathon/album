@@ -1,5 +1,5 @@
 import express from "express";
-import { updateWork, deleteWork, createWork } from "../repositories/work.js";
+import { updateWork, deleteWork, createWork } from "../usecases/work.js";
 
 const router = express.Router();
 
