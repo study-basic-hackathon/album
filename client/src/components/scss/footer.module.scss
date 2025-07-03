@@ -1,27 +1,26 @@
 .footer {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
+
   .container {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-xs);
-    a {
+
+    .icon {
+      line-height: 1;
       @media (hover) {
         &:hover {
           color: var(--color-complementary-2);
         }
       }
     }
+    
     button {
       background: none;
       border: none;
       color: var(--color-accent-1);
-      @media (hover) {
-        &:hover {
-          color: var(--color-complementary-2);
-        }
-      }
     }
   }
 }
