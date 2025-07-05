@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    const imageId = createImage();
+    const imageId = req.imageId;
     const ext = path.extname(file.originalname) || ".png";
     const filename = `${imageId}${ext}`;
     cb(null, filename);
@@ -24,17 +24,21 @@ const storage = multer.diskStorage({
 const uploadImage = multer({ storage });
 
 // 画像の登録
-router.post("/", uploadImage.single("file"), (req, res) => {
+router.post("/", async (req, res, next) => {
   try{
-    if (!req.file) {
-      return res.status(400).json({ error: "Invalid file" });
-    }
-    const imageId = path.parse(req.file.filename).name;
-    res.status(201).header("Location", `/images/${imageId}`);
+    const imageId = await createImage();
+    req.imageId = imageId
+    next();
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
     };
+  }, uploadImage.single("file"), (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: "Invalid file" });
+    }
+    const imageId = req.imageId;
+    res.status(201).header("Location", `/images/${imageId}`).end();
 });
 
 // 画像の取得
