@@ -34,10 +34,10 @@ export async function insertWork(title, arranger_id, material_ids, season_id, ca
 
     // image テーブルにデータを登録
     if (image_ids && image_ids.length > 0) {
-      const imageInserts = image_ids.map(imageId => `(${imageId}, ${workId})`).join(',');
+      const imageInserts = image_ids.map(imageId => `(${workId}, ${imageId})`).join(',');
       await client.query(`
         INSERT INTO
-            image(id, work_id)
+            work_image(work_id, image_id)
         VALUES
             ${imageInserts}
       `);
