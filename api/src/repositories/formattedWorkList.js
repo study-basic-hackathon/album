@@ -10,14 +10,14 @@ export async function getFormattedWorkListByCondition({ whereClause, whereParams
       ARRAY_AGG(DISTINCT wm.material_id) AS material_ids,
       wk.category_id,
       wk.season_id,
-      ARRAY_AGG(DISTINCT ie.id) AS image_ids,
+      ARRAY_AGG(DISTINCT wi.image_id) AS image_ids,
       TO_CHAR(wk.created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at
     FROM
       work AS wk
-    JOIN
+    LEFT JOIN
       work_material AS wm ON wk.id = wm.work_id
     LEFT JOIN
-      image AS ie ON wk.id = ie.work_id
+      work_image AS wi ON wk.id = wi.work_id
     WHERE
       ${whereClause}
     GROUP BY
