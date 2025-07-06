@@ -42,15 +42,21 @@ export async function deleteImageTransaction(imageId, filePath){
     }
 
     // ファイルを削除
-    await fs.unlink(filePath);
+    try {
+      await fs.unlink(filePath);
+    } catch (err) {
+      console.error(`failed to delete file:`, err);
+      throw err;
+    }
+
     await client.query('COMMIT');
     return success;
 
-  } catch (error) {
-    await client.query('ROLLBACK');
-    console.error(`Error deleting data:`, error);
-    throw error;
+  } catch (err) {
+    if (client) await client.query('ROLLBACK');
+    console.error(`failed to complete transaction:`, err);
+    throw err;
   } finally {
-    client.release();
+    if (client) client.release();
   }
 };
