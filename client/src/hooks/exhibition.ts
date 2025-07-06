@@ -44,7 +44,7 @@ export function useExhibitions(): UseExhibitionsReturn {
 
   useEffect(() => {
     fetchExhibitions();
-  }, [fetchExhibitions]);
+  }, []);
 
   return { exhibitions, isLoading, errorMessage, refetch };
 }
