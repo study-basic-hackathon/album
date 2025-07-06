@@ -1,5 +1,5 @@
 import express from "express";
-import { noRecord, noFile, success, rollbackError } from '../utils/image.js'
+import { noRecord, noFile, success } from '../utils/image.js'
 import { getImageById, deleteImage, getDirPath } from '../usecases/image.js';
 
 const router = express.Router();
@@ -31,7 +31,7 @@ router.delete("/:imageId", async (req, res) => {
     }
     const dirPath = getDirPath();
     const result = await deleteImage(imageId, dirPath);
-    const validResults = [noFile, noRecord, success, rollbackError];
+    const validResults = [noFile, noRecord, success];
     if (!validResults.includes(result)) {
       throw new Error(`Unknown result: ${result}`);
     }    
@@ -40,9 +40,6 @@ router.delete("/:imageId", async (req, res) => {
     }
     if (result === success) {
       return res.status(204).end();
-    }
-    if (result === rollbackError){
-      throw new Error('rollbackError'); 
     }
   } catch (err) {
     console.error("Error:", err);

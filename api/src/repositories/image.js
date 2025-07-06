@@ -1,7 +1,7 @@
 import { pool } from "../db.js";
 import path from 'path';
 import { promises as fs } from 'fs';
-import { noRecord, success, rollbackError } from '../utils/image.js'
+import { noRecord, success } from '../utils/image.js'
 
 const UPLAODS_DIRECTORY = process.env.UPLAODS_DIRECTORY || "uploads";
 
@@ -47,20 +47,10 @@ export async function deleteImageTransaction(imageId, filePath){
     return success;
 
   } catch (error) {
-    console.error(`Error:`, error);
-
-    // ロールバック時にエラーが生じる可能性もある
-    if (client) {
-      try {
-        await client.query('ROLLBACK');
-      } catch (rollbackError) {
-        console.error(`Error during rollback:`, rollbackError);
-      }
-    }
-    return rollbackError;
+    await client.query('ROLLBACK');
+    console.error(`Error deleting data:`, error);
+    throw error;
   } finally {
-    if (client) {
-      client.release();
-    }
+    client.release();
   }
 };
