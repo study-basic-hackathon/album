@@ -28,9 +28,13 @@ router.delete("/:imageId", async (req, res) => {
     const { imageId } = req.params;
     if (!/^[0-9]+$/.test(imageId)) {
       return res.status(400).json({ message: "Invalid imageId" });
-    };
+    }
     const dirPath = getDirPath();
     const result = await deleteImage(imageId, dirPath);
+    const validResults = [noFile, noRecord, success, rollbackError];
+    if (!validResults.includes(result)) {
+      throw new Error(`Unknown result: ${result}`);
+    }    
     if (result === noFile || result === noRecord) {
       return res.status(404).json({ message: "Resource not found" });
     }
@@ -40,7 +44,6 @@ router.delete("/:imageId", async (req, res) => {
     if (result === rollbackError){
       throw new Error('rollbackError'); 
     }
-    throw new Error(`Unexpected returnValue : ${String(result)}`);
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
