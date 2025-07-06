@@ -2,9 +2,9 @@ export default function Head({ title, description }: { title: string; descriptio
   return (
     <>
       <title>{title}</title>
+      {description && <meta name="description" content={description} />}
       <meta name="description" content={description} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
+      {description && <meta property="og:description" content={description} />}
     </>
   );
 }
