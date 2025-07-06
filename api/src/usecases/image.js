@@ -16,7 +16,7 @@ export async function getImageById(imageId) {
 
 //画像の削除
 export async function deleteImage(imageId, dirPath) {
-  const files = fs.readdirSync(dirPath);
+  const files = await fs.readdirSync(dirPath);
   const file = files.find(file => path.parse(file).name === imageId);
   if (!file) {
     return noFile;
