@@ -6,7 +6,7 @@ export async function getExhibitions(): Promise<
 > {
   const response = await fetch(endpoint("/exhibitions"));
   if (!response.ok) {
-    throw new Error("Failed to fetch exhibitions");
+    throw new Error("華展一覧の取得に失敗しました。");
   }
   return response.json();
 }
@@ -22,7 +22,7 @@ export async function getExhibition(
   );
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch exhibition with ID ${exhibitionId}`);
+    throw new Error(`華展ID ${exhibitionId} の華展情報取得に失敗しました。`);
   }
   return response.json();
 }
@@ -38,7 +38,7 @@ export async function getExhibitionWorkListItems(
   );
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch works for exhibition with ID ${exhibitionId}`);
+    throw new Error(`華展ID ${exhibitionId} の作品一覧取得に失敗しました。`);
   }
   return response.json();
 }
@@ -54,7 +54,7 @@ export async function getExhibitionWorkListItem(
     .replace("{workId}", String(workId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch work with ID ${workId} for exhibition ${exhibitionId}`);
+    throw new Error(`華展ID ${exhibitionId} の作品ID ${workId} の取得に失敗しました。`);
   }
   return response.json();
 }

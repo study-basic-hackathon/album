@@ -45,14 +45,19 @@ function ExhibitionList({ exhibitions }: { exhibitions: Exhibition[] }) {
 }
 
 export default function Index() {
-  const { exhibitions, isLoading, errorMessage } = useExhibitions();
+  const { exhibitions, isLoading, errorMessage, refetch } = useExhibitions();
   const exhibitionList: Exhibition[] = Object.values(exhibitions);
 
   if (isLoading) {
     return <Fallback message="華展一覧を読み込み中..." />;
   }
   if (errorMessage) {
-    return <Fallback message={errorMessage} isError />;
+    return (
+      <section className={styles.errorSection}>
+        <Fallback message={errorMessage} isError />
+        <button onClick={refetch}>再試行</button>
+      </section>
+    );
   }
 
   return (
