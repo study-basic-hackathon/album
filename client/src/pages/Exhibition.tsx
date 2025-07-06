@@ -4,6 +4,7 @@ import { useExhibition, useExhibitionWorkListItems } from "../hooks/exhibition";
 import WorksImages from "../components/WorksImages";
 import Heading from "../components/Heading";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 
 type Exhibition = components["schemas"]["Exhibition"];
 type Work = components["schemas"]["Work"];
@@ -36,9 +37,13 @@ export default function Exhibition() {
   if (!exhibition || exhibitionWorks.length === 0) {
     return <Fallback message="指定された華展は存在しません" isError />;
   }
-  
+
   return (
     <>
+      <Head
+        title={`${exhibition.name}の作品一覧`}
+        description={`${exhibition.name}の作品一覧ページです。`}
+      />
       <Heading title={`${exhibition.name}の作品一覧`} />
       <WorksImages works={exhibitionWorks} />
     </>

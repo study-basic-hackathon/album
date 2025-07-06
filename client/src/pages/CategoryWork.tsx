@@ -6,6 +6,7 @@ import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 import styles from "./scss/work.module.scss";
 
 type Category = components["schemas"]["Category"];
@@ -73,6 +74,10 @@ export default function CategoryWork() {
 
   return (
     <>
+      <Head
+        title={`${category.name}の作品`}
+        description={`${category.name}の作品の詳細ページです。`}
+      />
       <WorkHeading category={category} />
       <WorkImages work={work} />
       <AdjacentNavigation categoryId={categoryId} navigation={navigation} />

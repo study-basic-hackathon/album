@@ -4,6 +4,7 @@ import { useSeason, useSeasonWorkListItems } from "../hooks/season";
 import WorksImages from "../components/WorksImages";
 import Heading from "../components/Heading";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 
 type Work = components["schemas"]["Work"];
 type Season = components["schemas"]["Season"];
@@ -39,6 +40,10 @@ export default function Season() {
 
   return (
     <>
+      <Head
+        title={`${season.name}の作品一覧`}
+        description={`${season.name}の作品一覧ページです。`}
+      />
       <Heading title={`${season.name}の作品一覧`} />
       <WorksImages works={seasonWorks} />
     </>

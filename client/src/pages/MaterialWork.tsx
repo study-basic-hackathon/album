@@ -6,6 +6,7 @@ import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 import styles from "./scss/work.module.scss";
 
 type Material = components["schemas"]["Material"];
@@ -72,6 +73,10 @@ export default function MaterialWork() {
 
   return (
     <>
+      <Head
+        title={`${material.name}の作品`}
+        description={`${material.name}の作品の詳細ページです。`}
+      />
       <WorkHeading material={material} />
       <WorkImages work={work} />
       <AdjacentNavigation materialId={materialId} navigation={navigation} />
