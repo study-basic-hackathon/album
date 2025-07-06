@@ -5,6 +5,7 @@ import { useExhibitions } from "../hooks/exhibition";
 import Heading from "../components/Heading";
 import HeadingSub from "../components/HeadingSub";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 import styles from "./scss/index.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -62,6 +63,10 @@ export default function Index() {
 
   return (
     <>
+      <Head
+        title="華道用写真共有Webアプリ"
+        description="華展の写真を共有するための Web アプリケーションです。"
+      />
       <Heading
         title="華道用写真共有Webアプリ"
         description="華展の写真を共有するための Web アプリケーションです。"

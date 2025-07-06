@@ -4,6 +4,7 @@ import { useArranger, useArrangerWorkListItems } from "../hooks/arranger";
 import WorksImages from "../components/WorksImages";
 import Heading from "../components/Heading";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 
 type Arranger = components["schemas"]["Arranger"];
 type Work = components["schemas"]["Work"];
@@ -39,6 +40,10 @@ export default function Arranger() {
 
   return (
     <>
+      <Head
+        title={`${arranger.name}の作品一覧`}
+        description={`${arranger.name}の作品一覧ページです。`}
+      />
       <Heading title={`${arranger.name}の作品一覧`} />
       <WorksImages works={arrangerWorks} />
     </>

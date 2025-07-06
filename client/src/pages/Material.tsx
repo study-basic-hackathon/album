@@ -4,6 +4,7 @@ import { useMaterial, useMaterialWorkListItems } from "../hooks/material";
 import WorksImages from "../components/WorksImages";
 import Heading from "../components/Heading";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 
 type Work = components["schemas"]["Work"];
 type Material = components["schemas"]["Material"];
@@ -36,9 +37,13 @@ export default function Material() {
   if (!material || materialWorks.length === 0) {
     return <Fallback message="指定された素材は存在しません" isError />;
   }
-  
+
   return (
     <>
+      <Head
+        title={`${material.name}の作品一覧`}
+        description={`${material.name}の作品一覧ページです。`}
+      />
       <Heading title={`${material.name}の作品一覧`} />
       <WorksImages works={materialWorks} />
     </>

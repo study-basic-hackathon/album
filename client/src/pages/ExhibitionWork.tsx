@@ -6,6 +6,7 @@ import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 import styles from "./scss/work.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -73,6 +74,10 @@ export default function ExhibitionWork() {
 
   return (
     <>
+      <Head
+        title={`${exhibition.name}の作品`}
+        description={`${exhibition.name}の作品の詳細ページです。`}
+      />
       <WorkHeading exhibition={exhibition} />
       <WorkImages work={work} />
       <AdjacentNavigation exhibitionId={exhibitionId} navigation={navigation} />
