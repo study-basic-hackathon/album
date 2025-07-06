@@ -1,6 +1,6 @@
 import { pool } from "../db.js";
 import path from 'path';
-import {promises as fs} from 'fs';
+import { promises as fs } from 'fs';
 import { noRecord, success, rollbackError } from '../utils/image.js'
 
 const UPLAODS_DIRECTORY = process.env.UPLAODS_DIRECTORY || "uploads";
