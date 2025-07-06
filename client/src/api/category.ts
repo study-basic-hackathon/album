@@ -9,7 +9,7 @@ export async function getCategory(
   const path = endpoint("/categories/{categoryId}").replace("{categoryId}", String(categoryId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch category with ID ${categoryId}`);
+    throw new Error(`カテゴリID ${categoryId} の情報取得に失敗しました。`);
   }
   return response.json();
 }
@@ -25,7 +25,7 @@ export async function getCategoryWorkListItems(
   );
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch works for category with ID ${categoryId}`);
+    throw new Error(`カテゴリID ${categoryId} の作品一覧取得に失敗しました。`);
   }
   return response.json();
 }
@@ -41,7 +41,7 @@ export async function getCategoryWorkListItem(
     .replace("{workId}", String(workId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch work with ID ${workId} for category with ID ${categoryId}`);
+    throw new Error(`カテゴリID ${categoryId} の作品ID ${workId} の情報取得に失敗しました。`);
   }
   return response.json();
 }

@@ -9,7 +9,7 @@ export async function getMaterial(
   const path = endpoint("/materials/{materialId}").replace("{materialId}", String(materialId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch material with ID ${materialId}`);
+    throw new Error(`花材ID ${materialId} の情報取得に失敗しました。`);
   }
   return response.json();
 }
@@ -25,7 +25,7 @@ export async function getMaterialWorkListItems(
   );
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch works for material with ID ${materialId}`);
+    throw new Error(`花材ID ${materialId} の作品一覧取得に失敗しました。`);
   }
   return response.json();
 }
@@ -41,7 +41,7 @@ export async function getMaterialWorkListItem(
     .replace("{workId}", String(workId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch work with ID ${workId} for material with ID ${materialId}`);
+    throw new Error(`花材ID ${materialId} の作品ID ${workId} の情報取得に失敗しました。`);
   }
   return response.json();
 }

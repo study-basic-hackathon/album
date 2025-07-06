@@ -22,7 +22,7 @@ export async function getExhibition(
   );
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`華展ID ${exhibitionId} の華展情報取得に失敗しました。`);
+    throw new Error(`華展ID ${exhibitionId} の情報取得に失敗しました。`);
   }
   return response.json();
 }
@@ -54,7 +54,7 @@ export async function getExhibitionWorkListItem(
     .replace("{workId}", String(workId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`華展ID ${exhibitionId} の作品ID ${workId} の取得に失敗しました。`);
+    throw new Error(`華展ID ${exhibitionId} の作品ID ${workId} の情報取得に失敗しました。`);
   }
   return response.json();
 }
