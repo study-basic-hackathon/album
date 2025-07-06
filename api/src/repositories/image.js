@@ -29,7 +29,7 @@ export async function deleteImageTransaction(imageId, filePath){
     // レコードを削除
     const result = await client.query(
     `DELETE FROM
-      images
+      image
     WHERE
       id = $1`,
      [imageId]
