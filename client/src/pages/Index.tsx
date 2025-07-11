@@ -5,6 +5,7 @@ import { useExhibitions } from "../hooks/exhibition";
 import Heading from "../components/Heading";
 import HeadingSub from "../components/HeadingSub";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 import styles from "./scss/index.module.scss";
 
 type Exhibition = components["schemas"]["Exhibition"];
@@ -45,18 +46,27 @@ function ExhibitionList({ exhibitions }: { exhibitions: Exhibition[] }) {
 }
 
 export default function Index() {
-  const { exhibitions, isLoading, errorMessage } = useExhibitions();
+  const { exhibitions, isLoading, errorMessage, refetch } = useExhibitions();
   const exhibitionList: Exhibition[] = Object.values(exhibitions);
 
   if (isLoading) {
     return <Fallback message="華展一覧を読み込み中..." />;
   }
   if (errorMessage) {
-    return <Fallback message={errorMessage} isError />;
+    return (
+      <section className={styles.errorSection}>
+        <Fallback message={errorMessage} isError />
+        <button onClick={refetch}>再試行</button>
+      </section>
+    );
   }
 
   return (
     <>
+      <Head
+        title="華道用写真共有Webアプリ"
+        description="華展の写真を共有するための Web アプリケーションです。"
+      />
       <Heading
         title="華道用写真共有Webアプリ"
         description="華展の写真を共有するための Web アプリケーションです。"

@@ -6,6 +6,7 @@ import WorkImages from "../components/WorkImages";
 import WorkMetadata from "../components/WorkMetadata";
 import AdjacentNavigationArrows from "../components/AdjacentNavigationArrows";
 import Fallback from "../components/Fallback";
+import Head from "../components/Head";
 import styles from "./scss/work.module.scss";
 
 type Season = components["schemas"]["Season"];
@@ -70,6 +71,7 @@ export default function SeasonWork() {
 
   return (
     <>
+      <Head title={`${season.name}の作品`} description={`${season.name}の作品の詳細ページです。`} />
       <WorkHeading season={season} />
       <WorkImages work={work} />
       <AdjacentNavigation seasonId={seasonId} navigation={navigation} />

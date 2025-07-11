@@ -9,7 +9,7 @@ export async function getArranger(
   const path = endpoint("/arrangers/{arrangerId}").replace("{arrangerId}", String(arrangerId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch arranger with ID ${arrangerId}`);
+    throw new Error(`作者ID ${arrangerId} の情報取得に失敗しました。`);
   }
   return response.json();
 }
@@ -25,7 +25,7 @@ export async function getArrangerWorkListItems(
   );
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch works for arranger with ID ${arrangerId}`);
+    throw new Error(`作者ID ${arrangerId} の作品一覧取得に失敗しました。`);
   }
 
   return response.json();
@@ -42,7 +42,7 @@ export async function getArrangerWorkListItem(
     .replace("{workId}", String(workId));
   const response = await fetch(path);
   if (!response.ok) {
-    throw new Error(`Failed to fetch work with ID ${workId} for arranger with ID ${arrangerId}`);
+    throw new Error(`作者ID ${arrangerId} の作品ID ${workId} の情報取得に失敗しました。`);
   }
   return response.json();
 }
