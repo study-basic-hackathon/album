@@ -1,13 +1,11 @@
 import express from "express";
 import multer from "multer";
-import fs from "fs";
 import path from "path";
 import { getImageById, createImage } from '../usecases/image.js';
 
 const router = express.Router();
 
 const uploadDir = path.resolve("./uploads");
-fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
