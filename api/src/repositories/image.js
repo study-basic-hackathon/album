@@ -1,7 +1,8 @@
 import { pool } from "../db.js";
 import path from 'path';
 import { promises as fs } from 'fs';
-import { noRecord, success } from '../utils/image.js'
+import Result from "../utils/commons/Result.js";
+import { InternalError, NotFoundError } from "../utils/commons/AppError.js";
 
 const UPLAODS_DIRECTORY = process.env.UPLAODS_DIRECTORY || "uploads";
 
@@ -20,7 +21,7 @@ export function findImageById(imageId) {
     return filePath;
 };
 
-export async function deleteImageTransaction(imageId, filePath){
+export async function deleteImage(imageId, filePath){
   let client; 
   try {
     client = await pool.connect();
@@ -28,34 +29,29 @@ export async function deleteImageTransaction(imageId, filePath){
 
     // レコードを削除
     const result = await client.query(
-    `DELETE FROM
-      image
-    WHERE
-      id = $1`,
+    `DELETE FROM image WHERE id = $1`,
      [imageId]
     );
 
     if (result.rowCount === 0) {
       await client.query('ROLLBACK');
-      console.warn(`image record not found`);
-      return noRecord;
+      return Result.fail(new NotFoundError('Record not found'));
     }
 
     // ファイルを削除
     try {
       await fs.unlink(filePath);
     } catch (err) {
-      console.error(`failed to delete file:`, err);
-      throw err;
+      await client.query('ROLLBACK');
+      return Result.fail(new InternalError('Failed to delete file', err));
     }
 
     await client.query('COMMIT');
-    return success;
+    return Result.ok();
 
   } catch (err) {
     if (client) await client.query('ROLLBACK');
-    console.error(`failed to complete transaction:`, err);
-    throw err;
+    return Result.fail(new InternalError('Failed to complete transaction', err));
   } finally {
     if (client) client.release();
   }
