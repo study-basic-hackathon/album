@@ -1,8 +1,8 @@
 import path from 'path';
 import { promises as fs } from 'fs';
 import { NotFoundError } from '../utils/commons/AppError.js';
+import { findImageById, insertImage } from '../repositories/image.js';
 import * as imageRepository from '../repositories/image.js'
-import { findImageById } from '../repositories/image.js';
 import Result from '../utils/commons/Result.js';
 
 //ファイルパスの取得
@@ -20,8 +20,6 @@ export async function getImageFilePathIfExists(imageId, dirPath) {
   return Result.ok(path.join(dirPath, file));
 } 
 
-import { findImageById, insertImage } from '../repositories/image.js';
-
 //画像の登録
 export async function createImage() {
   const resultRows = await insertImage();
@@ -31,7 +29,7 @@ export async function createImage() {
 
 //画像の取得
 export async function getImageById(imageId) {
-  const result = findImageById(imageId);
+  const result = await findImageById(imageId);
   return result; 
 };
 
