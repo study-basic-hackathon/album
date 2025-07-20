@@ -1,6 +1,14 @@
 import express from "express";
-import { getImageById, createImage, removeImage, getDirPath, getImageFilePathIfExists } from '../usecases/image.js';
+import {
+  getImageById,
+  createImage,
+  getDirPath,
+  getImageFilePath,
+  deleteImageFile,
+  deleteImageRecord,
+} from "../usecases/image.js";
 import { NotFoundError, ValidationError, InternalError } from "../utils/commons/AppError.js";
+import { unwrap } from "../utils/routers/errorHandling.js";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
@@ -25,61 +33,63 @@ const storage = multer.diskStorage({
 const uploadImage = multer({ storage });
 
 // 画像の登録
-router.post("/", async (req, res, next) => {
-  try{
-    const imageId = await createImage();
-    req.imageId = imageId
-    next();
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-    };
-  }, uploadImage.single("file"), (req, res) => {
+router.post(
+  "/",
+  async (req, res, next) => {
+    try {
+      const imageId = await createImage();
+      req.imageId = imageId;
+      next();
+    } catch (err) {
+      console.error("Error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  uploadImage.single("file"),
+  (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "Invalid file" });
     }
     const imageId = req.imageId;
     res.status(201).header("Location", `/images/${imageId}`).end();
-});
+  }
+);
 
 // 画像の取得
 router.get("/:imageId", async (req, res) => {
-    try{
-      const { imageId } = req.params;
-      if (!/^\d+$/.test(imageId)) {
-        return res.status(400).json({ message: "Invalid imageId" });
-      };
-      const result = await getImageById(imageId);
-      if (result === undefined) {
-        return res.status(404).json({ message: "Resource not found" });
-      };
-      res.sendFile(result);
+  try {
+    const { imageId } = req.params;
+    if (!/^\d+$/.test(imageId)) {
+      return res.status(400).json({ message: "Invalid imageId" });
+    }
+    const result = await getImageById(imageId);
+    if (result === undefined) {
+      return res.status(404).json({ message: "Resource not found" });
+    }
+    res.sendFile(result);
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
-    };
+  }
 });
 
 router.delete("/:imageId", async (req, res) => {
-  const { imageId } = req.params;
   try {
+    const { imageId } = req.params;
     if (!/^\d+$/.test(imageId)) {
       throw new ValidationError("Invalid imageId");
     }
 
     const dirPath = getDirPath();
-    const fileResult = await getImageFilePathIfExists(imageId, dirPath);
-    if (fileResult.isFailure()) throw fileResult.error;
-
-    const result = await removeImage(imageId, fileResult.data);
-    if (result.isFailure()) throw result.error;
+    const filePath = await unwrap(getImageFilePath(imageId, dirPath));
+    await unwrap(deleteImageFile(filePath));
+    await unwrap(deleteImageRecord(imageId));
 
     return res.status(204).end();
-
   } catch (error) {
     console.error("Delete image error", error);
 
-    switch (true){
+    switch (true) {
       case error instanceof ValidationError:
         return res.status(400).json({ error: error.message });
       case error instanceof NotFoundError:
