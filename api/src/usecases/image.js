@@ -16,9 +16,9 @@ export async function createImage() {
 
 //画像の取得
 export async function getImageById(imageId) {
-  const result = findImageById(imageId);
-  return result;
-}
+  const result = await findImageById(imageId);
+  return result; 
+};
 
 //画像のパス取得
 export async function getImageFilePath(imageId, dirPath) {

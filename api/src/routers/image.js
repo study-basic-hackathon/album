@@ -73,7 +73,8 @@ router.get("/:imageId", async (req, res) => {
   }
 });
 
-router.delete("/:imageId", async (req, res) => {
+router.delete("/:imageId", async (req, res, next) => {
+  const { imageId } = req.params;
   try {
     const { imageId } = req.params;
     if (!/^\d+$/.test(imageId)) {
@@ -87,18 +88,22 @@ router.delete("/:imageId", async (req, res) => {
 
     return res.status(204).end();
   } catch (error) {
-    console.error("Delete image error", error);
-
-    switch (true) {
-      case error instanceof ValidationError:
-        return res.status(400).json({ error: error.message });
-      case error instanceof NotFoundError:
-        return res.status(404).json({ error: error.message });
-      case error instanceof InternalError:
-      default:
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
+    next(error);
   }
+});
+
+router.use((err, req, res, next) => {
+  console.error(err);
+
+  if (err instanceof ValidationError) {
+    return res.status(400).json({ error: err.message });
+  }
+
+  if (err instanceof NotFoundError) {
+    return res.status(404).json({ error: err.message });
+  }
+
+  return res.status(500).json({ error: "Internal Server Error" });
 });
 
 export default router;
