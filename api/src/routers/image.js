@@ -7,7 +7,7 @@ import {
   deleteImageFile,
   deleteImageRecord,
 } from "../usecases/image.js";
-import { NotFoundError, ValidationError, InternalError } from "../utils/commons/AppError.js";
+import { NotFoundError, ValidationError } from "../utils/commons/AppError.js";
 import { unwrap } from "../utils/routers/errorHandling.js";
 import multer from "multer";
 import fs from "fs";
@@ -74,7 +74,6 @@ router.get("/:imageId", async (req, res) => {
 });
 
 router.delete("/:imageId", async (req, res, next) => {
-  const { imageId } = req.params;
   try {
     const { imageId } = req.params;
     if (!/^\d+$/.test(imageId)) {
