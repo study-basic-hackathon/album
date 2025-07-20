@@ -1,5 +1,5 @@
-export async function unwrap(result) {
-  const { data, error } = await result;
+export async function unwrap(promise) {
+  const { data, error } = await promise;
   if (error) throw error;
   return data;
-};
+}
