@@ -1,108 +1,53 @@
 import express from "express";
-import {
-  getImageById,
-  createImage,
-  getDirPath,
-  getImageFilePath,
-  deleteImageFile,
-  deleteImageRecord,
-} from "../usecases/image.js";
-import { NotFoundError, ValidationError } from "../utils/commons/AppError.js";
-import { unwrap } from "../utils/routers/errorHandling.js";
-import multer from "multer";
 import fs from "fs";
 import path from "path";
+import multer from "multer";
+import { randomUUID } from "crypto";
+import { getImage, createImage, deleteImage } from "../usecases/image.js";
+import { handleResult } from "../utils/routers/handleResult.js";
+import { tempDir, uploadDir } from "../utils/commons/dirPaths.js";
+import { convertId } from "../converters/routers.js";
 
 const router = express.Router();
 
-const uploadDir = path.resolve("./uploads");
+fs.mkdirSync(tempDir, { recursive: true });
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir);
+    cb(null, tempDir)
   },
   filename: (req, file, cb) => {
-    const imageId = req.imageId;
-    const ext = path.extname(file.originalname) || ".png";
-    const filename = `${imageId}${ext}`;
-    cb(null, filename);
+    const tempFileName = `${randomUUID()}${path.extname(file.originalname) || ".png"}`;
+    cb(null, tempFileName)
   },
 });
 
-const uploadImage = multer({ storage });
+const upload = multer({ storage });
+
 
 // 画像の登録
-router.post(
-  "/",
-  async (req, res, next) => {
-    try {
-      const imageId = await createImage();
-      req.imageId = imageId;
-      next();
-    } catch (err) {
-      console.error("Error:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  },
-  uploadImage.single("file"),
-  (req, res) => {
-    if (!req.file) {
-      return res.status(400).json({ error: "Invalid file" });
-    }
-    const imageId = req.imageId;
-    res.status(201).header("Location", `/images/${imageId}`).end();
+router.post("/upload", upload.single("file"), async (req, res) => {
+    const { tempPath } = req.file.path;
+    const result = await createImage(tempPath);
+    return handleResult( result, (res, data) => 
+      res.status(201).location(`/images/${data}`).end(), res);
   }
 );
 
 // 画像の取得
 router.get("/:imageId", async (req, res) => {
-  try {
-    const { imageId } = req.params;
-    if (!/^\d+$/.test(imageId)) {
-      return res.status(400).json({ message: "Invalid imageId" });
-    }
-    const result = await getImageById(imageId);
-    if (result === undefined) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    res.sendFile(result);
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    const imageId = convertId(req.params.imageId);
+    const result = await getImage(imageId);
+    return handleResult( result, (res, data) => res.sendFile(data), res);
   }
-});
+);
 
-router.delete("/:imageId", async (req, res, next) => {
-  try {
-    const { imageId } = req.params;
-    if (!/^\d+$/.test(imageId)) {
-      throw new ValidationError("Invalid imageId");
-    }
-
-    const dirPath = getDirPath();
-    const filePath = await unwrap(getImageFilePath(imageId, dirPath));
-    await unwrap(deleteImageFile(filePath));
-    await unwrap(deleteImageRecord(imageId));
-
-    return res.status(204).end();
-  } catch (error) {
-    next(error);
+router.delete("/:imageId", async (req, res) => {
+    const imageId = convertId(req.params.imageId);
+    const result = await deleteImage(imageId);
+    return handleResult( result, (res, data) => res.status(204).end(), res);
   }
-});
-
-router.use((err, req, res, next) => {
-  console.error(err);
-
-  if (err instanceof ValidationError) {
-    return res.status(400).json({ error: err.message });
-  }
-
-  if (err instanceof NotFoundError) {
-    return res.status(404).json({ error: err.message });
-  }
-
-  return res.status(500).json({ error: "Internal Server Error" });
-});
+);
 
 export default router;
