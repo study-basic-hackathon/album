@@ -21,7 +21,7 @@ export async function findCategoryById(categoryId) {
   const result = await pool.query(
     `
       SELECT
-        * 
+        *
       FROM
         category
       WHERE

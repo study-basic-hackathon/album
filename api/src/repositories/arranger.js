@@ -21,7 +21,7 @@ export async function findArrangerById(arrangerId) {
   const result = await pool.query(
     `
       SELECT
-        * 
+        *
       FROM
         arranger
       WHERE
@@ -70,4 +70,3 @@ export async function deleteArranger(arrangerId) {
   );
   return result.rowCount > 0;
 }
-
