@@ -6,5 +6,6 @@ const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, "../../../");
 
-export const tempDir = path.join(rootDir, "temp");
-export const uploadDir = path.join(rootDir, "uploads");
+export function getUploadDir() {
+  return path.join(rootDir, "uploads");
+}

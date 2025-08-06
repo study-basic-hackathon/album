@@ -37,11 +37,11 @@ async function formatWorksWithNavigation(works) {
 
     if (index > 0) {
       previousWorkId = works[index - 1].id;
-    };
+    }
 
     if (index < works.length - 1) {
       nextWorkId = works[index + 1].id;
-    };
+    }
 
     return {
       work: {
@@ -63,4 +63,4 @@ async function formatWorksWithNavigation(works) {
   });
 
   return formattedResult;
-};
+}

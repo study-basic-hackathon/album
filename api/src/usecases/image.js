@@ -2,18 +2,20 @@ import * as imageRepository from "../repositories/image.js";
 import Result from "../utils/commons/Result.js";
 import AppError from "../utils/commons/AppError.js";
 
-export async function createImage(tempPath) {
+export async function createImage(file) {
+  if (file === null) {
+    return Result.fail(AppError.validationError("Invalid ImageFile"));
+  }
   const insertResult = await imageRepository.insertRecord();
-  if (insertResult.isFailure) return insertResult;
+  if (insertResult.isFailure) {
+    return insertResult;
+  }
   const imageId = insertResult.data;
 
-  const nameResult = imageRepository.nameFile(imageId, tempPath);
-  if (nameResult.isFailure) return nameResult;
-  const uploadFileName = nameResult.data;
-
-  const moveResult = await imageRepository.moveFile(tempPath, uploadFileName);
-  if (moveResult.isFailure) return moveResult;
-
+  const saveResult = await imageRepository.saveFile(imageId, file);
+  if (saveResult.isFailure) {
+    return saveResult;
+  }
   return insertResult;
 }
 
@@ -32,14 +34,14 @@ export async function deleteImage(imageId) {
     return Result.fail(AppError.validationError("Invalid ImageId"));
   }
   const foundPath = await imageRepository.findById(imageId);
-  if (foundPath.isFailure) return foundPath;
+  if (foundPath.isFailure) {
+    return foundPath;
+  }
   const uploadPath = foundPath.data;
 
   const deleteRecordResult = await imageRepository.deleteRecord(imageId);
-  if (deleteRecordResult.isFailure) return deleteRecordResult;
-
-  const deleteFileResult = await imageRepository.deleteFile(uploadPath);
-  if (deleteFileResult.isFailure) return deleteFileResult;
-
-  return deleteFileResult;
+  if (deleteRecordResult.isFailure) {
+    return deleteRecordResult;
+  }
+  return await imageRepository.deleteFile(uploadPath);
 }

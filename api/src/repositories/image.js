@@ -1,9 +1,9 @@
 import { pool } from "../db.js";
 import path from "path";
-import { promises as fs } from "fs";
+import fs from "fs/promises";
 import Result from "../utils/commons/Result.js";
 import AppError from "../utils/commons/AppError.js";
-import { uploadDir } from "../utils/commons/dirPaths.js";
+import { getUploadDir } from "../utils/commons/fileStorage.js";
 
 export async function insertImage() {
   try {
@@ -21,21 +21,14 @@ export async function insertImage() {
   }
 }
 
-export function nameFile(imageId, tempPath) {
+export async function saveFile(imageId, file) {
   try {
-    const ext = path.extname(tempPath);
-    const uploadFileName = `${imageId}${ext}`;
-    return Result.ok(uploadFileName);
-  } catch (err) {
-    console.error(err);
-    return Result.fail(AppError.internalError());
-  }
-}
+    const uploadDir = getUploadDir();
+    await fs.mkdir(uploadDir, { recursive: true });
 
-export async function moveFile(tempPath, uploadFileName) {
-  try {
-    const uploadPath = path.join(uploadDir, uploadFileName);
-    await fs.rename(tempPath, uploadPath);
+    const fileName = `${imageId}${path.extname(file.originalName) || ".png"}`;
+    const uploadPath = path.join(uploadDir, fileName);
+    await fs.writeFile(uploadPath, file.buffer);
     return Result.ok();
   } catch (err) {
     console.error(err);
@@ -45,6 +38,7 @@ export async function moveFile(tempPath, uploadFileName) {
 
 export async function findById(imageId) {
   try {
+    const uploadDir = getUploadDir();
     const files = await fs.readdir(uploadDir);
     const file = files.find((file) => path.parse(file).name === imageId);
 
@@ -52,7 +46,7 @@ export async function findById(imageId) {
       return Result.fail(AppError.notFound());
     }
 
-    const filePath = path.join(uploadDir, file)
+    const filePath = path.join(uploadDir, file);
     return Result.ok(filePath);
   } catch (err) {
     console.error(err);

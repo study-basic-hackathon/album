@@ -1,5 +1,5 @@
 export default class AppError extends Error {
-  constructor(message, code = 500, cause = null) {
+  constructor(message, code, cause = null) {
     super(message, { cause });
     this.name = new.target.name;
     this.code = code;
