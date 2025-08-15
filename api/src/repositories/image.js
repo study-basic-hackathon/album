@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs/promises";
 import Result from "../utils/commons/Result.js";
 import AppError from "../utils/commons/AppError.js";
-import { getUploadDir } from "../utils/commons/fileStorage.js";
+import { getUploadDir } from "../utils/commons/getDir.js";
 
 export async function insertImage() {
   try {
@@ -26,7 +26,7 @@ export async function saveFile(imageId, file) {
     const uploadDir = getUploadDir();
     await fs.mkdir(uploadDir, { recursive: true });
 
-    const fileName = `${imageId}${path.extname(file.originalName) || ".png"}`;
+    const fileName = `${imageId}${path.extname(file.originalName)}`;
     const uploadPath = path.join(uploadDir, fileName);
     await fs.writeFile(uploadPath, file.buffer);
     return Result.ok();
