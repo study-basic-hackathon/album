@@ -11,4 +11,12 @@ export default class Result {
   static fail(error) {
     return new Result(null, error);
   }
+
+  isSuccess() {
+    return this.error === null;
+  }
+
+  isFailure() {
+    return this.error !== null;
+  }
 }

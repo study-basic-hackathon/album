@@ -18,55 +18,58 @@ export async function insertSeason(name) {
 }
 
 export async function findSeasonById(seasonId) {
-    const result = await pool.query(`
+  const result = await pool.query(
+    `
       SELECT
-        * 
+        *
       FROM
         season
       WHERE
         id = $1
-        `, 
-      [seasonId]
-    );
-    return result.rows;
-};
+        `,
+    [seasonId]
+  );
+  return result.rows;
+}
 
 export async function findWorksBySeasonId(seasonId) {
   const result = await getFormattedWorkListByCondition({
     whereClause: "wk.season_id = $1",
     whereParams: [seasonId],
-    orderByClause: "wk.created_at ASC"
+    orderByClause: "wk.created_at ASC",
   });
   return result;
-};
+}
 
 // 季節の更新
 export async function updateSeason(seasonId, name) {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     UPDATE
       season
     SET
       name = $2
     WHERE
       id = $1
-    RETURNING 
+    RETURNING
       *
-      `, 
+      `,
     [seasonId, name]
   );
   return result.rows;
-};
+}
 
 // 季節の削除
 export async function deleteSeason(seasonId) {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     DELETE FROM
       season
     WHERE
       id = $1
-    RETURNING 
+    RETURNING
       *
-    `, 
+    `,
     [seasonId]
   );
   return result.rows.length > 0;

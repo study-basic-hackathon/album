@@ -1,39 +1,47 @@
-import path from "path";
 import * as imageRepository from "../repositories/image.js";
-import { findImageById, insertImage } from "../repositories/image.js";
+import Result from "../utils/commons/Result.js";
+import AppError from "../utils/commons/AppError.js";
 
-//ファイルパスの取得
-export function getDirPath() {
-  return path.resolve("./uploads");
-}
+export async function createImage(file) {
+  if (file === null) {
+    return Result.fail(AppError.validationError("Invalid ImageFile"));
+  }
+  const insertResult = await imageRepository.insertRecord();
+  if (insertResult.isFailure) {
+    return insertResult;
+  }
+  const imageId = insertResult.data;
 
-//画像の登録
-export async function createImage() {
-  const resultRows = await insertImage();
-  const imageId = resultRows[0].id;
-  return imageId;
+  const saveResult = await imageRepository.saveFile(imageId, file);
+  if (saveResult.isFailure) {
+    return saveResult;
+  }
+  return insertResult;
 }
 
 //画像の取得
-export async function getImageById(imageId) {
-  const result = await findImageById(imageId);
-  return result; 
-};
-
-//画像のパス取得
-export async function getImageFilePath(imageId, dirPath) {
-  const result = imageRepository.findByParams(imageId, dirPath);
+export async function getImage(imageId) {
+  if (imageId === null) {
+    return Result.fail(AppError.validationError("Invalid ImageId"));
+  }
+  const result = await imageRepository.findById(imageId);
   return result;
 }
 
-//画像の削除(レコード)
-export function deleteImageRecord(imageId) {
-  const result = imageRepository.deleteRecord(imageId);
-  return result;
-}
+//画像の削除
+export async function deleteImage(imageId) {
+  if (imageId === null) {
+    return Result.fail(AppError.validationError("Invalid ImageId"));
+  }
+  const foundPath = await imageRepository.findById(imageId);
+  if (foundPath.isFailure) {
+    return foundPath;
+  }
+  const uploadPath = foundPath.data;
 
-//画像の削除(ファイル)
-export function deleteImageFile(dirPath) {
-  const result = imageRepository.deleteFile(dirPath);
-  return result;
+  const deleteRecordResult = await imageRepository.deleteRecord(imageId);
+  if (deleteRecordResult.isFailure) {
+    return deleteRecordResult;
+  }
+  return await imageRepository.deleteFile(uploadPath);
 }
