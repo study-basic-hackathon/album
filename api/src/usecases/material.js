@@ -1,41 +1,71 @@
-import { findMaterialById, findWorksByMaterialId, insertMaterial } from '../repositories/material.js';
+import {
+  findMaterialById,
+  findWorksByMaterialId,
+  insertMaterial
+} from '../repositories/material.js';
 import * as materialRepository from '../repositories/material.js';
 
 // 花材の登録
-export async function createMaterial(name) {
-  const resultRows = await insertMaterial(name);
-  const materialId = resultRows[0].id;
-  return materialId;
+export async function createMaterial(payloadResult) {
+  if (payloadResult.isFailure()) {
+    return payloadResult;
+  }
+  return await insertMaterial(payloadResult);
 };
 
 // 花材の情報の取得
-export async function getMaterialById(materialId) {
-  const result = await findMaterialById(materialId);
-  return result[0];
+export async function getMaterialById(idResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  return await findMaterialById(idResult);
 };
 
 // 花材の作品一覧の取得
-export async function getMaterialWorks(materialId) {
-  const result = await findWorksByMaterialId(materialId);
-  return result;
+export async function getMaterialWorks(idResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  return findWorksByMaterialId(idResult);
 };
 
 // 花材の特定の作品の取得
-export async function getMaterialWorkById(materialId, workId) {
-  const targetWorkId = parseInt(workId, 10);
-  const formattedWorks = await findWorksByMaterialId(materialId);
-  const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
-  return foundWork[0];
-};
+export async function getMaterialWorkById(idsResult) {
+  if (idsResult.isFailure()) {
+    return idsResult;
+  }
+  const workListResult = await findWorksByMaterialId(idsResult);
+
+  if(workListResult.isFailure()) {
+    return workListResult;
+  }
+  return await materialRepository.getWork(workListResult, idsResult);
+}
+
 
 // 花材の更新
-export async function updateMaterial(materialId, name) {
-  const result = await materialRepository.updateMaterial(materialId, name);
-  return result[0];
+export async function updateMaterial(idResult, payloadResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  if (payloadResult.isFailure()) {
+    return payloadResult;
+  }
+  const exsistingResult = await materialRepository.ensureRecordExists(idResult);
+  if (exsistingResult.isFailure()) {
+    return exsistingResult;
+  }
+  return await materialRepository.updateMaterial(idResult, payloadResult);
 };
 
 // 花材の削除
-export async function deleteMaterial(materialId) {      
-  const result = await materialRepository.deleteMaterial(materialId);
-  return result;
+export async function deleteMaterial(idResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  const exsistingResult = await materialRepository.ensureRecordExists(idResult);
+  if (exsistingResult.isFailure()) {
+    return exsistingResult;
+  }
+  return await materialRepository.deleteMaterial(idResult);
 }

@@ -1,14 +1,13 @@
 import { pool } from "../db.js";
 import path from "path";
 import fs from "fs/promises";
-import Result from "../utils/commons/Result.js";
-import AppError from "../utils/commons/AppError.js";
-import { getUploadDir } from "../utils/commons/getDir.js";
+import Result from "../utils/Result.js";
+import AppError from "../utils/AppError.js";
+import { getUploadDir } from "./utils/getUploadDir.js";
 
-export async function insertImage() {
+export async function insertRecord() {
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       INSERT INTO image (created_at)
       VALUES (NOW())
       RETURNING id`,
@@ -21,8 +20,10 @@ export async function insertImage() {
   }
 }
 
-export async function saveFile(imageId, file) {
+export async function saveFile(idResult, fileResult) {
   try {
+    const imageId = idResult.data;
+    const { file } = fileResult.data;
     const uploadDir = getUploadDir();
     await fs.mkdir(uploadDir, { recursive: true });
 
@@ -36,14 +37,15 @@ export async function saveFile(imageId, file) {
   }
 }
 
-export async function findById(imageId) {
+export async function findById(idResult) {
   try {
+    const { imageId } = idResult.data;
     const uploadDir = getUploadDir();
     const files = await fs.readdir(uploadDir);
     const file = files.find((file) => path.parse(file).name === imageId);
 
     if (!file) {
-      return Result.fail(AppError.notFound());
+      return Result.fail(AppError.notFound("File not found"));
     }
 
     const filePath = path.join(uploadDir, file);
@@ -54,9 +56,13 @@ export async function findById(imageId) {
   }
 }
 
-export async function deleteRecord(imageId) {
+export async function deleteRecord(idResult) {
   try {
-    const result = await pool.query(`DELETE FROM image WHERE id = $1`, [imageId]);
+    const { imageId } = idResult.data;
+    const result = await pool.query(`
+      DELETE FROM image WHERE id = $1`,
+      [imageId]
+    );
     if (result.rowCount === 0) {
       return Result.fail(AppError.internalError());
     }
@@ -67,8 +73,9 @@ export async function deleteRecord(imageId) {
   }
 }
 
-export async function deleteFile(filePath) {
+export async function deleteFile(pathResult) {
   try {
+    const filePath = pathResult.data;
     await fs.unlink(filePath);
     return Result.ok();
   } catch (err) {

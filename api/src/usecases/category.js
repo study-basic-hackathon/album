@@ -2,40 +2,65 @@ import { findCategoryById, findWorksByCategoryId, insertCategory } from '../repo
 import * as categoryRepository from '../repositories/category.js';
 
 //カテゴリの登録
-export async function createCategory(name) {
-  const resultRows = await insertCategory(name);
-  const categoryId = resultRows[0].id;
-  return categoryId;
-};
+export async function createCategory(payloadResult) {
+  if (payloadResult.isFailure()) {
+    return payloadResult;
+  }
+  return await insertCategory(payloadResult);
+}
 
 // カテゴリーの情報の取得
-export async function getCategoryById(categoryId) {
-  const result = await findCategoryById(categoryId);
-  return result[0];
-};
+export async function getCategoryById(idResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  return await findCategoryById(idResult);
+}
 
 // カテゴリーの作品一覧の取得
-export async function getCategoryWorks(categoryId) {
-  const result = await findWorksByCategoryId(categoryId);
-  return result;
-};
+export async function getCategoryWorks(idResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  return await findWorksByCategoryId(idResult);
+}
 
 // カテゴリーの特定の作品の取得
-export async function getCategoryWorkById(categoryId, workId) {
-  const targetWorkId = parseInt(workId, 10);
-  const formattedWorks = await findWorksByCategoryId(categoryId);
-  const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
-  return foundWork[0];
-};
+export async function getCategoryWorkById(idsResult) {
+  if (idsResult.isFailure()) {
+    return idsResult;
+  }
+  const workListResult = await findWorksByCategoryId(idsResult);
+
+  if(workListResult.isFailure()) {
+    return workListResult;
+  }
+  return await categoryRepository.getWork(workListResult, idsResult);
+}
 
 // カテゴリの更新
-export async function updateCategory(categoryId, name) {
-  const result = await categoryRepository.updateCategory(categoryId, name);
-  return result[0];
-};
+export async function updateCategory(idResult, payloadResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  if (payloadResult.isFailure()) {
+    return payloadResult;
+  }
+  const exsistingResult = await categoryRepository.ensureRecordExists(idResult);
+  if (exsistingResult.isFailure()) {
+    return exsistingResult;
+  }
+  return await categoryRepository.updateCategory(idResult, payloadResult);
+}
 
 // カテゴリの削除
-export async function deleteCategory(categoryId) {
-  const result = await categoryRepository.deleteCategory(categoryId);
-  return result;
+export async function deleteCategory(idResult) {
+  if (idResult.isFailure()) {
+    return idResult;
+  }
+  const exsistingResult = await categoryRepository.ensureRecordExists(idResult);
+  if (exsistingResult.isFailure()) {
+    return exsistingResult;
+  }
+  return await categoryRepository.deleteCategory(idResult);
 }

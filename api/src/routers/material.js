@@ -1,124 +1,86 @@
 import express from "express";
 import {
   createMaterial,
-  getMaterialById, 
-  getMaterialWorks, 
-  getMaterialWorkById, 
-  updateMaterial, 
-  deleteMaterial,  
+  getMaterialById,
+  getMaterialWorks,
+  getMaterialWorkById,
+  updateMaterial,
+  deleteMaterial,
 } from '../usecases/material.js';
+import {
+  convertMaterialPayload,
+  convertMaterialId,
+  convertMaterialAndWorkIds,
+} from "../converter/material/index.js"
+import { handleResult } from "./utils/index.js";
 
 const router = express.Router();
 
 //花材の登録
 router.post("/", async (req, res) => {
-  try {
-    const { name } = req.body;
-    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
-    if (!name) {
-      return res.status(400).send({ message: 'Name is required' });
-    }
-    if (forbiddenChars.test(name)) {
-      return res.status(400).json({ message: "Invalid Name" });
-    }
-    const materialId = await createMaterial(name);
-    const path = `/materials/${materialId}`;
-    res.status(201).header('Location', path)
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  const payload = convertMaterialPayload(req.body);
+  const result = await createMaterial(payload);
+  return handleResult(
+    result,
+    (res, data) => res.status(201).location(`/materials/${data}`).end(),
+    res
+  );
 });
 
 // 花材の情報の取得
 router.get("/:materialId", async (req, res) => {
-  try{
-      const { materialId } = req.params;
-      if (!/^\d+$/.test(materialId)) {
-        return res.status(400).json({ message: "Invalid materialId" });
-      };
-      const result = await getMaterialById(materialId);
-      if (result === undefined) {
-        return res.status(404).json({ message: "Resource not found" });
-      };
-      res.json(result);
-  } catch (err) {
-      console.error("Error:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    };
+  const id = convertMaterialId(req.params);
+  const result = await getMaterialById(id);
+  return handleResult(
+    result,
+    (res, data) => res.status(200).json(data),
+    res
+  );
 });
 
 // 花材の作品一覧の取得
 router.get("/:materialId/works", async (req, res) => {
-  try{
-      const { materialId } = req.params;
-      if (!/^\d+$/.test(materialId)) {
-        return res.status(400).json({ message: "Invalid materialId" });
-      };
-      const result = await getMaterialWorks(materialId);
-      if (result === undefined) {
-        return res.status(404).json({ message: "Resource not found" });
-      };
-      res.json(result);
-  } catch (err) {
-      console.error("Error:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    };
+  const id = convertMaterialId(req.params);
+  const result = await getMaterialWorks(id);
+  return handleResult(
+    result,
+    (res, data) => res.status(200).json(data),
+    res
+  );
 });
 
 // 花材の特定の作品の取得
 router.get("/:materialId/works/:workId", async (req, res) => {
-  try {
-    const { materialId, workId } = req.params;
-    if (!/^\d+$/.test(materialId)) {
-      return res.status(400).json({ message: "Invalid materialId" });
-    };
-    if (!/^\d+$/.test(workId)) {
-      return res.status(400).json({ message: "Invalid workId" });
-    };
-    const result = await getMaterialWorkById(materialId, workId);
-    if (result === undefined) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    res.json(result);
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  };
+  const ids = convertMaterialAndWorkIds(req.params);
+  const result = await getMaterialWorkById(ids);
+  return handleResult(
+    result,
+    (res, data) => res.status(200).json(data),
+    res
+  );
 });
 
 // 花材の更新
 router.put("/:materialId", async (req, res) => {
-  try{
-      const { materialId } = req.params;
-      const { name } = req.body;
-      if (!/^\d+$/.test(materialId)) {
-        return res.status(400).json({ message: "Invalid materialId" });
-      };
-      const result = await updateMaterial(materialId, name);
-      res.status(204).send();
-  } catch (err) {
-      console.error("Error:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    };
+  const id = convertMaterialId(req.params);
+  const payload = convertMaterialPayload(req.body);
+  const result = await updateMaterial(id, payload);
+  return handleResult(
+    result,
+    (res, data) => res.status(204).end(),
+    res
+  );
 });
 
 // 花材の削除
 router.delete("/:materialId", async (req, res) => {
-  try {
-    const { materialId } = req.params;
-    if (!/^\d+$/.test(materialId)) {
-      return res.status(400).json({ message: "Invalid materialId" });
-    };
-    const result = await deleteMaterial(materialId);
-    if (!result) {
-      return res.status(404).json({ message: "Resource not found" });
-    };
-    res.status(204).send();
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  };
+  const id = convertMaterialId(req.params);
+  const result = await deleteMaterial(id);
+  return handleResult(
+    result,
+    (res, data) => res.status(204).end(),
+    res
+  );
 });
 
 export default router;
