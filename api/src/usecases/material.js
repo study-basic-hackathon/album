@@ -1,9 +1,9 @@
 import {
   findMaterialById,
   findWorksByMaterialId,
-  insertMaterial
-} from '../repositories/material.js';
-import * as materialRepository from '../repositories/material.js';
+  insertMaterial,
+} from "../repositories/material.js";
+import * as materialRepository from "../repositories/material.js";
 
 // 花材の登録
 export async function createMaterial(payloadResult) {
@@ -11,7 +11,7 @@ export async function createMaterial(payloadResult) {
     return payloadResult;
   }
   return await insertMaterial(payloadResult);
-};
+}
 
 // 花材の情報の取得
 export async function getMaterialById(idResult) {
@@ -19,7 +19,7 @@ export async function getMaterialById(idResult) {
     return idResult;
   }
   return await findMaterialById(idResult);
-};
+}
 
 // 花材の作品一覧の取得
 export async function getMaterialWorks(idResult) {
@@ -27,7 +27,7 @@ export async function getMaterialWorks(idResult) {
     return idResult;
   }
   return await findWorksByMaterialId(idResult);
-};
+}
 
 // 花材の特定の作品の取得
 export async function getMaterialWorkById(idsResult) {
@@ -36,12 +36,11 @@ export async function getMaterialWorkById(idsResult) {
   }
   const workListResult = await findWorksByMaterialId(idsResult);
 
-  if(workListResult.isFailure()) {
+  if (workListResult.isFailure()) {
     return workListResult;
   }
   return await materialRepository.getWork(workListResult, idsResult);
 }
-
 
 // 花材の更新
 export async function updateMaterial(idResult, payloadResult) {
@@ -56,7 +55,7 @@ export async function updateMaterial(idResult, payloadResult) {
     return exsitingResult;
   }
   return await materialRepository.updateMaterial(idResult, payloadResult);
-};
+}
 
 // 花材の削除
 export async function deleteMaterial(idResult) {

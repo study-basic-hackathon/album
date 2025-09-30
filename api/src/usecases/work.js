@@ -1,4 +1,4 @@
-import * as workRepository from '../repositories/work.js';
+import * as workRepository from "../repositories/work.js";
 
 // 作品の登録
 export async function createWork(payloadResult) {

@@ -2,8 +2,8 @@ import Result from "../../utils/Result.js";
 import AppError from "../../utils/AppError.js";
 import { isValidName, isValidId } from "../util/index.js";
 
-const ids = ['exhibition_id', 'arranger_id', 'season_id', 'category_id'];
-const arrayIndex = ['material_ids', 'image_ids'];
+const ids = ["exhibition_id", "arranger_id", "season_id", "category_id"];
+const arrayIndex = ["material_ids", "image_ids"];
 
 export function convertWorkPayload(payload) {
   if (!isValidName(payload.title)) {
@@ -15,7 +15,7 @@ export function convertWorkPayload(payload) {
     }
   }
   for (const key of arrayIndex) {
-    if (!Array.isArray(payload[key]) || !payload[key].every(id => isValidId(id))) {
+    if (!Array.isArray(payload[key]) || !payload[key].every((id) => isValidId(id))) {
       return Result.fail(AppError.validationError(`Invalid ${key}`));
     }
   }

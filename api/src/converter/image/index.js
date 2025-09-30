@@ -1,7 +1,7 @@
 import path from "path";
 import Result from "../../utils/Result.js";
 import AppError from "../../utils/AppError.js";
-import { isValidId, isValidFile } from "../util/index.js"
+import { isValidId, isValidFile } from "../util/index.js";
 
 export function convertFile(file) {
   if (!isValidFile(file)) {

@@ -5,22 +5,16 @@ import AppError from "../utils/AppError.js";
 // 作品の登録
 export async function insertWork(payloadResult) {
   let client; // スコープはトランザクション内のみ
-  const {
-    title,
-    exhibitionId,
-    arrangerId,
-    materialIds,
-    seasonId,
-    categoryId,
-    imageIds
-  } = payloadResult.data
+  const { title, exhibitionId, arrangerId, materialIds, seasonId, categoryId, imageIds } =
+    payloadResult.data;
 
   try {
     client = await pool.connect();
     await client.query("BEGIN");
 
     // workテーブル
-    const insertedWork = await client.query(`
+    const insertedWork = await client.query(
+      `
       INSERT INTO work(title, exhibition_id, arranger_id, season_id, category_id)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING id`,
@@ -30,16 +24,20 @@ export async function insertWork(payloadResult) {
     const workId = insertedWork.rows[0].id;
 
     // work_materialテーブル
-    await client.query(`
+    await client.query(
+      `
       INSERT INTO work_material (work_id, material_id)
       SELECT $1, unnest($2::int[])`,
-      [workId, materialIds]);
+      [workId, materialIds]
+    );
 
     // work_imageテーブル
-    await client.query(`
+    await client.query(
+      `
       INSERT INTO work_image (work_id, image_id)
       SELECT $1, unnest($2::int[])`,
-      [workId, imageIds]);
+      [workId, imageIds]
+    );
 
     await client.query("COMMIT");
     return Result.ok(workId);
@@ -60,7 +58,8 @@ export async function insertWork(payloadResult) {
 export async function ensureRecordExists(idResult) {
   try {
     const { workId } = idResult.data;
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT COUNT(*)
       FROM work WHERE id = $1`,
       [workId]
@@ -76,27 +75,20 @@ export async function ensureRecordExists(idResult) {
   }
 }
 
-
 // 作品の更新
 export async function updateWork(idResult, payloadResult) {
   let client; // スコープはトランザクション内のみ
-  const { workId } = idResult.data
-  const {
-    title,
-    exhibitionId,
-    arrangerId,
-    seasonId,
-    categoryId,
-    materialIds,
-    imageIds,
-  } = payloadResult.data;
+  const { workId } = idResult.data;
+  const { title, exhibitionId, arrangerId, seasonId, categoryId, materialIds, imageIds } =
+    payloadResult.data;
 
   try {
     client = await pool.connect();
     await client.query("BEGIN");
 
     // workテーブルの更新
-    await client.query(`
+    await client.query(
+      `
     UPDATE work
     SET
       title = $2,
@@ -105,31 +97,35 @@ export async function updateWork(idResult, payloadResult) {
       season_id = $5,
       category_id = $6
     WHERE id = $1`,
-    [workId, title, exhibitionId, arrangerId, seasonId, categoryId]
+      [workId, title, exhibitionId, arrangerId, seasonId, categoryId]
     );
 
     // work_materialテーブルの更新
-    await client.query(`
+    await client.query(
+      `
     DELETE FROM work_material
     WHERE work_id = $1`,
-    [workId]
+      [workId]
     );
-    await client.query(`
+    await client.query(
+      `
     INSERT INTO work_material (work_id, material_id)
     SELECT $1, unnest($2::int[])`,
-    [workId, materialIds]
+      [workId, materialIds]
     );
 
     // work_imageテーブルの更新
-    await client.query(`
+    await client.query(
+      `
     DELETE FROM work_image
     WHERE work_id = $1`,
-    [workId]
+      [workId]
     );
-    await client.query(`
+    await client.query(
+      `
     INSERT INTO work_image (work_id, image_id)
     SELECT $1, unnest($2::int[])`,
-    [workId, imageIds]
+      [workId, imageIds]
     );
 
     await client.query("COMMIT");
@@ -145,4 +141,4 @@ export async function updateWork(idResult, payloadResult) {
       client.release();
     }
   }
-};
+}

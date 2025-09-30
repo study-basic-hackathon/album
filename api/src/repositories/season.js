@@ -7,7 +7,8 @@ import { getWorkListByCondition } from "./utils/getWorkListByCondition.js";
 export async function insertSeason(payloadResult) {
   try {
     const { name } = payloadResult.data;
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       INSERT INTO season (name)
       VALUES ($1)
       RETURNING id`,
@@ -15,7 +16,7 @@ export async function insertSeason(payloadResult) {
     );
     return Result.ok(result.rows[0].id);
   } catch (err) {
-    console.error('Error:', err)
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -23,8 +24,9 @@ export async function insertSeason(payloadResult) {
 // 季節の取得
 export async function findSeasonById(idResult) {
   try {
-    const { seasonId } = idResult.data
-    const result = await pool.query(`
+    const { seasonId } = idResult.data;
+    const result = await pool.query(
+      `
       SELECT *
       FROM season
       WHERE id = $1`,
@@ -35,7 +37,7 @@ export async function findSeasonById(idResult) {
     }
     return Result.ok(result.rows[0]);
   } catch (err) {
-    console.error('Error:', err)
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -53,8 +55,8 @@ export async function findWorksBySeasonId(idsResult) {
       return Result.fail(AppError.notFound("seasonWork not found"));
     }
     return Result.ok(workList);
-    } catch (err) {
-    console.error('Error:', err);
+  } catch (err) {
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -63,14 +65,14 @@ export async function findWorksBySeasonId(idsResult) {
 export async function getWork(workListResult, idsResult) {
   try {
     const { workId } = idsResult.data;
-    const workList = workListResult.data
-    const work = workList.find(item => String(item.work.id) === workId);
+    const workList = workListResult.data;
+    const work = workList.find((item) => String(item.work.id) === workId);
     if (!work) {
       return Result.fail(AppError.notFound("seasonWork not found"));
     }
-    return Result.ok(work)
-    } catch (err) {
-    console.error('Error:', err);
+    return Result.ok(work);
+  } catch (err) {
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -79,7 +81,8 @@ export async function getWork(workListResult, idsResult) {
 export async function ensureRecordExists(idResult) {
   try {
     const { seasonId } = idResult.data;
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT COUNT(*)
       FROM season WHERE id = $1`,
       [seasonId]
@@ -100,7 +103,8 @@ export async function updateSeason(idResult, payloadResult) {
   try {
     const { seasonId } = idResult.data;
     const { name } = payloadResult.data;
-    await pool.query(`
+    await pool.query(
+      `
       UPDATE season
       SET name = $2
       WHERE id = $1 `,
@@ -108,7 +112,7 @@ export async function updateSeason(idResult, payloadResult) {
     );
     return Result.ok();
   } catch (err) {
-    console.error('Error:', err);
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -116,15 +120,16 @@ export async function updateSeason(idResult, payloadResult) {
 // 季節の削除
 export async function deleteSeason(idResult) {
   try {
-    const { seasonId } = idResult.data
-    await pool.query(`
+    const { seasonId } = idResult.data;
+    await pool.query(
+      `
       DELETE FROM season
       WHERE id = $1`,
       [seasonId]
     );
     return Result.ok();
   } catch (err) {
-    console.error('Error:', err);
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }

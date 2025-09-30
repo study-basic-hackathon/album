@@ -1,5 +1,9 @@
-import { findCategoryById, findWorksByCategoryId, insertCategory } from '../repositories/category.js';
-import * as categoryRepository from '../repositories/category.js';
+import {
+  findCategoryById,
+  findWorksByCategoryId,
+  insertCategory,
+} from "../repositories/category.js";
+import * as categoryRepository from "../repositories/category.js";
 
 //カテゴリの登録
 export async function createCategory(payloadResult) {
@@ -32,7 +36,7 @@ export async function getCategoryWorkById(idsResult) {
   }
   const workListResult = await findWorksByCategoryId(idsResult);
 
-  if(workListResult.isFailure()) {
+  if (workListResult.isFailure()) {
     return workListResult;
   }
   return await categoryRepository.getWork(workListResult, idsResult);

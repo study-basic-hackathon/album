@@ -7,7 +7,8 @@ import { getUploadDir } from "./utils/getUploadDir.js";
 
 export async function insertRecord() {
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       INSERT INTO image (created_at)
       VALUES (NOW())
       RETURNING id`,
@@ -59,7 +60,8 @@ export async function findById(idResult) {
 export async function deleteRecord(idResult) {
   try {
     const { imageId } = idResult.data;
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       DELETE FROM image WHERE id = $1`,
       [imageId]
     );

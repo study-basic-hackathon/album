@@ -8,7 +8,7 @@ import * as exhibitionRepository from "../repositories/exhibition.js";
 
 // 華展の一覧
 export async function getExhibitions() {
-   return await findAllExhibitions();
+  return await findAllExhibitions();
 }
 
 // 華展の登録
@@ -42,7 +42,7 @@ export async function getExhibitionWorkById(idsResult) {
   }
   const workListResult = await findWorksByExhibitionId(idsResult);
 
-  if(workListResult.isFailure()) {
+  if (workListResult.isFailure()) {
     return workListResult;
   }
   return await exhibitionRepository.getWork(workListResult, idsResult);
@@ -60,7 +60,7 @@ export async function updateExhibition(idResult, payloadResult) {
   if (exsitingResult.isFailure()) {
     return exsitingResult;
   }
-   return await exhibitionRepository.updateExhibition(idResult, payloadResult);
+  return await exhibitionRepository.updateExhibition(idResult, payloadResult);
 }
 
 // 華展の削除

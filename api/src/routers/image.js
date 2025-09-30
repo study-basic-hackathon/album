@@ -2,10 +2,7 @@ import express from "express";
 import multer from "multer";
 import { getImage, createImage, deleteImage } from "../usecases/image.js";
 import { handleResult } from "./utils/index.js";
-import {
-  convertFile,
-  convertImageId
-} from "../converter/image/index.js";
+import { convertFile, convertImageId } from "../converter/image/index.js";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });

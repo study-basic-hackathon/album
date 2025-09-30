@@ -1,4 +1,4 @@
-import * as imageRepository from "../repositories/image.js"
+import * as imageRepository from "../repositories/image.js";
 
 // 画像の登録
 export async function createImage(fileResult) {
