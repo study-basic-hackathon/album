@@ -16,9 +16,9 @@ export async function updateWork(idResult, payloadResult) {
   if (payloadResult.isFailure()) {
     return payloadResult;
   }
-  const exsistingResult = await workRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await workRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await workRepository.updateWork(idResult, payloadResult);
 }
@@ -28,9 +28,9 @@ export async function deleteWork(idResult) {
   if (idResult.isFailure()) {
     return idResult;
   }
-  const exsistingResult = await workRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await workRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await workRepository.deleteWork(idResult);
 }

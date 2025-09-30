@@ -26,7 +26,7 @@ export async function getMaterialWorks(idResult) {
   if (idResult.isFailure()) {
     return idResult;
   }
-  return findWorksByMaterialId(idResult);
+  return await findWorksByMaterialId(idResult);
 };
 
 // 花材の特定の作品の取得
@@ -51,9 +51,9 @@ export async function updateMaterial(idResult, payloadResult) {
   if (payloadResult.isFailure()) {
     return payloadResult;
   }
-  const exsistingResult = await materialRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await materialRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await materialRepository.updateMaterial(idResult, payloadResult);
 };
@@ -63,9 +63,9 @@ export async function deleteMaterial(idResult) {
   if (idResult.isFailure()) {
     return idResult;
   }
-  const exsistingResult = await materialRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await materialRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await materialRepository.deleteMaterial(idResult);
 }

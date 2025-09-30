@@ -50,9 +50,9 @@ export async function updateArranger(idResult, payloadResult) {
   if (payloadResult.isFailure()) {
     return payloadResult;
   }
-  const exsistingResult = await arrangerRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await arrangerRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await arrangerRepository.updateArranger(idResult, payloadResult);
 };
@@ -62,9 +62,9 @@ export async function deleteArranger(idResult) {
   if (idResult.isFailure()) {
     return idResult;
   }
-  const exsistingResult = await arrangerRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await arrangerRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await arrangerRepository.deleteArranger(idResult);
 }

@@ -7,7 +7,8 @@ import { getWorkListByCondition } from "./utils/getWorkListByCondition.js";
 export async function insertCategory(payloadResult) {
   try {
     const { name } = payloadResult.data;
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       INSERT INTO category (name)
       VALUES ($1)
       RETURNING id`,
@@ -15,7 +16,7 @@ export async function insertCategory(payloadResult) {
     );
     return Result.ok(result.rows[0].id);
   } catch (err) {
-    console.error('Error:', err)
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -23,8 +24,9 @@ export async function insertCategory(payloadResult) {
 // カテゴリの取得
 export async function findCategoryById(idResult) {
   try {
-    const { categoryId } = idResult.data
-    const result = await pool.query(`
+    const { categoryId } = idResult.data;
+    const result = await pool.query(
+      `
       SELECT *
       FROM category
       WHERE id = $1`,
@@ -35,7 +37,7 @@ export async function findCategoryById(idResult) {
     }
     return Result.ok(result.rows[0]);
   } catch (err) {
-    console.error('Error:', err)
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -44,18 +46,18 @@ export async function findCategoryById(idResult) {
 export async function findWorksByCategoryId(idsResult) {
   try {
     const { categoryId } = idsResult.data;
-	  const workList = await getWorkListByCondition({
-	    where: "wk.category_id = $1",
-	    params: [categoryId],
-	    orderBy: "wk.created_at ASC",
-	  });
-	  if (!workList || workList.length === 0) {
-	    return Result.fail(AppError.notFound("categoryWork not found"));
-	  }
-	  return Result.ok(workList);
-	  } catch (err) {
-	  console.error('Error:', err);
-	  return Result.fail(AppError.sqlError());
+    const workList = await getWorkListByCondition({
+      where: "wk.category_id = $1",
+      params: [categoryId],
+      orderBy: "wk.created_at ASC",
+    });
+    if (!workList || workList.length === 0) {
+      return Result.fail(AppError.notFound("categoryWork not found"));
+    }
+    return Result.ok(workList);
+  } catch (err) {
+    console.error("Error:", err);
+    return Result.fail(AppError.sqlError());
   }
 }
 
@@ -63,15 +65,15 @@ export async function findWorksByCategoryId(idsResult) {
 export async function getWork(workListResult, idsResult) {
   try {
     const { workId } = idsResult.data;
-    const workList = workListResult.data
-	  const work = workList.find(item => String(item.work.id) === workId);
-	  if (!work) {
-	    return Result.fail(AppError.notFound("categoryWork not found"));
-	  }
-	  return Result.ok(work)
-	  } catch (err) {
-	  console.error('Error:', err);
-	  return Result.fail(AppError.sqlError());
+    const workList = workListResult.data;
+    const work = workList.find((item) => String(item.work.id) === workId);
+    if (!work) {
+      return Result.fail(AppError.notFound("categoryWork not found"));
+    }
+    return Result.ok(work);
+  } catch (err) {
+    console.error("Error:", err);
+    return Result.fail(AppError.sqlError());
   }
 }
 
@@ -79,7 +81,8 @@ export async function getWork(workListResult, idsResult) {
 export async function ensureRecordExists(idResult) {
   try {
     const { categoryId } = idResult.data;
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT COUNT(*)
       FROM category WHERE id = $1`,
       [categoryId]
@@ -100,7 +103,8 @@ export async function updateCategory(idResult, payloadResult) {
   try {
     const { categoryId } = idResult.data;
     const { name } = payloadResult.data;
-    await pool.query(`
+    await pool.query(
+      `
       UPDATE category
       SET name = $2
       WHERE id = $1 `,
@@ -108,7 +112,7 @@ export async function updateCategory(idResult, payloadResult) {
     );
     return Result.ok();
   } catch (err) {
-    console.error('Error:', err);
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }
@@ -116,15 +120,16 @@ export async function updateCategory(idResult, payloadResult) {
 // カテゴリの削除
 export async function deleteCategory(idResult) {
   try {
-    const { categoryId } = idResult.data
-    await pool.query(`
+    const { categoryId } = idResult.data;
+    await pool.query(
+      `
       DELETE FROM category
       WHERE id = $1`,
       [categoryId]
     );
     return Result.ok();
   } catch (err) {
-    console.error('Error:', err);
+    console.error("Error:", err);
     return Result.fail(AppError.sqlError());
   }
 }

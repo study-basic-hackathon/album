@@ -97,68 +97,52 @@ export async function updateWork(idResult, payloadResult) {
 
     // workテーブルの更新
     await client.query(`
-      UPDATE work
-      SET
-        title = $2,
-        exhibition_id = $3,
-        arranger_id = $4,
-        season_id = $5,
-        category_id = $6
-      WHERE id = $1`,
-      [workId, title, exhibitionId, arrangerId, seasonId, categoryId]
+    UPDATE work
+    SET
+      title = $2,
+      exhibition_id = $3,
+      arranger_id = $4,
+      season_id = $5,
+      category_id = $6
+    WHERE id = $1`,
+    [workId, title, exhibitionId, arrangerId, seasonId, categoryId]
     );
 
     // work_materialテーブルの更新
     await client.query(`
-      DELETE FROM work_material
-      WHERE work_id = $1`,
-      [workId]
+    DELETE FROM work_material
+    WHERE work_id = $1`,
+    [workId]
     );
     await client.query(`
-      INSERT INTO work_material (work_id, material_id)
-      SELECT $1, unnest($2::int[])`,
-      [workId, materialIds]
+    INSERT INTO work_material (work_id, material_id)
+    SELECT $1, unnest($2::int[])`,
+    [workId, materialIds]
     );
 
     // work_imageテーブルの更新
     await client.query(`
-      DELETE FROM work_image
-      WHERE work_id = $1`,
-      [workId]
+    DELETE FROM work_image
+    WHERE work_id = $1`,
+    [workId]
     );
     await client.query(`
-      INSERT INTO work_image (work_id, image_id)
-      SELECT $1, unnest($2::int[])`,
-      [workId, imageIds]
+    INSERT INTO work_image (work_id, image_id)
+    SELECT $1, unnest($2::int[])`,
+    [workId, imageIds]
     );
 
     await client.query("COMMIT");
     return Result.ok(workId);
   } catch (error) {
-	  if (client) {
+    if (client) {
       await client.query("ROLLBACK");
     }
     console.error("Error:", error);
     return Result.fail(AppError.sqlError());
   } finally {
-	  if (client) {
+    if (client) {
       client.release();
     }
   }
-}
-
-// 作品の削除
-export async function deleteWork(idResult) {
-  try {
-    const { workId } = idResult.data
-    await pool.query(`
-      DELETE FROM work
-      WHERE id = $1`,
-      [workId]
-    );
-    return Result.ok();
-  } catch (err) {
-    console.error('Error:', err);
-    return Result.fail(AppError.sqlError());
-  }
-}
+};

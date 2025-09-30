@@ -22,7 +22,6 @@ export async function getImage(idResult) {
   if (idResult.isFailure()) {
     return idResult;
   }
-  console.log(idResult);
   return await imageRepository.findById(idResult);
 }
 

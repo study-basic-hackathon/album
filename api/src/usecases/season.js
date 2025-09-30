@@ -46,9 +46,9 @@ export async function updateSeason(idResult, payloadResult) {
   if (payloadResult.isFailure()) {
     return payloadResult;
   }
-  const exsistingResult = await seasonRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await seasonRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await seasonRepository.updateSeason(idResult, payloadResult);
 };
@@ -58,9 +58,9 @@ export async function deleteSeason(idResult) {
   if (idResult.isFailure()) {
     return idResult;
   }
-  const exsistingResult = await seasonRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await seasonRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await seasonRepository.deleteSeason(idResult);
 }

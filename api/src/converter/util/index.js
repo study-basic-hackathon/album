@@ -1,4 +1,4 @@
-const allowedMinetypes = {
+const allowedMimetypes = {
   "image/jpeg": ".jpg",
   "image/png": ".png",
 };
@@ -23,7 +23,7 @@ export function isValidDate(dateStr) {
 }
 
 export function isValidFile(file) {
-  if (!file || !allowedMinetypes[file.mimetype]) {
+  if (!file || !allowedMimetypes[file.mimetype]) {
     return false;
   }
   return true;

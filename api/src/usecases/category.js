@@ -46,9 +46,9 @@ export async function updateCategory(idResult, payloadResult) {
   if (payloadResult.isFailure()) {
     return payloadResult;
   }
-  const exsistingResult = await categoryRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await categoryRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await categoryRepository.updateCategory(idResult, payloadResult);
 }
@@ -58,9 +58,9 @@ export async function deleteCategory(idResult) {
   if (idResult.isFailure()) {
     return idResult;
   }
-  const exsistingResult = await categoryRepository.ensureRecordExists(idResult);
-  if (exsistingResult.isFailure()) {
-    return exsistingResult;
+  const exsitingResult = await categoryRepository.ensureRecordExists(idResult);
+  if (exsitingResult.isFailure()) {
+    return exsitingResult;
   }
   return await categoryRepository.deleteCategory(idResult);
 }
