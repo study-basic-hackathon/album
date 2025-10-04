@@ -55,9 +55,9 @@ export async function updateSeason(id, payload) {
   if (invalidKeys.length > 0) {
     return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  const exsiting = await seasonRepository.ensureRecord(id);
-  if (exsiting.isFailure()) {
-    return exsiting;
+  const existing = await seasonRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
   }
   return await seasonRepository.updateSeason(id, payload);
 }
@@ -69,9 +69,9 @@ export async function deleteSeason(id) {
   if (invalidKeys.length > 0) {
     return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  const exsiting = await seasonRepository.ensureRecord(id);
-  if (exsiting.isFailure()) {
-    return exsiting;
+  const existing = await seasonRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
   }
   return await seasonRepository.deleteSeason(id);
 }
