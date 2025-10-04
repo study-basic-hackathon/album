@@ -8,7 +8,7 @@ export default [
     files: ["**/*.js"],
     ignores: ["dist"],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       sourceType: "module",
       globals: globals.node,
     },

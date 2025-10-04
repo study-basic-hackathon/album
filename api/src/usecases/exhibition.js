@@ -1,76 +1,82 @@
-import {
-  findAllExhibitions,
-  insertExhibition,
-  findExhibitionById,
-  findWorksByExhibitionId,
-} from "../repositories/exhibition.js";
 import * as exhibitionRepository from "../repositories/exhibition.js";
+import Result from "../utils/Result.js";
+import AppError from "../utils/AppError.js";
+import { getInvalidKeys } from "./utils/getInvalidKeys.js";
 
 // 華展の一覧
 export async function getExhibitions() {
-  return await findAllExhibitions();
+  return await exhibitionRepository.findAllExhibitions();
 }
 
 // 華展の登録
-export async function createExhibition(payloadResult) {
-  if (payloadResult.isFailure()) {
-    return payloadResult;
+export async function createExhibition(payload) {
+  const invalidKeys = getInvalidKeys(payload);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await insertExhibition(payloadResult);
+  return await exhibitionRepository.createExhibition(payload);
 }
 
 // 華展の取得
-export async function getExhibitionById(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function getExhibitionById(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await findExhibitionById(idResult);
+  return await exhibitionRepository.findExhibition(id);
 }
 
 // 華展の作品一覧の取得
-export async function getExhibitionWorks(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function getExhibitionWorks(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await findWorksByExhibitionId(idResult);
+  return await exhibitionRepository.findWorks(id);
 }
 
 // 華展の特定の作品の取得
-export async function getExhibitionWorkById(idsResult) {
-  if (idsResult.isFailure()) {
-    return idsResult;
-  }
-  const workListResult = await findWorksByExhibitionId(idsResult);
+export async function getExhibitionWorkById(ids) {
+  const invalidKeys = getInvalidKeys(ids);
 
-  if (workListResult.isFailure()) {
-    return workListResult;
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await exhibitionRepository.getWork(workListResult, idsResult);
+  const exhibitionWorks = await exhibitionRepository.findWorks(ids);
+
+  if (exhibitionWorks.isFailure()) {
+    return exhibitionWorks;
+  }
+  return await exhibitionRepository.findWork(exhibitionWorks.data, ids);
 }
 
 // 華展の更新
-export async function updateExhibition(idResult, payloadResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function updateExhibition(id, payload) {
+  const invalidKeys = getInvalidKeys(id, payload);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  if (payloadResult.isFailure()) {
-    return payloadResult;
+  const existing = await exhibitionRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
   }
-  const exsitingResult = await exhibitionRepository.ensureRecordExists(idResult);
-  if (exsitingResult.isFailure()) {
-    return exsitingResult;
-  }
-  return await exhibitionRepository.updateExhibition(idResult, payloadResult);
+  return await exhibitionRepository.updateExhibition(id, payload);
 }
 
 // 華展の削除
-export async function deleteExhibition(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function deleteExhibition(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  const exsitingResult = await exhibitionRepository.ensureRecordExists(idResult);
-  if (exsitingResult.isFailure()) {
-    return exsitingResult;
+  const existing = await exhibitionRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
   }
-  return await exhibitionRepository.deleteExhibition(idResult);
+  return await exhibitionRepository.deleteExhibition(id);
 }

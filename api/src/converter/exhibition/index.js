@@ -1,42 +1,30 @@
-import Result from "../../utils/Result.js";
-import AppError from "../../utils/AppError.js";
-import { isValidName, isValidId, isValidDate } from "../util/index.js";
+import { toAcceptedName, toAcceptedId, toAcceptedDate } from "../util/index.js";
 
 export function convertExhibitionPayload(payload) {
-  if (!isValidName(payload.name)) {
-    return Result.fail(AppError.validationError("Invalid Name"));
+  const result = {
+    name: toAcceptedName(payload.name),
+    started_date: toAcceptedDate(payload.started_date),
+    ended_date: toAcceptedDate(payload.ended_date),
+  };
+
+  if (result.started_date && result.ended_date) {
+    if (new Date(result.started_date) > new Date(result.ended_date)) {
+      result.started_date = null;
+      result.ended_date = null;
+    }
   }
-  if (!isValidDate(payload.started_date) || !isValidDate(payload.ended_date)) {
-    return Result.fail(AppError.validationError("Invalid Date"));
-  }
-  if (new Date(payload.started_date) > new Date(payload.ended_date)) {
-    return Result.fail(AppError.validationError("started_date must be before ended_date"));
-  }
-  return Result.ok({
-    name: payload.name,
-    started_date: payload.started_date,
-    ended_date: payload.ended_date,
-  });
+  return result;
 }
 
 export function convertExhibitionId(params) {
-  if (!isValidId(params.exhibitionId)) {
-    return Result.fail(AppError.validationError("Invalid exhibitionId"));
-  }
-  return Result.ok({
-    exhibitionId: params.exhibitionId,
-  });
+  return {
+    exhibitionId: toAcceptedId(params.exhibitionId),
+  };
 }
 
 export function convertExhibitionAndWorkIds(params) {
-  if (!isValidId(params.exhibitionId)) {
-    return Result.fail(AppError.validationError("Invalid exhibitionId"));
-  }
-  if (!isValidId(params.workId)) {
-    return Result.fail(AppError.validationError("Invalid workId"));
-  }
-  return Result.ok({
-    exhibitionId: params.exhibitionId,
-    workId: params.workId,
-  });
+  return {
+    exhibitionId: toAcceptedId(params.exhibitionId),
+    workId: toAcceptedId(params.workId),
+  };
 }

@@ -1,34 +1,20 @@
-import Result from "../../utils/Result.js";
-import AppError from "../../utils/AppError.js";
-import { isValidName, isValidId } from "../util/index.js";
+import { toAcceptedName, toAcceptedId } from "../util/index.js";
 
 export function convertArrangerPayload(payload) {
-  if (!isValidName(payload.name)) {
-    return Result.fail(AppError.validationError("Invalid Name"));
-  }
-  return Result.ok({
-    name: payload.name,
-  });
+  return {
+    name: toAcceptedName(payload.name),
+  };
 }
 
 export function convertArrangerId(params) {
-  if (!isValidId(params.arrangerId)) {
-    return Result.fail(AppError.validationError("Invalid arrangerId"));
-  }
-  return Result.ok({
-    arrangerId: params.arrangerId,
-  });
+  return {
+    arrangerId: toAcceptedId(params.arrangerId),
+  };
 }
 
 export function convertArrangerAndWorkIds(params) {
-  if (!isValidId(params.arrangerId)) {
-    return Result.fail(AppError.validationError("Invalid arrangerId"));
-  }
-  if (!isValidId(params.workId)) {
-    return Result.fail(AppError.validationError("Invalid workId"));
-  }
-  return Result.ok({
-    arrangerId: params.arrangerId,
-    workId: params.workId,
-  });
+  return {
+    arrangerId: toAcceptedId(params.arrangerId),
+    workId: toAcceptedId(params.workId),
+  };
 }

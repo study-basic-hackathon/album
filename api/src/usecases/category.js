@@ -1,70 +1,77 @@
-import {
-  findCategoryById,
-  findWorksByCategoryId,
-  insertCategory,
-} from "../repositories/category.js";
 import * as categoryRepository from "../repositories/category.js";
+import Result from "../utils/Result.js";
+import AppError from "../utils/AppError.js";
+import { getInvalidKeys } from "./utils/getInvalidKeys.js";
 
 //カテゴリの登録
-export async function createCategory(payloadResult) {
-  if (payloadResult.isFailure()) {
-    return payloadResult;
+export async function createCategory(payload) {
+  const invalidKeys = getInvalidKeys(payload);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await insertCategory(payloadResult);
+  return await categoryRepository.createCategory(payload);
 }
 
 // カテゴリーの情報の取得
-export async function getCategoryById(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function getCategoryById(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await findCategoryById(idResult);
+  return await categoryRepository.findCategory(id);
 }
 
 // カテゴリーの作品一覧の取得
-export async function getCategoryWorks(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function getCategoryWorks(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await findWorksByCategoryId(idResult);
+  return await categoryRepository.findWorks(id);
 }
 
 // カテゴリーの特定の作品の取得
-export async function getCategoryWorkById(idsResult) {
-  if (idsResult.isFailure()) {
-    return idsResult;
-  }
-  const workListResult = await findWorksByCategoryId(idsResult);
+export async function getCategoryWorkById(ids) {
+  const invalidKeys = getInvalidKeys(ids);
 
-  if (workListResult.isFailure()) {
-    return workListResult;
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await categoryRepository.getWork(workListResult, idsResult);
+  const categoryWorks = await categoryRepository.findWorks(ids);
+
+  if (categoryWorks.isFailure()) {
+    return categoryWorks;
+  }
+  return await categoryRepository.findWork(categoryWorks.data, ids);
 }
 
 // カテゴリの更新
-export async function updateCategory(idResult, payloadResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function updateCategory(id, payload) {
+  const invalidKeys = getInvalidKeys(id, payload);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  if (payloadResult.isFailure()) {
-    return payloadResult;
+  const existing = await categoryRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
   }
-  const exsitingResult = await categoryRepository.ensureRecordExists(idResult);
-  if (exsitingResult.isFailure()) {
-    return exsitingResult;
-  }
-  return await categoryRepository.updateCategory(idResult, payloadResult);
+  return await categoryRepository.updateCategory(id, payload);
 }
 
 // カテゴリの削除
-export async function deleteCategory(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function deleteCategory(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  const exsitingResult = await categoryRepository.ensureRecordExists(idResult);
-  if (exsitingResult.isFailure()) {
-    return exsitingResult;
+  const existing = await categoryRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
   }
-  return await categoryRepository.deleteCategory(idResult);
+  return await categoryRepository.deleteCategory(id);
 }

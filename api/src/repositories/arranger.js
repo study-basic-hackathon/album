@@ -4,9 +4,9 @@ import AppError from "../utils/AppError.js";
 import { getWorkListByCondition } from "./utils/getWorkListByCondition.js";
 
 //作者の登録
-export async function insertArranger(payloadResult) {
+export async function createArranger(payload) {
   try {
-    const { name } = payloadResult.data;
+    const { name } = payload;
     const result = await pool.query(
       `
       INSERT INTO arranger (name)
@@ -22,9 +22,9 @@ export async function insertArranger(payloadResult) {
 }
 
 // 作者の取得
-export async function findArrangerById(idResult) {
+export async function findArranger(id) {
   try {
-    const { arrangerId } = idResult.data;
+    const { arrangerId } = id;
     const result = await pool.query(
       `
       SELECT *
@@ -43,18 +43,18 @@ export async function findArrangerById(idResult) {
 }
 
 // 作者の作品一覧の取得
-export async function findWorksByArrangerId(idsResult) {
+export async function findWorks(id) {
   try {
-    const { arrangerId } = idsResult.data;
-    const workList = await getWorkListByCondition({
+    const { arrangerId } = id;
+    const works = await getWorkListByCondition({
       where: "wk.arranger_id = $1",
       params: [arrangerId],
       orderBy: "wk.created_at ASC",
     });
-    if (!workList || workList.length === 0) {
+    if (!works || works.length === 0) {
       return Result.fail(AppError.notFound("arrangerWork not found"));
     }
-    return Result.ok(workList);
+    return Result.ok(works);
   } catch (err) {
     console.error("Error:", err);
     return Result.fail(AppError.sqlError());
@@ -62,11 +62,10 @@ export async function findWorksByArrangerId(idsResult) {
 }
 
 // 作者の特定の作品の取得
-export async function getWork(workListResult, idsResult) {
+export async function findWork(works, ids) {
   try {
-    const { workId } = idsResult.data;
-    const workList = workListResult.data;
-    const work = workList.find((item) => String(item.work.id) === workId);
+    const { workId } = ids;
+    const work = works.find((item) => String(item.work.id) === workId);
     if (!work) {
       return Result.fail(AppError.notFound("arrangerWork not found"));
     }
@@ -78,9 +77,9 @@ export async function getWork(workListResult, idsResult) {
 }
 
 // 作者の存在確認
-export async function ensureRecordExists(idResult) {
+export async function ensureRecord(id) {
   try {
-    const { arrangerId } = idResult.data;
+    const { arrangerId } = id;
     const result = await pool.query(
       `
       SELECT COUNT(*)
@@ -99,10 +98,10 @@ export async function ensureRecordExists(idResult) {
 }
 
 // 作者の更新
-export async function updateArranger(idResult, payloadResult) {
+export async function updateArranger(id, payload) {
   try {
-    const { arrangerId } = idResult.data;
-    const { name } = payloadResult.data;
+    const { arrangerId } = id;
+    const { name } = payload;
     await pool.query(
       `
       UPDATE arranger
@@ -118,9 +117,9 @@ export async function updateArranger(idResult, payloadResult) {
 }
 
 // 作者の削除
-export async function deleteArranger(idResult) {
+export async function deleteArranger(id) {
   try {
-    const { arrangerId } = idResult.data;
+    const { arrangerId } = id;
     await pool.query(
       `
       DELETE FROM arranger

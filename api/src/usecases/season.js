@@ -1,66 +1,77 @@
-import { findSeasonById, findWorksBySeasonId, insertSeason } from "../repositories/season.js";
 import * as seasonRepository from "../repositories/season.js";
+import Result from "../utils/Result.js";
+import AppError from "../utils/AppError.js";
+import { getInvalidKeys } from "./utils/getInvalidKeys.js";
 
 //季節の登録
-export async function createSeason(payloadResult) {
-  if (payloadResult.isFailure()) {
-    return payloadResult;
+export async function createSeason(payload) {
+  const invalidKeys = getInvalidKeys(payload);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await insertSeason(payloadResult);
+  return await seasonRepository.createSeason(payload);
 }
 
 // 季節の情報の取得
-export async function getSeasonById(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function getSeasonById(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await findSeasonById(idResult);
+  return await seasonRepository.findSeason(id);
 }
 
 // 季節の作品一覧の取得
-export async function getSeasonWorks(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function getSeasonWorks(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await findWorksBySeasonId(idResult);
+  return await seasonRepository.findWorks(id);
 }
 
 // 季節の特定の作品の取得
-export async function getSeasonWorkById(idsResult) {
-  if (idsResult.isFailure()) {
-    return idsResult;
-  }
-  const workListResult = await findWorksBySeasonId(idsResult);
+export async function getSeasonWorkById(ids) {
+  const invalidKeys = getInvalidKeys(ids);
 
-  if (workListResult.isFailure()) {
-    return workListResult;
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  return await seasonRepository.getWork(workListResult, idsResult);
+  const seasonWorks = await seasonRepository.findWorks(ids);
+
+  if (seasonWorks.isFailure()) {
+    return seasonWorks;
+  }
+  return await seasonRepository.findWork(seasonWorks.data, ids);
 }
 
 // 季節の更新
-export async function updateSeason(idResult, payloadResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function updateSeason(id, payload) {
+  const invalidKeys = getInvalidKeys(id, payload);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  if (payloadResult.isFailure()) {
-    return payloadResult;
+  const exsiting = await seasonRepository.ensureRecord(id);
+  if (exsiting.isFailure()) {
+    return exsiting;
   }
-  const exsitingResult = await seasonRepository.ensureRecordExists(idResult);
-  if (exsitingResult.isFailure()) {
-    return exsitingResult;
-  }
-  return await seasonRepository.updateSeason(idResult, payloadResult);
+  return await seasonRepository.updateSeason(id, payload);
 }
 
 // 季節の削除
-export async function deleteSeason(idResult) {
-  if (idResult.isFailure()) {
-    return idResult;
+export async function deleteSeason(id) {
+  const invalidKeys = getInvalidKeys(id);
+
+  if (invalidKeys.length > 0) {
+    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
   }
-  const exsitingResult = await seasonRepository.ensureRecordExists(idResult);
-  if (exsitingResult.isFailure()) {
-    return exsitingResult;
+  const exsiting = await seasonRepository.ensureRecord(id);
+  if (exsiting.isFailure()) {
+    return exsiting;
   }
-  return await seasonRepository.deleteSeason(idResult);
+  return await seasonRepository.deleteSeason(id);
 }

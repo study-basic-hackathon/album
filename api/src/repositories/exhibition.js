@@ -25,9 +25,9 @@ export async function findAllExhibitions() {
 }
 
 //華展の登録
-export async function insertExhibition(payloadResult) {
+export async function createExhibition(payload) {
   try {
-    const { name, started_date, ended_date } = payloadResult.data;
+    const { name, started_date, ended_date } = payload;
     const result = await pool.query(
       `
       INSERT INTO
@@ -44,9 +44,9 @@ export async function insertExhibition(payloadResult) {
 }
 
 //華展の取得
-export async function findExhibitionById(idResult) {
+export async function findExhibition(id) {
   try {
-    const { exhibitionId } = idResult.data;
+    const { exhibitionId } = id;
     const result = await pool.query(
       `
       SELECT
@@ -69,18 +69,18 @@ export async function findExhibitionById(idResult) {
 }
 
 // 華展の作品一覧の取得
-export async function findWorksByExhibitionId(idsResult) {
+export async function findWorks(id) {
   try {
-    const { exhibitionId } = idsResult.data;
-    const workList = await getWorkListByCondition({
+    const { exhibitionId } = id;
+    const works = await getWorkListByCondition({
       where: "wk.exhibition_id = $1",
       params: [exhibitionId],
       orderBy: "wk.created_at ASC",
     });
-    if (!workList || workList.length === 0) {
+    if (!works || works.length === 0) {
       return Result.fail(AppError.notFound("exhibitionWork not found"));
     }
-    return Result.ok(workList);
+    return Result.ok(works);
   } catch (err) {
     console.error("Error:", err);
     return Result.fail(AppError.sqlError());
@@ -88,11 +88,10 @@ export async function findWorksByExhibitionId(idsResult) {
 }
 
 // 華展の特定の作品の取得
-export async function getWork(workListResult, idsResult) {
+export async function findWork(works, ids) {
   try {
-    const { workId } = idsResult.data;
-    const workList = workListResult.data;
-    const work = workList.find((item) => String(item.work.id) === workId);
+    const { workId } = ids;
+    const work = works.find((item) => String(item.work.id) === workId);
     if (!work) {
       return Result.fail(AppError.notFound("exhibitionWork not found"));
     }
@@ -104,9 +103,9 @@ export async function getWork(workListResult, idsResult) {
 }
 
 // 華展の存在確認
-export async function ensureRecordExists(idResult) {
+export async function ensureRecord(id) {
   try {
-    const { exhibitionId } = idResult.data;
+    const { exhibitionId } = id;
     const result = await pool.query(
       `
       SELECT COUNT(*)
@@ -125,10 +124,10 @@ export async function ensureRecordExists(idResult) {
 }
 
 // 華展の更新
-export async function updateExhibition(idResult, payloadResult) {
+export async function updateExhibition(id, payload) {
   try {
-    const { exhibitionId } = idResult.data;
-    const { name, started_date, ended_date } = payloadResult.data;
+    const { exhibitionId } = id;
+    const { name, started_date, ended_date } = payload;
     await pool.query(
       `
       UPDATE
@@ -148,9 +147,9 @@ export async function updateExhibition(idResult, payloadResult) {
 }
 
 // 華展の削除
-export async function deleteExhibition(idResult) {
+export async function deleteExhibition(id) {
   try {
-    const { exhibitionId } = idResult.data;
+    const { exhibitionId } = id;
     await pool.query(
       `
       DELETE FROM exhibition

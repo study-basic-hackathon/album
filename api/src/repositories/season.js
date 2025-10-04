@@ -4,9 +4,9 @@ import AppError from "../utils/AppError.js";
 import { getWorkListByCondition } from "./utils/getWorkListByCondition.js";
 
 //季節の登録
-export async function insertSeason(payloadResult) {
+export async function createSeason(payload) {
   try {
-    const { name } = payloadResult.data;
+    const { name } = payload;
     const result = await pool.query(
       `
       INSERT INTO season (name)
@@ -22,9 +22,9 @@ export async function insertSeason(payloadResult) {
 }
 
 // 季節の取得
-export async function findSeasonById(idResult) {
+export async function findSeason(id) {
   try {
-    const { seasonId } = idResult.data;
+    const { seasonId } = id;
     const result = await pool.query(
       `
       SELECT *
@@ -43,18 +43,18 @@ export async function findSeasonById(idResult) {
 }
 
 // 季節の作品一覧の取得
-export async function findWorksBySeasonId(idsResult) {
+export async function findWorks(id) {
   try {
-    const { seasonId } = idsResult.data;
-    const workList = await getWorkListByCondition({
+    const { seasonId } = id;
+    const works = await getWorkListByCondition({
       where: "wk.season_id = $1",
       params: [seasonId],
       orderBy: "wk.created_at ASC",
     });
-    if (!workList || workList.length === 0) {
+    if (!works || works.length === 0) {
       return Result.fail(AppError.notFound("seasonWork not found"));
     }
-    return Result.ok(workList);
+    return Result.ok(works);
   } catch (err) {
     console.error("Error:", err);
     return Result.fail(AppError.sqlError());
@@ -62,11 +62,10 @@ export async function findWorksBySeasonId(idsResult) {
 }
 
 // 季節の特定の作品の取得
-export async function getWork(workListResult, idsResult) {
+export async function findWork(works, ids) {
   try {
-    const { workId } = idsResult.data;
-    const workList = workListResult.data;
-    const work = workList.find((item) => String(item.work.id) === workId);
+    const { workId } = ids;
+    const work = works.find((item) => String(item.work.id) === workId);
     if (!work) {
       return Result.fail(AppError.notFound("seasonWork not found"));
     }
@@ -78,9 +77,9 @@ export async function getWork(workListResult, idsResult) {
 }
 
 // 季節の存在確認
-export async function ensureRecordExists(idResult) {
+export async function ensureRecord(id) {
   try {
-    const { seasonId } = idResult.data;
+    const { seasonId } = id;
     const result = await pool.query(
       `
       SELECT COUNT(*)
@@ -99,10 +98,10 @@ export async function ensureRecordExists(idResult) {
 }
 
 // 季節の更新
-export async function updateSeason(idResult, payloadResult) {
+export async function updateSeason(id, payload) {
   try {
-    const { seasonId } = idResult.data;
-    const { name } = payloadResult.data;
+    const { seasonId } = id;
+    const { name } = payload;
     await pool.query(
       `
       UPDATE season
@@ -118,9 +117,9 @@ export async function updateSeason(idResult, payloadResult) {
 }
 
 // 季節の削除
-export async function deleteSeason(idResult) {
+export async function deleteSeason(id) {
   try {
-    const { seasonId } = idResult.data;
+    const { seasonId } = id;
     await pool.query(
       `
       DELETE FROM season

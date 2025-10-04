@@ -4,9 +4,9 @@ import AppError from "../utils/AppError.js";
 import { getWorkListByCondition } from "./utils/getWorkListByCondition.js";
 
 //花材の登録
-export async function insertMaterial(payloadResult) {
+export async function createMaterial(payload) {
   try {
-    const { name } = payloadResult.data;
+    const { name } = payload;
     const result = await pool.query(
       `
       INSERT INTO material (name)
@@ -22,9 +22,9 @@ export async function insertMaterial(payloadResult) {
 }
 
 // 花材の取得
-export async function findMaterialById(idResult) {
+export async function findMaterial(id) {
   try {
-    const { materialId } = idResult.data;
+    const { materialId } = id;
     const result = await pool.query(
       `
       SELECT *
@@ -43,9 +43,9 @@ export async function findMaterialById(idResult) {
 }
 
 // 花材の作品一覧の取得
-export async function findWorksByMaterialId(idsResult) {
+export async function findWorks(id) {
   try {
-    const { materialId } = idsResult.data;
+    const { materialId } = id;
     const workList = await getWorkListByCondition({
       where: "wm.material_id = $1",
       params: [materialId],
@@ -62,11 +62,10 @@ export async function findWorksByMaterialId(idsResult) {
 }
 
 // 花材の特定の作品の取得
-export async function getWork(workListResult, idsResult) {
+export async function findWork(works, ids) {
   try {
-    const { workId } = idsResult.data;
-    const workList = workListResult.data;
-    const work = workList.find((item) => String(item.work.id) === workId);
+    const { workId } = ids;
+    const work = works.find((item) => String(item.work.id) === workId);
     if (!work) {
       return Result.fail(AppError.notFound("materialWork not found"));
     }
@@ -78,9 +77,9 @@ export async function getWork(workListResult, idsResult) {
 }
 
 // 花材の存在確認
-export async function ensureRecordExists(idResult) {
+export async function ensureRecord(id) {
   try {
-    const { materialId } = idResult.data;
+    const { materialId } = id;
     const result = await pool.query(
       `
       SELECT COUNT(*)
@@ -99,10 +98,10 @@ export async function ensureRecordExists(idResult) {
 }
 
 // 花材の更新
-export async function updateMaterial(idResult, payloadResult) {
+export async function updateMaterial(id, payload) {
   try {
-    const { materialId } = idResult.data;
-    const { name } = payloadResult.data;
+    const { materialId } = id;
+    const { name } = payload;
     await pool.query(
       `
       UPDATE material
@@ -118,9 +117,9 @@ export async function updateMaterial(idResult, payloadResult) {
 }
 
 // 花材の削除
-export async function deleteMaterial(idResult) {
+export async function deleteMaterial(id) {
   try {
-    const { materialId } = idResult.data;
+    const { materialId } = id;
     await pool.query(
       `
       DELETE FROM material

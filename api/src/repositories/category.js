@@ -4,9 +4,9 @@ import AppError from "../utils/AppError.js";
 import { getWorkListByCondition } from "./utils/getWorkListByCondition.js";
 
 //カテゴリの登録
-export async function insertCategory(payloadResult) {
+export async function createCategory(payload) {
   try {
-    const { name } = payloadResult.data;
+    const { name } = payload;
     const result = await pool.query(
       `
       INSERT INTO category (name)
@@ -22,9 +22,9 @@ export async function insertCategory(payloadResult) {
 }
 
 // カテゴリの取得
-export async function findCategoryById(idResult) {
+export async function findCategory(id) {
   try {
-    const { categoryId } = idResult.data;
+    const { categoryId } = id;
     const result = await pool.query(
       `
       SELECT *
@@ -43,18 +43,18 @@ export async function findCategoryById(idResult) {
 }
 
 // カテゴリーの作品一覧の取得
-export async function findWorksByCategoryId(idsResult) {
+export async function findWorks(id) {
   try {
-    const { categoryId } = idsResult.data;
-    const workList = await getWorkListByCondition({
+    const { categoryId } = id;
+    const works = await getWorkListByCondition({
       where: "wk.category_id = $1",
       params: [categoryId],
       orderBy: "wk.created_at ASC",
     });
-    if (!workList || workList.length === 0) {
+    if (!works || works.length === 0) {
       return Result.fail(AppError.notFound("categoryWork not found"));
     }
-    return Result.ok(workList);
+    return Result.ok(works);
   } catch (err) {
     console.error("Error:", err);
     return Result.fail(AppError.sqlError());
@@ -62,11 +62,10 @@ export async function findWorksByCategoryId(idsResult) {
 }
 
 // カテゴリの特定の作品の取得
-export async function getWork(workListResult, idsResult) {
+export async function findWork(works, ids) {
   try {
-    const { workId } = idsResult.data;
-    const workList = workListResult.data;
-    const work = workList.find((item) => String(item.work.id) === workId);
+    const { workId } = ids;
+    const work = works.find((item) => String(item.work.id) === workId);
     if (!work) {
       return Result.fail(AppError.notFound("categoryWork not found"));
     }
@@ -78,9 +77,9 @@ export async function getWork(workListResult, idsResult) {
 }
 
 // カテゴリの存在確認
-export async function ensureRecordExists(idResult) {
+export async function ensureRecord(id) {
   try {
-    const { categoryId } = idResult.data;
+    const { categoryId } = id;
     const result = await pool.query(
       `
       SELECT COUNT(*)
@@ -99,10 +98,10 @@ export async function ensureRecordExists(idResult) {
 }
 
 // カテゴリの更新
-export async function updateCategory(idResult, payloadResult) {
+export async function updateCategory(id, payload) {
   try {
-    const { categoryId } = idResult.data;
-    const { name } = payloadResult.data;
+    const { categoryId } = id;
+    const { name } = payload;
     await pool.query(
       `
       UPDATE category
@@ -118,9 +117,9 @@ export async function updateCategory(idResult, payloadResult) {
 }
 
 // カテゴリの削除
-export async function deleteCategory(idResult) {
+export async function deleteCategory(id) {
   try {
-    const { categoryId } = idResult.data;
+    const { categoryId } = id;
     await pool.query(
       `
       DELETE FROM category

@@ -3,10 +3,9 @@ import Result from "../utils/Result.js";
 import AppError from "../utils/AppError.js";
 
 // 作品の登録
-export async function insertWork(payloadResult) {
+export async function createWork(payload) {
   let client; // スコープはトランザクション内のみ
-  const { title, exhibitionId, arrangerId, materialIds, seasonId, categoryId, imageIds } =
-    payloadResult.data;
+  const { title, exhibitionId, arrangerId, materialIds, seasonId, categoryId, imageIds } = payload;
 
   try {
     client = await pool.connect();
@@ -55,9 +54,9 @@ export async function insertWork(payloadResult) {
 }
 
 // 作品の存在確認
-export async function ensureRecordExists(idResult) {
+export async function ensureRecord(id) {
   try {
-    const { workId } = idResult.data;
+    const { workId } = id;
     const result = await pool.query(
       `
       SELECT COUNT(*)
@@ -76,11 +75,10 @@ export async function ensureRecordExists(idResult) {
 }
 
 // 作品の更新
-export async function updateWork(idResult, payloadResult) {
+export async function updateWork(id, payload) {
   let client; // スコープはトランザクション内のみ
-  const { workId } = idResult.data;
-  const { title, exhibitionId, arrangerId, seasonId, categoryId, materialIds, imageIds } =
-    payloadResult.data;
+  const { workId } = id;
+  const { title, exhibitionId, arrangerId, seasonId, categoryId, materialIds, imageIds } = payload;
 
   try {
     client = await pool.connect();
@@ -140,5 +138,21 @@ export async function updateWork(idResult, payloadResult) {
     if (client) {
       client.release();
     }
+  }
+}
+
+// 作品の削除
+export async function deleteWork(id) {
+  try {
+    const { workId } = id;
+    await pool.query(
+      `DELETE FROM work
+       WHERE id = $1`,
+      [workId]
+    );
+    return Result.ok();
+  } catch (error) {
+    console.error("Error:", error);
+    return Result.fail(AppError.sqlError());
   }
 }
