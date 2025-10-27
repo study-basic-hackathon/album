@@ -27,7 +27,7 @@ export async function deleteRecord(id) {
       [imageId]
     );
     if (result.rowCount === 0) {
-      return Result.fail(AppError.internalError());
+      return Result.fail(AppError.notFound("Image not found"));
     }
     return Result.ok();
   } catch (err) {

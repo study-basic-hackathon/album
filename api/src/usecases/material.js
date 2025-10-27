@@ -59,7 +59,7 @@ export async function updateMaterial(id, payload) {
   if (existing.isFailure()) {
     return existing;
   }
-  return await materialRepository.update(id, payload);
+  return await materialRepository.updateMaterial(id, payload);
 }
 
 // 花材の削除
@@ -73,5 +73,5 @@ export async function deleteMaterial(id) {
   if (existing.isFailure()) {
     return existing;
   }
-  return await materialRepository.delete(id);
+  return await materialRepository.deleteMaterial(id);
 }

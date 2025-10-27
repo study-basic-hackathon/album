@@ -21,7 +21,7 @@ function buildSql(where, orderBy) {
     LEFT JOIN work_material AS wm ON wk.id = wm.work_id
     LEFT JOIN work_image AS wi ON wk.id = wi.work_id
     WHERE ${where}
-    GROUP BY wk.id, wk.title, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
+    GROUP BY wk.id, wk.title, wk.exhibition_id, wk.arranger_id, wk.season_id, wk.category_id, wk.created_at
     ORDER BY ${orderBy}
   `;
 }

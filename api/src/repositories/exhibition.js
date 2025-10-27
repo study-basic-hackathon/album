@@ -14,9 +14,6 @@ export async function findAllExhibitions() {
         TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date
       FROM exhibition
       ORDER BY started_date DESC`);
-    if (!result.rows[0]) {
-      return Result.fail(AppError.notFound("Exhibitions not found"));
-    }
     return Result.ok(result.rows);
   } catch (err) {
     console.error("Error:", err);
@@ -53,7 +50,7 @@ export async function findExhibition(id) {
         id,
         name,
         TO_CHAR(started_date, 'YYYY-MM-DD') AS started_date,
-        TO_CHAR(started_date, 'YYYY-MM-DD') AS ended_date
+        TO_CHAR(ended_date, 'YYYY-MM-DD') AS ended_date
       FROM exhibition
       WHERE id = $1`,
       [exhibitionId]

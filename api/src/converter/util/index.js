@@ -20,14 +20,17 @@ export function toAcceptedIds(values) {
 }
 
 function isValidId(id) {
-  if (!id || typeof id !== "string") {
+  if (id === null || id === undefined) {
     return false;
   }
-  return /^[0-9]+$/.test(id);
+  if (typeof id !== "string" && typeof id !== "number") {
+    return false;
+  }
+  return /^[0-9]+$/.test(String(id));
 }
 
 function isValidIds(arr) {
-  if (!arr || !arr.length > 0 || !Array.isArray(arr)) {
+  if (!Array.isArray(arr) || arr.length === 0) {
     return false;
   }
   return arr.every(isValidId);
