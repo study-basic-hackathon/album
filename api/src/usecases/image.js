@@ -1,16 +1,8 @@
 import * as imageRecordRepository from "../repositories/image/imageRecord.js";
 import * as imageFileRepository from "../repositories/image/imageFile.js";
-import Result from "../utils/Result.js";
-import AppError from "../utils/AppError.js";
-import { getInvalidKeys } from "./utils/getInvalidKeys.js";
 
 // 画像の登録
 export async function createImage(file) {
-  const invalidKeys = getInvalidKeys(file);
-
-  if (invalidKeys.length > 0) {
-    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
-  }
   const id = await imageRecordRepository.createRecord();
   if (id.isFailure()) {
     return id;
@@ -25,21 +17,11 @@ export async function createImage(file) {
 
 //画像の取得
 export async function getImage(id) {
-  const invalidKeys = getInvalidKeys(id);
-
-  if (invalidKeys.length > 0) {
-    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
-  }
   return await imageFileRepository.findImage(id);
 }
 
 //画像の削除
 export async function deleteImage(id) {
-  const invalidKeys = getInvalidKeys(id);
-
-  if (invalidKeys.length > 0) {
-    return Result.fail(AppError.validationError(`Invalid keys: ${invalidKeys.join(", ")}`));
-  }
   const filePath = await imageFileRepository.findImage(id);
   if (filePath.isFailure()) {
     return filePath;
