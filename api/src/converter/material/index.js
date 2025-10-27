@@ -2,7 +2,7 @@ import Result from "../../utils/Result.js";
 import AppError from "../../utils/AppError.js";
 import { isValidName, isValidId } from "../util/index.js";
 
-export function convertCategoryPayload(payload) {
+export function convertMaterialPayload(payload) {
   if (!isValidName(payload.name)) {
     return Result.fail(AppError.validationError("Invalid Name"));
   }
@@ -11,24 +11,24 @@ export function convertCategoryPayload(payload) {
   });
 }
 
-export function convertCategoryId(params) {
-  if (!isValidId(params.categoryId)) {
-    return Result.fail(AppError.validationError("Invalid categoryId"));
+export function convertMaterialId(params) {
+  if (!isValidId(params.materialId)) {
+    return Result.fail(AppError.validationError("Invalid materialId"));
   }
   return Result.ok({
-    categoryId: params.categoryId,
+    materialId: params.materialId,
   });
 }
 
-export function convertCategoryAndWorkIds(params) {
-  if (!isValidId(params.categoryId)) {
-    return Result.fail(AppError.validationError("Invalid categoryId"));
+export function convertMaterialAndWorkIds(params) {
+  if (!isValidId(params.materialId)) {
+    return Result.fail(AppError.validationError("Invalid materialId"));
   }
   if (!isValidId(params.workId)) {
     return Result.fail(AppError.validationError("Invalid workId"));
   }
   return Result.ok({
-    categoryId: params.categoryId,
+    materialId: params.materialId,
     workId: params.workId,
   });
 }
