@@ -1,25 +1,11 @@
-// NameValidation
-export function toAcceptedName(value) {
-  return isValidName(value) ? value : null;
-}
-
-function isValidName(name) {
+export function isValidName(name) {
   if (!name || typeof name !== "string") {
     return false;
   }
   return !/[<>{}[\]|\\^`$"'=]/.test(name);
 }
 
-// IdValidation
-export function toAcceptedId(value) {
-  return isValidId(value) ? value : null;
-}
-
-export function toAcceptedIds(values) {
-  return isValidIds(values) ? values : null;
-}
-
-function isValidId(id) {
+export function isValidId(id) {
   if (id === null || id === undefined) {
     return false;
   }
@@ -29,55 +15,35 @@ function isValidId(id) {
   return /^[0-9]+$/.test(String(id));
 }
 
-function isValidIds(arr) {
+export function isValidIds(arr) {
   if (!Array.isArray(arr) || arr.length === 0) {
     return false;
   }
   return arr.every(isValidId);
 }
 
-// DateValidation
-export function toAcceptedDate(value) {
-  return isValidDate(value) ? value : null;
-}
-
-function isValidDate(dateStr) {
-  if (!dateStr || typeof dateStr !== "string") {
+export function isValidDate(dateStr) {
+  if (typeof dateStr !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
     return false;
   }
-  if (isNaN(new Date(dateStr).getTime())) {
+  const date = new Date(dateStr);
+  return !isNaN(date.getTime()) && date.toISOString().startsWith(dateStr);
+}
+
+
+const allowedMimeTypes = new Set(["image/jpeg", "image/png"]);
+
+export function isValidFile(file) {
+  if (!file || typeof file !== "object") {
     return false;
   }
-  return true;
+  return isValidBuffer(file.buffer) && isValidMimeType(file.mimetype);
 }
 
-// FileValidation
-export function toAcceptedFile(value) {
-  return isValidFile(value) ? value : null;
-}
-
-function isValidFile(buffer) {
-  if (!buffer) {
-    return false;
-  }
-  if (buffer instanceof Buffer && buffer.length > 0) {
-    return true;
-  }
-  return false;
-}
-
-// MimeTypeValidation
-export function toAcceptedMimeType(value) {
-  return isValidMimeType(value) ? value : null;
+function isValidBuffer(buffer) {
+  return Buffer.isBuffer(buffer) && buffer.length > 0;
 }
 
 function isValidMimeType(mimeType) {
-  if (!mimeType || typeof mimeType !== "string") {
-    return false;
-  }
-  const allowedMimetypes = {
-    "image/jpeg": true,
-    "image/png": true,
-  };
-  return !!allowedMimetypes[mimeType];
+  return typeof mimeType === "string" && allowedMimeTypes.has(mimeType);
 }

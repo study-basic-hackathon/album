@@ -1,20 +1,34 @@
-import { toAcceptedName, toAcceptedId } from "../util/index.js";
+import Result from "../../utils/Result.js";
+import AppError from "../../utils/AppError.js";
+import { isValidName, isValidId } from "../util/index.js";
 
 export function convertSeasonPayload(payload) {
-  return {
-    name: toAcceptedName(payload.name),
-  };
+  if (!isValidName(payload.name)) {
+    return Result.fail(AppError.validationError("Invalid Name"));
+  }
+  return Result.ok({
+    name: payload.name,
+  });
 }
 
 export function convertSeasonId(params) {
-  return {
-    seasonId: toAcceptedId(params.seasonId),
-  };
+  if (!isValidId(params.seasonId)) {
+    return Result.fail(AppError.validationError("Invalid seasonId"));
+  }
+  return Result.ok({
+    seasonId: params.seasonId,
+  });
 }
 
 export function convertSeasonAndWorkIds(params) {
-  return {
-    seasonId: toAcceptedId(params.seasonId),
-    workId: toAcceptedId(params.workId),
-  };
+  if (!isValidId(params.seasonId)) {
+    return Result.fail(AppError.validationError("Invalid seasonId"));
+  }
+  if (!isValidId(params.workId)) {
+    return Result.fail(AppError.validationError("Invalid WorkId"));
+  }
+  return Result.ok({
+    seasonId: params.seasonId,
+    workId: params.workId,
+  });
 }
