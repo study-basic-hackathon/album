@@ -10,6 +10,8 @@ export async function createImage(file) {
 
   const saving = await imageFileRepository.saveImage(id.data, file);
   if (saving.isFailure()) {
+    // ファイル保存に失敗した場合、作成したDBレコードを削除
+    await imageRecordRepository.deleteRecord({ imageId: id.data });
     return saving;
   }
   return id;
