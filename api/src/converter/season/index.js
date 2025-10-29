@@ -25,7 +25,7 @@ export function convertSeasonAndWorkIds(params) {
     return Result.fail(AppError.validationError("Invalid seasonId"));
   }
   if (!isValidId(params.workId)) {
-    return Result.fail(AppError.validationError("Invalid WorkId"));
+    return Result.fail(AppError.validationError("Invalid workId"));
   }
   return Result.ok({
     seasonId: params.seasonId,
