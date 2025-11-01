@@ -1,41 +1,44 @@
-import { findArrangerById, findWorksByArrangerId, insertArranger } from '../repositories/arranger.js';
-import * as arrangerRepository from '../repositories/arranger.js';
+import * as arrangerRepository from "../repositories/arranger.js";
 
 // 作者の登録
-export async function createArranger(name) {
-  const resultRows = await insertArranger(name);
-  const arrangerId = resultRows[0].id;
-  return arrangerId;
-};
+export async function createArranger(payload) {
+  return await arrangerRepository.createArranger(payload);
+}
 
 // 作者の情報の取得
-export async function getArrangerById(arrangerId) {
-  const result = await findArrangerById(arrangerId);
-  return result[0];
-};
+export async function getArrangerById(id) {
+  return await arrangerRepository.findArranger(id);
+}
 
 // 作者の作品一覧の取得
-export async function getArrangerWorks(arrangerId) {
-  const result = await findWorksByArrangerId(arrangerId);
-  return result;
-};
+export async function getArrangerWorks(id) {
+  return await arrangerRepository.findWorks(id);
+}
 
 // 作者の特定の作品の取得
-export async function getArrangerWorkById(arrangerId, workId) {
-  const targetWorkId = parseInt(workId, 10);
-  const formattedWorks = await findWorksByArrangerId(arrangerId);
-  const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
-  return foundWork[0];
-};
+export async function getArrangerWorkById(ids) {
+  const arrangerWorks = await arrangerRepository.findWorks(ids);
+
+  if (arrangerWorks.isFailure()) {
+    return arrangerWorks;
+  }
+  return await arrangerRepository.findWork(arrangerWorks.data, ids);
+}
 
 // 作者の更新
-export async function updateArranger(arrangerId, name) {
-  const result = await arrangerRepository.updateArranger(arrangerId, name);
-  return result[0];
-};
+export async function updateArranger(id, payload) {
+  const existing = await arrangerRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
+  }
+  return await arrangerRepository.updateArranger(id, payload);
+}
 
 // 作者の削除
-export async function deleteArranger(arrangerId) {  
-  const result = await arrangerRepository.deleteArranger(arrangerId);
-  return result;
+export async function deleteArranger(id) {
+  const existing = await arrangerRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
+  }
+  return await arrangerRepository.deleteArranger(id);
 }

@@ -1,60 +1,42 @@
 import express from "express";
 import { updateWork, deleteWork, createWork } from "../usecases/work.js";
+import { convertWorkPayload, convertWorkId } from "../converter/work/index.js";
+import { handleResult } from "./utils/index.js";
 
 const router = express.Router();
 
 //作品の登録
 router.post("/", async (req, res) => {
-  try {
-    const { title, arranger_id, material_ids, season_id, category_id, image_ids } = req.body;
-    const forbiddenChars = /[<>{}[\]|\\^`$"'=]/;
-    if (!title) {
-      return res.status(400).send({ message: 'title is required' });
-    }
-    if (forbiddenChars.test(title)) {
-      return res.status(400).json({ message: "Invalid title" });
-    }
-    const workId = await createWork(title, arranger_id, material_ids, season_id, category_id, image_ids);
-    const path = `/works/${workId}`;
-    res.status(201).header('Location', path)
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+  const payload = convertWorkPayload(req.body);
+  if (payload.isFailure()) {
+    return handleResult(payload, null, res);
   }
+  const result = await createWork(payload.data);
+  return handleResult(result, (res, data) => res.status(201).location(`/works/${data}`).end(), res);
 });
 
 // 作品の更新
 router.put("/:workId", async (req, res) => {
-    try {
-        const { workId } = req.params;
-        const { title, arranger_id, material_ids, season_id, category_id, image_ids } = req.body;
-        if (!/^\d+$/.test(workId)) {
-            return res.status(400).json({ message: "Invalid workId" });
-        }
-        const result = await updateWork(workId, title, arranger_id, material_ids, season_id, category_id, image_ids);
-        res.status(204).send();
-    } catch (err) {
-        console.error("Error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-    } 
+  const id = convertWorkId(req.params);
+  if (id.isFailure()) {
+    return handleResult(id, null, res);
+  }
+  const payload = convertWorkPayload(req.body);
+  if (payload.isFailure()) {
+    return handleResult(payload, null, res);
+  }
+  const result = await updateWork(id.data, payload.data);
+  return handleResult(result, (res, data) => res.status(204).end(), res);
 });
 
 // 作品の削除
 router.delete("/:workId", async (req, res) => {
-    try {
-        const { workId } = req.params;
-        if (!/^\d+$/.test(workId)) {
-            return res.status(400).json({ message: "Invalid workId" });
-        }
-        const result = await deleteWork(workId);
-        if (!result) {
-            return res.status(404).json({ message: "Resource not found" });
-        }
-        res.status(204).send();
-    } catch (err) {
-        console.error("Error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+  const id = convertWorkId(req.params);
+  if (id.isFailure()) {
+    return handleResult(id, null, res);
+  }
+  const result = await deleteWork(id.data);
+  return handleResult(result, (res, data) => res.status(204).end(), res);
 });
 
 export default router;

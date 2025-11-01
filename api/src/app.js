@@ -1,12 +1,12 @@
 import express from "express";
 import cors from "cors";
-import exhibitionRoutes from './routers/exhibition.js';
-import arrangerRoutes from './routers/arranger.js';
-import materialRoutes from './routers/material.js';
-import categoryRoutes from './routers/category.js';
-import seasonRoutes from './routers/season.js';
-import imageRoutes from './routers/image.js';
-import workRoutes from './routers/work.js';
+import exhibitionRoutes from "./routers/exhibition.js";
+import arrangerRoutes from "./routers/arranger.js";
+import materialRoutes from "./routers/material.js";
+import categoryRoutes from "./routers/category.js";
+import seasonRoutes from "./routers/season.js";
+import imageRoutes from "./routers/image.js";
+import workRoutes from "./routers/work.js";
 
 const app = express();
 

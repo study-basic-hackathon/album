@@ -1,41 +1,44 @@
-import { findSeasonById, findWorksBySeasonId, insertSeason } from '../repositories/season.js';
-import * as seasonRepository from '../repositories/season.js';
+import * as seasonRepository from "../repositories/season.js";
 
 //季節の登録
-export async function createSeason(name) {
-  const resultRows = await insertSeason(name);
-  const seasonId = resultRows[0].id;
-  return seasonId;
-};
+export async function createSeason(payload) {
+  return await seasonRepository.createSeason(payload);
+}
 
 // 季節の情報の取得
-export async function getSeasonById(seasonId) {
-  const result = await findSeasonById(seasonId);
-  return result[0];
-};
+export async function getSeasonById(id) {
+  return await seasonRepository.findSeason(id);
+}
 
 // 季節の作品一覧の取得
-export async function getSeasonWorks(seasonId) {
-  const result = await findWorksBySeasonId(seasonId);
-  return result;
-};
+export async function getSeasonWorks(id) {
+  return await seasonRepository.findWorks(id);
+}
 
 // 季節の特定の作品の取得
-export async function getSeasonWorkById(seasonId, workId) {
-  const targetWorkId = parseInt(workId, 10);
-  const formattedWorks = await findWorksBySeasonId(seasonId);
-  const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
-  return foundWork[0];
-};
+export async function getSeasonWorkById(ids) {
+  const seasonWorks = await seasonRepository.findWorks(ids);
+
+  if (seasonWorks.isFailure()) {
+    return seasonWorks;
+  }
+  return await seasonRepository.findWork(seasonWorks.data, ids);
+}
 
 // 季節の更新
-export async function updateSeason(seasonId, name) {
-  const result = await seasonRepository.updateSeason(seasonId, name);
-  return result[0];
-};
+export async function updateSeason(id, payload) {
+  const existing = await seasonRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
+  }
+  return await seasonRepository.updateSeason(id, payload);
+}
 
 // 季節の削除
-export async function deleteSeason(seasonId) {
-  const result = await seasonRepository.deleteSeason(seasonId);
-  return result;
+export async function deleteSeason(id) {
+  const existing = await seasonRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
+  }
+  return await seasonRepository.deleteSeason(id);
 }

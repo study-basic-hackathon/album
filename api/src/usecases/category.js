@@ -1,41 +1,44 @@
-import { findCategoryById, findWorksByCategoryId, insertCategory } from '../repositories/category.js';
-import * as categoryRepository from '../repositories/category.js';
+import * as categoryRepository from "../repositories/category.js";
 
 //カテゴリの登録
-export async function createCategory(name) {
-  const resultRows = await insertCategory(name);
-  const categoryId = resultRows[0].id;
-  return categoryId;
-};
+export async function createCategory(payload) {
+  return await categoryRepository.createCategory(payload);
+}
 
 // カテゴリーの情報の取得
-export async function getCategoryById(categoryId) {
-  const result = await findCategoryById(categoryId);
-  return result[0];
-};
+export async function getCategoryById(id) {
+  return await categoryRepository.findCategory(id);
+}
 
 // カテゴリーの作品一覧の取得
-export async function getCategoryWorks(categoryId) {
-  const result = await findWorksByCategoryId(categoryId);
-  return result;
-};
+export async function getCategoryWorks(id) {
+  return await categoryRepository.findWorks(id);
+}
 
 // カテゴリーの特定の作品の取得
-export async function getCategoryWorkById(categoryId, workId) {
-  const targetWorkId = parseInt(workId, 10);
-  const formattedWorks = await findWorksByCategoryId(categoryId);
-  const foundWork = formattedWorks.filter(item => item.work.id === targetWorkId);
-  return foundWork[0];
-};
+export async function getCategoryWorkById(ids) {
+  const categoryWorks = await categoryRepository.findWorks(ids);
+
+  if (categoryWorks.isFailure()) {
+    return categoryWorks;
+  }
+  return await categoryRepository.findWork(categoryWorks.data, ids);
+}
 
 // カテゴリの更新
-export async function updateCategory(categoryId, name) {
-  const result = await categoryRepository.updateCategory(categoryId, name);
-  return result[0];
-};
+export async function updateCategory(id, payload) {
+  const existing = await categoryRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
+  }
+  return await categoryRepository.updateCategory(id, payload);
+}
 
 // カテゴリの削除
-export async function deleteCategory(categoryId) {
-  const result = await categoryRepository.deleteCategory(categoryId);
-  return result;
+export async function deleteCategory(id) {
+  const existing = await categoryRepository.ensureRecord(id);
+  if (existing.isFailure()) {
+    return existing;
+  }
+  return await categoryRepository.deleteCategory(id);
 }

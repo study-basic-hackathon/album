@@ -1,129 +1,158 @@
 import { pool } from "../db.js";
+import Result from "../utils/Result.js";
+import AppError from "../utils/AppError.js";
 
 // 作品の登録
-export async function insertWork(
-  title,
-  arranger_id,
-  material_ids,
-  season_id,
-  category_id,
-  image_ids
-) {
-  const client = await pool.connect();
+export async function createWork(payload) {
+  let client; // スコープはトランザクション内のみ
+  const { title, exhibitionId, arrangerId, materialIds, seasonId, categoryId, imageIds } = payload;
+
   try {
+    client = await pool.connect();
     await client.query("BEGIN");
 
-    // work テーブルに作品情報を登録
-    const workResult = await client.query(
+    // workテーブル
+    const insertedWork = await client.query(
       `
-      INSERT INTO
-          work(title, arranger_id, season_id, category_id)
-      VALUES
-          ($1, $2, $3, $4)
-      RETURNING
-          id
-      `,
-      [title, arranger_id, season_id, category_id]
+      INSERT INTO work(title, exhibition_id, arranger_id, season_id, category_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id`,
+      [title, exhibitionId, arrangerId, seasonId, categoryId]
     );
 
-    const workId = workResult.rows[0].id;
+    const workId = insertedWork.rows[0].id;
 
-    // work_material テーブルにデータを登録
-    if (material_ids && material_ids.length > 0) {
-      const materialInserts = material_ids
-        .map((materialId) => `(${workId}, ${materialId})`)
-        .join(",");
-      await client.query(`
-        INSERT INTO
-            work_material(work_id, material_id)
-        VALUES
-            ${materialInserts}
-      `);
-    }
+    // work_materialテーブル
+    await client.query(
+      `
+      INSERT INTO work_material (work_id, material_id)
+      SELECT $1, unnest($2::int[])`,
+      [workId, materialIds]
+    );
 
-    // image テーブルにデータを登録
-    if (image_ids && image_ids.length > 0) {
-      const imageInserts = image_ids.map((imageId) => `(${workId}, ${imageId})`).join(",");
-      await client.query(`
-        INSERT INTO
-            work_image(work_id, image_id)
-        VALUES
-            ${imageInserts}
-      `);
-    }
+    // work_imageテーブル
+    await client.query(
+      `
+      INSERT INTO work_image (work_id, image_id)
+      SELECT $1, unnest($2::int[])`,
+      [workId, imageIds]
+    );
 
     await client.query("COMMIT");
-    return workId;
+    return Result.ok(workId);
   } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("Error registering data:", error);
-    throw error;
+    if (client) {
+      await client.query("ROLLBACK");
+    }
+    console.error("Error:", error);
+    return Result.fail(AppError.sqlError());
   } finally {
-    client.release();
+    if (client) {
+      client.release();
+    }
+  }
+}
+
+// 作品の存在確認
+export async function ensureRecord(id) {
+  try {
+    const { workId } = id;
+    const result = await pool.query(
+      `
+      SELECT COUNT(*)
+      FROM work WHERE id = $1`,
+      [workId]
+    );
+    const count = parseInt(result.rows[0].count, 10);
+    if (count === 0) {
+      return Result.fail(AppError.notFound("Work not found"));
+    }
+    return Result.ok();
+  } catch (error) {
+    console.error("Error:", error);
+    return Result.fail(AppError.sqlError());
   }
 }
 
 // 作品の更新
-export async function updateWorkBase(workId, title, arranger_id, season_id, category_id) {
-  const result = await pool.query(
-    `
-        UPDATE
-            work
-        SET
-            title = $2,
-            arranger_id = $3,
-            season_id = $4,
-            category_id = $5
-        WHERE
-            id = $1
-        `,
-    [workId, title, arranger_id, season_id, category_id]
-  );
-  return result.rows;
-}
+export async function updateWork(id, payload) {
+  let client; // スコープはトランザクション内のみ
+  const { workId } = id;
+  const { title, exhibitionId, arrangerId, seasonId, categoryId, materialIds, imageIds } = payload;
 
-export async function updateWorkMaterials(workId, material_ids) {
-  await pool.query(`DELETE FROM work_material WHERE work_id = $1`, [workId]);
-  for (const materialId of material_ids) {
-    await pool.query(`INSERT INTO work_material (work_id, material_id) VALUES ($1, $2)`, [
-      workId,
-      materialId,
-    ]);
+  try {
+    client = await pool.connect();
+    await client.query("BEGIN");
+
+    // workテーブルの更新
+    await client.query(
+      `
+    UPDATE work
+    SET
+      title = $2,
+      exhibition_id = $3,
+      arranger_id = $4,
+      season_id = $5,
+      category_id = $6
+    WHERE id = $1`,
+      [workId, title, exhibitionId, arrangerId, seasonId, categoryId]
+    );
+
+    // work_materialテーブルの更新
+    await client.query(
+      `
+    DELETE FROM work_material
+    WHERE work_id = $1`,
+      [workId]
+    );
+    await client.query(
+      `
+    INSERT INTO work_material (work_id, material_id)
+    SELECT $1, unnest($2::int[])`,
+      [workId, materialIds]
+    );
+
+    // work_imageテーブルの更新
+    await client.query(
+      `
+    DELETE FROM work_image
+    WHERE work_id = $1`,
+      [workId]
+    );
+    await client.query(
+      `
+    INSERT INTO work_image (work_id, image_id)
+    SELECT $1, unnest($2::int[])`,
+      [workId, imageIds]
+    );
+
+    await client.query("COMMIT");
+    return Result.ok(workId);
+  } catch (error) {
+    if (client) {
+      await client.query("ROLLBACK");
+    }
+    console.error("Error:", error);
+    return Result.fail(AppError.sqlError());
+  } finally {
+    if (client) {
+      client.release();
+    }
   }
-}
-
-export async function updateWorkImages(workId, image_ids) {
-  await pool.query(`UPDATE image SET work_id = NULL WHERE work_id = $1`, [workId]);
-  if (image_ids.length > 0) {
-    await pool.query(`UPDATE image SET work_id = $1 WHERE id = ANY($2)`, [workId, image_ids]);
-  }
-}
-
-export async function updateWork(
-  workId,
-  title,
-  arranger_id,
-  material_ids,
-  season_id,
-  category_id,
-  image_ids
-) {
-  const result = await updateWorkBase(workId, title, arranger_id, season_id, category_id);
-  await updateWorkMaterials(workId, material_ids);
-  await updateWorkImages(workId, image_ids);
-  return result;
 }
 
 // 作品の削除
-export async function deleteWork(workId) {
-  const result = await pool.query(
-    `
-        DELETE FROM
-            work
-        WHERE
-            id = $1
-        `,
-    [workId]
-  );
-  return result.rowCount > 0;
+export async function deleteWork(id) {
+  try {
+    const { workId } = id;
+    await pool.query(
+      `DELETE FROM work
+       WHERE id = $1`,
+      [workId]
+    );
+    return Result.ok();
+  } catch (error) {
+    console.error("Error:", error);
+    return Result.fail(AppError.sqlError());
+  }
 }

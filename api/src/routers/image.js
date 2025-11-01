@@ -1,16 +1,19 @@
 import express from "express";
 import multer from "multer";
 import { getImage, createImage, deleteImage } from "../usecases/image.js";
-import { handleResult } from "../utils/routers/handleResult.js";
-import { convertFile, convertId } from "../converters/routers.js";
+import { handleResult } from "./utils/index.js";
+import { convertFile, convertImageId } from "../converter/image/index.js";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // 画像の登録
-router.post("/images", upload.single("file"), async (req, res) => {
-  const { file } = convertFile(req.file);
-  const result = await createImage(file);
+router.post("/", upload.single("file"), async (req, res) => {
+  const file = convertFile(req.file);
+  if (file.isFailure()) {
+    return handleResult(file, null, res);
+  }
+  const result = await createImage(file.data);
   return handleResult(
     result,
     (res, data) => res.status(201).location(`/images/${data}`).end(),
@@ -19,15 +22,22 @@ router.post("/images", upload.single("file"), async (req, res) => {
 });
 
 // 画像の取得
-router.get("/images/:imageId", async (req, res) => {
-  const imageId = convertId(req.params.imageId);
-  const result = await getImage(imageId);
+router.get("/:imageId", async (req, res) => {
+  const id = convertImageId(req.params);
+  if (id.isFailure()) {
+    return handleResult(id, null, res);
+  }
+  const result = await getImage(id.data);
   return handleResult(result, (res, data) => res.sendFile(data), res);
 });
 
-router.delete("/images/:imageId", async (req, res) => {
-  const imageId = convertId(req.params.imageId);
-  const result = await deleteImage(imageId);
+// 画像の削除
+router.delete("/:imageId", async (req, res) => {
+  const id = convertImageId(req.params);
+  if (id.isFailure()) {
+    return handleResult(id, null, res);
+  }
+  const result = await deleteImage(id.data);
   return handleResult(result, (res, data) => res.status(204).end(), res);
 });
 
